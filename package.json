@@ -1,0 +1,8 @@
+{
+  "name": "additional-authors",
+  "dependencies": {
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "underscore": "^1.8.3"
+  }
+}

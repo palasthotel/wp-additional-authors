@@ -1,0 +1,97 @@
+import React, {Component, PropTypes} from 'react';
+
+class AuthorItem extends Component {
+	
+	/**
+	 * ------------------------------------------------
+	 * lifecycle
+	 * ------------------------------------------------
+	 */
+	constructor(props) {
+		super(props);
+		
+	}
+	
+	/**
+	 * ------------------------------------------------
+	 * rendering
+	 * ------------------------------------------------
+	 */
+	render() {
+		const {author, isMainAuthor} = this.props;
+		return (
+			<div
+				className={`author-item${(isMainAuthor)?" is-main-author":""}`}
+			>
+				{author.display_name} ({author.user_nicename})
+				{this.renderDelete()}
+				<span
+					className="author-item__move author-item__up"
+				    onClick={this.onChangePosition.bind(this,-1)}
+				>
+					▲
+				</span>
+				<span
+					className="author-item__move author-item__down"
+				    onClick={this.onChangePosition.bind(this,1)}
+				>
+					▼
+				</span>
+				<input type="hidden" name="additional_authors[]" value={author.id} />
+			</div>
+		)
+	}
+	renderDelete(){
+		if(this.props.isMainAuthor) return null;
+		return (
+			<span
+				className="author-item__delete"
+				onClick={this.props.onUnselect}
+			>
+				X
+			</span>
+		)
+	}
+	
+	/**
+	 * ------------------------------------------------
+	 * events
+	 * ------------------------------------------------
+	 */
+	onChangePosition(diff){
+		this.props.onChangePosition((this.props.index+diff));
+	}
+	
+	/**
+	 * ------------------------------------------------
+	 * other functions
+	 * ------------------------------------------------
+	 */
+}
+
+/**
+ * property defaults
+ */
+AuthorItem.defaultProps = {
+	author: {
+		id: -1,
+		name: "",
+		user_login: "",
+	}
+};
+
+/**
+ * define property types
+ */
+AuthorItem.propTypes = {
+	author: PropTypes.object.isRequired,
+	index: PropTypes.number.isRequired,
+	onUnselect: PropTypes.func.isRequired,
+	onChangePosition: PropTypes.func.isRequired,
+	isMainAuthor: PropTypes.bool.isRequired,
+};
+
+/**
+ * export component to public
+ */
+export default AuthorItem;

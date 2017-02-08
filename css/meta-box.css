@@ -1,0 +1,28 @@
+.additional-authors-search { position: relative; }
+
+.additional-authors-search .additional-authors-search__input { padding: 5px; width: 100%; }
+
+.additional-authors-search .additional-authors-search-list { position: absolute; left: 0; right: 0; background-color: white; z-index: 10; }
+
+.additional-authors-search .additional-authors-search-item, .additional-authors-search .additional-authors-new-item { padding: 10px; border: 1px solid black; border-top: none; cursor: pointer; }
+
+.additional-authors-search .additional-authors-search-item.is-over, .additional-authors-search .additional-authors-new-item.is-over { padding-left: 5px; border-left: 6px solid black; }
+
+.additional-authors .author-item { position: relative; padding: 5px 5px 5px 25px; border-radius: 5px; background-color: #006799; color: white; margin-right: 5px; margin-top: 5px; }
+
+.additional-authors .author-item .author-item__delete { position: absolute; left: 5px; top: 7px; width: 10px; padding-left: 3px; padding-top: 2px; height: 11px; font-size: 9px; border-radius: 8px; background: white; color: #006799; cursor: pointer; line-height: 1em; }
+
+.additional-authors .author-item .author-item__delete:hover { color: red; }
+
+.additional-authors .author-item .author-item__move { position: absolute; right: 5px; line-height: 0; cursor: pointer; }
+
+.additional-authors .author-item .author-item__move.author-item__up { top: 7px; }
+
+.additional-authors .author-item .author-item__move.author-item__down { bottom: 7px; }
+
+.additional-authors .author-item:first-child .author-item__up { display: none; }
+
+.additional-authors .author-item:last-child .author-item__down { display: none; }
+
+.additional-authors .author-item.is-main-author { background-color: red; }
+/*# sourceMappingURL=meta-box.css.map */
