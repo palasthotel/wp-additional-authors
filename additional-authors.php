@@ -176,3 +176,16 @@ function additional_authors_get_the_authors_ids( $post_id = NULL) {
 
 	return $additional_authors->get_ids( $post_id );
 }
+
+/**
+ * solr indexing authors filter
+ * @param $auhtor_ids
+ * @param $post_id
+ *
+ * @return array
+ */
+function additional_authors_solr_author_ids($author_ids, $post_id){
+	$author_ids = additional_authors_get_the_authors_ids($post_id);
+	return $author_ids;
+}
+add_filter('solr_index_update_author_ids', 'additional_authors_solr_author_ids', 10, 2);

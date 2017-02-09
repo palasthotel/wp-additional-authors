@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \AdditionalAuthors\Render $this
- * @var array $author_id
+ * @var int $author_id
  */
 
 printf(
@@ -9,7 +9,7 @@ printf(
 	esc_url( get_author_posts_url( $author_id ) ),
 	sprintf(
 		esc_attr__( 'Posts by %s' ),
-		$display_name
+		get_the_author_meta( 'display_name', $author_id )
 	),
-	$display_name
+	get_the_author_meta( 'display_name', $author_id )
 );
