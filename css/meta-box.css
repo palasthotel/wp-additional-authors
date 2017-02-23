@@ -25,4 +25,8 @@
 .additional-authors .author-item:last-child .author-item__down { display: none; }
 
 .additional-authors .author-item.is-main-author { background-color: red; }
+
+.additional-authors .author-item.is-new-author { background-color: forestgreen; }
+
+.additional-authors .author-item.is-new-author:nth-child(2) .author-item__up { display: none; }
 /*# sourceMappingURL=meta-box.css.map */

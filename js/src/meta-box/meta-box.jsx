@@ -18,7 +18,9 @@ class MetaBox extends Component {
 		this._main_user_select.addEventListener("change",this.onMainAuthorChanged.bind(this));
 		
 		this.state = {
+			users: props.users,
 			selected: this.props.selected,
+			new_user_id: -1,
 		};
 		
 	}
@@ -29,8 +31,8 @@ class MetaBox extends Component {
 	 * ------------------------------------------------
 	 */
 	render() {
-		const {language, users} = this.props;
-		const {selected, main_author} = this.state;
+		const {language} = this.props;
+		const {selected, users, new_users, main_author} = this.state;
 		return (
 			<div className="additional-authors">
 				<Search
@@ -50,7 +52,7 @@ class MetaBox extends Component {
 						let user = null;
 						let first = true;
 						for(let _user of users){
-							if(_user.id == id){
+							if(_user.ID == id){
 								return (
 									<AuthorItem
 										key={id}
@@ -76,27 +78,43 @@ class MetaBox extends Component {
 	 * ------------------------------------------------
 	 */
 	onSelect(author){
-		this.state.selected.push(author.id);
+		if(author.ID == 0){
+			author.ID = this.state.new_user_id--;
+			this.state.users.push(author);
+		}
+		
+		this.state.selected.push(author.ID);
 		this.state.selected = _.unique(this.state.selected);
 		this.setState({ selected: this.state.selected });
+		
 		this.props.onAuthorsChange(this.state.selected);
+		
 	}
 	onUnselect(author){
 		let selected = [];
-		if(this.state.main_author == author.id){
+		if(this.state.main_author == author.ID){
 			console.log("you cannot delete main author");
 			return;
 		}
 		for(let _id of this.state.selected){
 			
-			if(_id == author.id) continue;
+			if(_id == author.ID) continue;
 			selected.push(_id);
 		}
 		this.setState({selected: selected});
 	}
 	onChangePosition(user, from, to){
 		let selected = [];
+		
+		/**
+		 * new user cannot be on first position
+		 */
+		if(to == 0 && user.ID <= 0) return;
+		
 		for(let index in this.state.selected){
+			
+			if(!this.state.selected.hasOwnProperty(index)) continue;
+			
 			if(index == from){
 				selected.push(this.state.selected[to]);
 			} else if( index == to){
@@ -158,6 +176,7 @@ class MetaBox extends Component {
 MetaBox.defaultProps = {
 	users: [],
 	language: {},
+	onAuthorsChange: () => {},
 };
 
 /**
@@ -167,7 +186,7 @@ MetaBox.propTypes = {
 	users: PropTypes.array.isRequired,
 	selected: PropTypes.array.isRequired,
 	language: PropTypes.object.isRequired,
-	onAuthorsChange: PropTypes.func.isRequired,
+	onAuthorsChange: PropTypes.func,
 };
 
 /**

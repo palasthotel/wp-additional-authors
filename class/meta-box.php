@@ -35,6 +35,20 @@ class MetaBox {
 		wp_enqueue_style("additional_authors_meta_box_style", $this->plugin->url."/css/meta-box.css");
 		wp_enqueue_script("additional_authors_meta_box_script", $this->plugin->url."/js/bundle/main.js",array(),1, true);
 		
+		/**
+		 * get selected users
+		 */
+		$selected=array();
+		$selected[]=$post->post_author;
+		$additional = get_post_custom_values( \AdditionalAuthors::META_POST_ADDITIONAL_AUTHORS, $post->ID );
+		if(is_array($additional)) {
+			$selected = array_merge( $selected, $additional );
+		}
+		
+		/**
+		 * get all users
+		 * // TODO: async request because of too many users better
+		 */
 		$users = get_users(
 			array(
 				'who' => 'authors',
@@ -43,43 +57,20 @@ class MetaBox {
 			)
 		);
 		
-		$selected=array();
-		$selected[]=$post->post_author;
-		
-		$additional = get_post_custom_values( \AdditionalAuthors::META_POST_ADDITIONAL_AUTHORS, $post->ID );
-		if(is_array($additional)){
-			$selected = array_merge($selected,$additional);
-		}
+		$config = array(
+			"users" => $users,
+			"selected" => $selected,
+			"language" => array(
+				"label" => __('Search for author:'),
+				"description" => __('Selected authors.'),
+			),
+			"root_id" => "meta_additional_authors",
+			
+		);
+		wp_localize_script('additional_authors_meta_box_script', 'AdditionalAuthors', $config);
 		
 		?>
-		
 		<div id="meta_additional_authors"></div>
-		
-		<script type="text/javascript">
-			
-			window.additional_authors = {
-				users: [],
-				selected: [<?php echo implode(",", $selected); ?>],
-				root: document.getElementById("meta_additional_authors"),
-				language:{
-					label: "<?php _e('Search for author:'); ?>",
-					description: "<?php _e('Selected authors.'); ?>",
-				},
-				onAuthorsChange:function(ids){
-				}
-			};
-			
-			<?php foreach ( $users as $user ) : ?>
-			window.additional_authors.users.push({
-				id: <?php echo $user->ID; ?>,
-				display_name: "<?php echo $user->display_name; ?>",
-				user_login: "<?php echo $user->user_login; ?>",
-				user_nicename: "<?php echo $user->user_nicename; ?>",
-			});
-			<?php endforeach; ?>
-			
-		</script>
-		
 		<?php
 	}
 	
@@ -107,12 +98,18 @@ class MetaBox {
 			 */
 			delete_post_meta( $post_id, \AdditionalAuthors::META_POST_ADDITIONAL_AUTHORS );
 			
-			foreach ( $_POST[self::POST_AUTORS] as $index => $additional_author ) {
+			foreach ( $_POST[self::POST_AUTORS]["ids"] as $index => $additional_author ) {
 				
 				/**
 				 * skip first because it is main author and saved on post
 				 */
 				if($index == 0) continue;
+				
+				if(intval($additional_author) <= 0){
+					// TODO: create user
+					$name = $_POST[self::POST_AUTORS]["names"];
+					
+				}
 				
 				add_post_meta( $post_id, \AdditionalAuthors::META_POST_ADDITIONAL_AUTHORS, $additional_author );
 			}
@@ -124,7 +121,7 @@ class MetaBox {
 			for($i = 1; $i < count($user_ids); $i++){
 				if($post->post_author == $user_ids[$i]){
 					// additional author is now main author
-					delete_post_meta($post_id,\AdditionalAuthors::META_POST_ADDITIONAL_AUTHORS,$post->post_author);
+					delete_post_meta($post_id,\AdditionalAuthors::META_POST_ADDITIONAL_AUTHORS, $post->post_author);
 					break;
 				}
 			}

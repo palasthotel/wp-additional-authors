@@ -58,7 +58,7 @@ class Search extends Component {
 				>
 					{search_result.map((item, index)=>{
 						return <SearchItem
-							key={item.id}
+							key={item.ID}
 							author={item}
 							onSelect={this.onSelect.bind(this, item)}
 							isOver={(over_index == index)}
@@ -92,7 +92,7 @@ class Search extends Component {
 		if(query != ''){
 			for(let user of users){
 				if(user.display_name.toLowerCase().indexOf(query.toLowerCase()) > -1){
-					if(selected.indexOf(user.id) >= 0) continue;
+					if(selected.indexOf(user.ID) >= 0) continue;
 					search_result.unshift(user);
 				}
 			}
@@ -118,8 +118,12 @@ class Search extends Component {
 		this.props.onSelect(user);
 		this.onChange();
 	}
-	onNewItem(){
-		console.log("new");
+	onNewItem(name){
+		this.props.onSelect({
+			ID: 0,
+			display_name: name,
+			user_nicename: "-",
+		});
 	}
 	onKeyDown(e){
 		const ENTER = 13;

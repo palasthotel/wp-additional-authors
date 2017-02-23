@@ -21,10 +21,11 @@ class AuthorItem extends Component {
 		const {author, isMainAuthor} = this.props;
 		return (
 			<div
-				className={`author-item${(isMainAuthor)?" is-main-author":""}`}
+				className={`author-item${(isMainAuthor)?" is-main-author":""}${(author.ID < 0)?" is-new-author":""}`}
 			>
 				{author.display_name} ({author.user_nicename})
 				{this.renderDelete()}
+				
 				<span
 					className="author-item__move author-item__up"
 				    onClick={this.onChangePosition.bind(this,-1)}
@@ -37,7 +38,8 @@ class AuthorItem extends Component {
 				>
 					▼
 				</span>
-				<input type="hidden" name="additional_authors[]" value={author.id} />
+				<input type="hidden" name="additional_authors[ids][]" value={author.ID} />
+				<input type="hidden" name="additional_authors[names][]" value={author.display_name} />
 			</div>
 		)
 	}
@@ -74,10 +76,11 @@ class AuthorItem extends Component {
  */
 AuthorItem.defaultProps = {
 	author: {
-		id: -1,
+		ID: -1,
 		name: "",
 		user_login: "",
-	}
+	},
+	className: "",
 };
 
 /**

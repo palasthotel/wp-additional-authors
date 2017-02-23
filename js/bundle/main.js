@@ -64,36 +64,23 @@
 	 * wait for dom to be ready so all plugins etc are loaded
 	 */
 	document.addEventListener("DOMContentLoaded", function (event) {
-		/**
-	  * Toolbar button components
-	  */
-		var tb = window.grid_toolbar_buttons;
-		var etb = window.grid_toolbar_buttons_editor;
-	
-		/**
-	  * grid overlays
-	  */
-		var gov = window.grid_overlays;
-		var eov = window.grid_overlays_editor;
 	
 		/**
 	  * append app to grid app root
 	  */
 	
-		var _window$additional_au = window.additional_authors,
-		    language = _window$additional_au.language,
-		    users = _window$additional_au.users,
-		    selected = _window$additional_au.selected,
-		    root = _window$additional_au.root,
-		    onAuthorsChange = _window$additional_au.onAuthorsChange;
+		var _AdditionalAuthors = AdditionalAuthors,
+		    language = _AdditionalAuthors.language,
+		    users = _AdditionalAuthors.users,
+		    selected = _AdditionalAuthors.selected,
+		    root_id = _AdditionalAuthors.root_id;
 	
 	
 		_reactDom2.default.render(_react2.default.createElement(_metaBox2.default, {
 			language: language,
 			users: users,
-			selected: selected,
-			onAuthorsChange: onAuthorsChange
-		}), root);
+			selected: selected
+		}), document.getElementById(root_id));
 	});
 
 /***/ },
@@ -21556,7 +21543,9 @@
 			_this._main_user_select.addEventListener("change", _this.onMainAuthorChanged.bind(_this));
 	
 			_this.state = {
-				selected: _this.props.selected
+				users: props.users,
+				selected: _this.props.selected,
+				new_user_id: -1
 			};
 	
 			return _this;
@@ -21574,11 +21563,11 @@
 			value: function render() {
 				var _this2 = this;
 	
-				var _props = this.props,
-				    language = _props.language,
-				    users = _props.users;
+				var language = this.props.language;
 				var _state = this.state,
 				    selected = _state.selected,
+				    users = _state.users,
+				    new_users = _state.new_users,
 				    main_author = _state.main_author;
 	
 				return _react2.default.createElement(
@@ -21615,7 +21604,7 @@
 								for (var _iterator = users[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 									var _user = _step.value;
 	
-									if (_user.id == id) {
+									if (_user.ID == id) {
 										return _react2.default.createElement(_authorItem2.default, {
 											key: id,
 											index: index,
@@ -21656,16 +21645,22 @@
 		}, {
 			key: 'onSelect',
 			value: function onSelect(author) {
-				this.state.selected.push(author.id);
+				if (author.ID == 0) {
+					author.ID = this.state.new_user_id--;
+					this.state.users.push(author);
+				}
+	
+				this.state.selected.push(author.ID);
 				this.state.selected = _underscore2.default.unique(this.state.selected);
 				this.setState({ selected: this.state.selected });
+	
 				this.props.onAuthorsChange(this.state.selected);
 			}
 		}, {
 			key: 'onUnselect',
 			value: function onUnselect(author) {
 				var selected = [];
-				if (this.state.main_author == author.id) {
+				if (this.state.main_author == author.ID) {
 					console.log("you cannot delete main author");
 					return;
 				}
@@ -21678,7 +21673,7 @@
 						var _id = _step2.value;
 	
 	
-						if (_id == author.id) continue;
+						if (_id == author.ID) continue;
 						selected.push(_id);
 					}
 				} catch (err) {
@@ -21702,7 +21697,16 @@
 			key: 'onChangePosition',
 			value: function onChangePosition(user, from, to) {
 				var selected = [];
+	
+				/**
+	    * new user cannot be on first position
+	    */
+				if (to == 0 && user.ID <= 0) return;
+	
 				for (var index in this.state.selected) {
+	
+					if (!this.state.selected.hasOwnProperty(index)) continue;
+	
 					if (index == from) {
 						selected.push(this.state.selected[to]);
 					} else if (index == to) {
@@ -21799,7 +21803,8 @@
 	
 	MetaBox.defaultProps = {
 		users: [],
-		language: {}
+		language: {},
+		onAuthorsChange: function onAuthorsChange() {}
 	};
 	
 	/**
@@ -21809,7 +21814,7 @@
 		users: _react.PropTypes.array.isRequired,
 		selected: _react.PropTypes.array.isRequired,
 		language: _react.PropTypes.object.isRequired,
-		onAuthorsChange: _react.PropTypes.func.isRequired
+		onAuthorsChange: _react.PropTypes.func
 	};
 	
 	/**
@@ -23483,7 +23488,7 @@
 						},
 						search_result.map(function (item, index) {
 							return _react2.default.createElement(_searchItem2.default, {
-								key: item.id,
+								key: item.ID,
 								author: item,
 								onSelect: _this2.onSelect.bind(_this2, item),
 								isOver: over_index == index
@@ -23529,7 +23534,7 @@
 							var user = _step.value;
 	
 							if (user.display_name.toLowerCase().indexOf(query.toLowerCase()) > -1) {
-								if (selected.indexOf(user.id) >= 0) continue;
+								if (selected.indexOf(user.ID) >= 0) continue;
 								search_result.unshift(user);
 							}
 						}
@@ -23575,8 +23580,12 @@
 			}
 		}, {
 			key: 'onNewItem',
-			value: function onNewItem() {
-				console.log("new");
+			value: function onNewItem(name) {
+				this.props.onSelect({
+					ID: 0,
+					display_name: name,
+					user_nicename: "-"
+				});
 			}
 		}, {
 			key: 'onKeyDown',
@@ -23720,7 +23729,6 @@
 		}, {
 			key: 'onClick',
 			value: function onClick() {
-				console.log("onClick seach item");
 				this.props.onSelect(this.props.author);
 			}
 		}]);
@@ -23802,7 +23810,7 @@
 		}, {
 			key: 'onClick',
 			value: function onClick() {
-				this.props.onSelect(this.props.author);
+				this.props.onSelect(this.props.name);
 			}
 		}]);
 	
@@ -23871,7 +23879,7 @@
 				return _react2.default.createElement(
 					"div",
 					{
-						className: "author-item" + (isMainAuthor ? " is-main-author" : "")
+						className: "author-item" + (isMainAuthor ? " is-main-author" : "") + (author.ID < 0 ? " is-new-author" : "")
 					},
 					author.display_name,
 					" (",
@@ -23894,7 +23902,8 @@
 						},
 						"\u25BC"
 					),
-					_react2.default.createElement("input", { type: "hidden", name: "additional_authors[]", value: author.id })
+					_react2.default.createElement("input", { type: "hidden", name: "additional_authors[ids][]", value: author.ID }),
+					_react2.default.createElement("input", { type: "hidden", name: "additional_authors[names][]", value: author.display_name })
 				);
 			}
 		}, {
@@ -23941,10 +23950,11 @@
 	
 	AuthorItem.defaultProps = {
 		author: {
-			id: -1,
+			ID: -1,
 			name: "",
 			user_login: ""
-		}
+		},
+		className: ""
 	};
 	
 	/**

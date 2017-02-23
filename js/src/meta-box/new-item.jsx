@@ -26,7 +26,7 @@ class NewItem extends Component{
 		this.setState({over: is_over});
 	}
 	onClick(){
-		this.props.onSelect(this.props.author);
+		this.props.onSelect(this.props.name);
 	}
 }
 

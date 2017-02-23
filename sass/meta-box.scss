@@ -80,5 +80,17 @@
 		&.is-main-author{
 			background-color: red;
 		}
+		
+		&.is-new-author{
+			background-color: forestgreen;
+		}
+		&.is-new-author:nth-child(2){
+			.author-item__up{
+				display: none;
+			}
+		}
 	}
+	
+	
+	
 }

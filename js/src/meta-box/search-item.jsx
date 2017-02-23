@@ -27,7 +27,6 @@ class SearchItem extends Component{
 		this.setState({over: is_over});
 	}
 	onClick(){
-		console.log("onClick seach item");
 		this.props.onSelect(this.props.author);
 	}
 }
