@@ -15,16 +15,11 @@ class QueryManipulation {
 	private $author_name;
 
 	/**
-	 * @var \AdditionalAuthors
-	 */
-	private $plugin;
-
-	/**
 	 * Query constructor.
 	 *
-	 * @param \AdditionalAuthors $plugin
+	 * @param Plugin $plugin
 	 */
-	function __construct( $plugin ) {
+	function __construct( Plugin $plugin ) {
 
 		$this->plugin = $plugin;
 

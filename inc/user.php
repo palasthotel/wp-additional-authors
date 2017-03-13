@@ -13,9 +13,9 @@ class User {
 	/**
 	 * User constructor.
 	 *
-	 * @param \AdditionalAuthors $plugin
+	 * @param Plugin $plugin
 	 */
-	function __construct(\AdditionalAuthors $plugin) {
+	function __construct( Plugin $plugin) {
 		add_action( 'delete_user', array($this, 'delete_user') );
 	}
 	

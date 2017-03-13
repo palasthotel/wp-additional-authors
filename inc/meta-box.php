@@ -10,9 +10,9 @@ class MetaBox {
 	/**
 	 * MetaBox constructor.
 	 *
-	 * @param \AdditionalAuthors $plugin
+	 * @param Plugin $plugin
 	 */
-	function __construct( \AdditionalAuthors $plugin) {
+	function __construct( Plugin $plugin) {
 		$this->plugin = $plugin;
 		add_action( 'add_meta_boxes_post', array($this,'add_meta_box') );
 		add_action( 'save_post', array($this,'save'), 10, 2 );
@@ -40,7 +40,8 @@ class MetaBox {
 		 */
 		$selected=array();
 		$selected[]=$post->post_author;
-		$additional = get_post_custom_values( \AdditionalAuthors::META_POST_ADDITIONAL_AUTHORS, $post->ID );
+		$additional = get_post_custom_values( Plugin::META_POST_ADDITIONAL_AUTHORS, $post->ID );
+		$additional = array_unique($additional);
 		if(is_array($additional)) {
 			$selected = array_merge( $selected, $additional );
 		}
@@ -96,7 +97,7 @@ class MetaBox {
 			/**
 			 * we are in post edit form action
 			 */
-			delete_post_meta( $post_id, \AdditionalAuthors::META_POST_ADDITIONAL_AUTHORS );
+			delete_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS );
 			
 			foreach ( $_POST[self::POST_AUTORS]["ids"] as $index => $additional_author ) {
 				
@@ -111,7 +112,7 @@ class MetaBox {
 					
 				}
 				
-				add_post_meta( $post_id, \AdditionalAuthors::META_POST_ADDITIONAL_AUTHORS, $additional_author );
+				add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author, true );
 			}
 			
 		} else {
@@ -121,7 +122,7 @@ class MetaBox {
 			for($i = 1; $i < count($user_ids); $i++){
 				if($post->post_author == $user_ids[$i]){
 					// additional author is now main author
-					delete_post_meta($post_id,\AdditionalAuthors::META_POST_ADDITIONAL_AUTHORS, $post->post_author);
+					delete_post_meta($post_id,Plugin::META_POST_ADDITIONAL_AUTHORS, $post->post_author);
 					break;
 				}
 			}

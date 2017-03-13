@@ -45,7 +45,7 @@ class additional_authors_destination extends ph_user_destination
 		
 		if($handled){
 			// save so we can cut it out on making a real loginable author
-			update_user_meta($user_id, AdditionalAuthors::META_USER_GENERATED, $unguessable_string);
+			update_user_meta($user_id, \AdditionalAuthors\Plugin::META_USER_GENERATED, $unguessable_string);
 		}
 		
 		return $user_id;

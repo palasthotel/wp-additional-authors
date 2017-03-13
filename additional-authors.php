@@ -1,4 +1,7 @@
 <?php
+
+namespace AdditionalAuthors;
+
 /**
  * Plugin Name: Additional Authors
  * Description: Provides a meta box for additional authors from existing users or taxonomy.
@@ -15,7 +18,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Class AdditionalAuthors
  */
-class AdditionalAuthors {
+class Plugin {
 
 	/**
 	 * all outputs via themes
@@ -58,17 +61,17 @@ class AdditionalAuthors {
 		$this->dir = plugin_dir_path( __FILE__ );
 		$this->url = plugin_dir_url( __FILE__ );
 
-		require plugin_dir_path( __FILE__ ) . "class/query-manipulation.php";
-		new \AdditionalAuthors\QueryManipulation( $this );
+		require plugin_dir_path( __FILE__ ) . "inc/query-manipulation.php";
+		new QueryManipulation( $this );
 
-		require plugin_dir_path( __FILE__ ) . "class/meta-box.php";
-		new \AdditionalAuthors\MetaBox( $this );
+		require plugin_dir_path( __FILE__ ) . "inc/meta-box.php";
+		new MetaBox( $this );
 
-		require plugin_dir_path( __FILE__ ) . "class/render.php";
-		$this->render = new \AdditionalAuthors\Render( $this );
+		require plugin_dir_path( __FILE__ ) . "inc/render.php";
+		$this->render = new Render( $this );
 
-		require plugin_dir_path( __FILE__ ) . "class/migrate.php";
-		$this->migrate = new \AdditionalAuthors\Migrate( $this );
+		require plugin_dir_path( __FILE__ ) . "inc/migrate.php";
+		$this->migrate = new Migrate( $this );
 
 	}
 
@@ -107,7 +110,7 @@ class AdditionalAuthors {
 			}
 		}
 
-		return $additional_authors_ids;
+		return array_unique($additional_authors_ids);
 	}
 
 	/**
@@ -132,60 +135,6 @@ class AdditionalAuthors {
  * init plugin and make it accessible
  */
 global $additional_authors;
-$additional_authors = new AdditionalAuthors();
+$additional_authors = new Plugin();
 
-/**
- * -------------------------------
- * public functions
- * -------------------------------
- */
-
-/**
- * Quite similar to the_author().
- * Echo the additional authors as a string, beginning with ",", e.g.
- * ", Mark, Anna, David".
- * For use in frontend.
- *
- * @param  int $post_id The Post ID we want to get the additional authors from.
- *
- * @return null
- */
-function additional_authors_the_authors( $post_id = NULL,  $additional_vars = null ) {
-	global $additional_authors;
-	$additional_authors->render->the_authors( $post_id, $additional_vars );
-}
-
-/**
- * Quite similar to the_author_posts_link().
- *
- * @param  int $post_id The Post ID we want to get the additional authors from.
- *
- * @return array List of authors posts links
- */
-function additional_authors_the_authors_posts_links( $post_id = NULL, $additional_vars = null ) {
-	global $additional_authors;
-	$additional_authors->render->the_authors_posts_links( $post_id, $additional_vars );
-}
-
-/**
- * For use in frontend.
- * @return array User IDs as int
- */
-function additional_authors_get_the_authors_ids( $post_id = NULL) {
-	global $additional_authors;
-
-	return $additional_authors->get_ids( $post_id );
-}
-
-/**
- * solr indexing authors filter
- * @param $auhtor_ids
- * @param $post_id
- *
- * @return array
- */
-function additional_authors_solr_author_ids($author_ids, $post_id){
-	$author_ids = additional_authors_get_the_authors_ids($post_id);
-	return $author_ids;
-}
-add_filter('solr_index_update_author_ids', 'additional_authors_solr_author_ids', 10, 2);
+require_once "public-functions.php";

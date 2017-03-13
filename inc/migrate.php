@@ -14,10 +14,10 @@ class Migrate {
 	/**
 	 * Migrate constructor.
 	 *
-	 * @param \AdditionalAuthors $plugin
+	 * @param Plugin $plugin
 	 */
-	function __construct( \AdditionalAuthors $plugin ) {
-		add_action( \AdditionalAuthors::ACTION_ADDITIONAL_AUTHOR_DESTINATION, array($this, 'author_destination') );
+	function __construct( Plugin $plugin ) {
+		add_action( Plugin::ACTION_ADDITIONAL_AUTHOR_DESTINATION, array($this, 'author_destination') );
 		add_action( 'ph_migrate_register_field_handlers',array($this, 'handler_register') );
 	}
 	
@@ -102,7 +102,7 @@ function migration_handler($post, $fields)
 					 echo " <---- \n";
 					
 					 // make author additional, so info doesnt get lost
-					add_post_meta( $post_id, \AdditionalAuthors::META_POST_ADDITIONAL_AUTHORS, $additional_author[Migrate::FIELD_USERS_ID] );
+					add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author[Migrate::FIELD_USERS_ID], true );
 					 
 					continue;
 				}
@@ -120,7 +120,7 @@ function migration_handler($post, $fields)
 				/**
 				 * no main author so additional
 				 */
-				add_post_meta( $post_id, \AdditionalAuthors::META_POST_ADDITIONAL_AUTHORS, $additional_author[Migrate::FIELD_USERS_ID] );
+				add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author[Migrate::FIELD_USERS_ID], true );
 			}
 			
 			
@@ -134,7 +134,7 @@ function migration_handler($post, $fields)
 					"post_author" => $additional_author,
 				));
 			} else {
-				add_post_meta( $post_id, \AdditionalAuthors::META_POST_ADDITIONAL_AUTHORS, $additional_author );
+				add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author );
 			}
 		}
 		
