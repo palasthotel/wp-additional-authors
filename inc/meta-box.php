@@ -41,7 +41,7 @@ class MetaBox {
 		$selected=array();
 		$selected[]=$post->post_author;
 		$additional = get_post_custom_values( Plugin::META_POST_ADDITIONAL_AUTHORS, $post->ID );
-		$additional = array_unique($additional);
+		$additional = ($additional != null)? array_unique($additional) : array();
 		if(is_array($additional)) {
 			$selected = array_merge( $selected, $additional );
 		}
@@ -107,12 +107,14 @@ class MetaBox {
 				if($index == 0) continue;
 				
 				if(intval($additional_author) <= 0){
-					// TODO: create user
-					$name = $_POST[self::POST_AUTORS]["names"];
-					
+					$name = $_POST[self::POST_AUTORS]["names"][$index];
+					$additional_author = $this->plugin->user->create($name);
+					if(is_wp_error($additional_author)){
+						 // TODO: error display
+					}
 				}
 				
-				add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author, true );
+				add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author );
 			}
 			
 		} else {

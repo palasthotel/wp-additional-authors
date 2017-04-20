@@ -44,6 +44,16 @@ class Plugin {
 	const META_POST_ADDITIONAL_AUTHORS = "_additional_authors";
 	const META_USER_GENERATED = "_additional_authors_generated_user";
 
+	private static $instance;
+
+	static function get_instance() {
+		if ( self::$instance == null ) {
+			self::$instance = new Plugin();
+		}
+
+		return self::$instance;
+	}
+
 	/**
 	 * variables
 	 */
@@ -61,16 +71,19 @@ class Plugin {
 		$this->dir = plugin_dir_path( __FILE__ );
 		$this->url = plugin_dir_url( __FILE__ );
 
-		require plugin_dir_path( __FILE__ ) . "inc/query-manipulation.php";
-		new QueryManipulation( $this );
+		require dirname( __FILE__ ) . "/inc/query-manipulation.php";
+		$this->query_manipulation = new QueryManipulation( $this );
 
-		require plugin_dir_path( __FILE__ ) . "inc/meta-box.php";
-		new MetaBox( $this );
+		require dirname( __FILE__ ) . "/inc/meta-box.php";
+		$this->meta_box = new MetaBox( $this );
 
-		require plugin_dir_path( __FILE__ ) . "inc/render.php";
+		require dirname( __FILE__ ) . "/inc/user.php";
+		$this->user = new User( $this );
+
+		require dirname( __FILE__ ) . "/inc/render.php";
 		$this->render = new Render( $this );
 
-		require plugin_dir_path( __FILE__ ) . "inc/migrate.php";
+		require dirname( __FILE__ ) . "/inc/migrate.php";
 		$this->migrate = new Migrate( $this );
 
 	}
@@ -82,11 +95,11 @@ class Plugin {
 	 *
 	 * @return array
 	 */
-	public function get_ids( $post_id = NULL ) {
+	public function get_ids( $post_id = null ) {
 		/**
 		 * first id is main author
 		 */
-		$post = get_post($post_id);
+		$post                   = get_post( $post_id );
 		$additional_authors_ids = array(
 			$post->post_author,
 		);
@@ -110,7 +123,7 @@ class Plugin {
 			}
 		}
 
-		return array_unique($additional_authors_ids);
+		return array_unique( $additional_authors_ids );
 	}
 
 	/**
@@ -126,15 +139,14 @@ class Plugin {
 	 * generate a strong password
 	 * @return string
 	 */
-	public function generatePassword(){
-		return wp_generate_password(20, true);
+	public function generatePassword() {
+		return wp_generate_password( 20, true );
 	}
 }
 
 /**
  * init plugin and make it accessible
  */
-global $additional_authors;
-$additional_authors = new Plugin();
+Plugin::get_instance();
 
-require_once "public-functions.php";
+require_once dirname( __FILE__ ) . "/public-functions.php";

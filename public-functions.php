@@ -1,8 +1,7 @@
 <?php
 
 function additional_authors_get_plugin(){
-	global $additional_authors;
-	return $additional_authors;
+	return \AdditionalAuthors\Plugin::get_instance();
 }
 
 /**

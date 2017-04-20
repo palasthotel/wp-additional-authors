@@ -20,7 +20,7 @@ class additional_authors_destination extends ph_user_destination
 				                    strtolower(preg_replace("/[^A-Za-z0-9 ]/","",$item->last_name));
 			}
 			
-			global $additional_authors;
+			$additional_authors = AdditionalAuthors\Plugin::get_instance();
 			$item->user_email = $item->user_login."@localhost.local";
 			$item->user_nicename = $item->user_login;
 			$unguessable_string = $additional_authors->generateUnguessableString();
