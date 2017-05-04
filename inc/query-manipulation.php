@@ -25,9 +25,10 @@ class QueryManipulation {
 
 		// Manipulate author query to show also posts, where this author is set
 		// in a post meta field.
-		add_filter( 'posts_join' , array( $this, 'posts_join' ) );
-		add_filter( 'posts_where' , array( $this, 'posts_where' ) );
+		add_filter( 'posts_join', array( $this, 'posts_join' ) );
+		add_filter( 'posts_where', array( $this, 'posts_where' ) );
 		add_filter( 'posts_groupby', array( $this, 'posts_groupby' ) );
+		add_filter( 'get_usernumposts', array( $this, 'change_num_posts' ), 10, 4 );
 	}
 
 	/**
@@ -73,7 +74,7 @@ class QueryManipulation {
 		$where .= "OR ( " .
 		          "{$wpdb->postmeta}.meta_key = '" . \AdditionalAuthors::META_POST_ADDITIONAL_AUTHORS . "' AND " .
 		          "CAST({$wpdb->postmeta}.meta_value AS CHAR) = '{$author_id}' AND " .
-		          "{$wpdb->posts}.post_password = '' AND ".
+		          "{$wpdb->posts}.post_password = '' AND " .
 		          "{$wpdb->posts}.post_type = 'post' AND " .
 		          "({$wpdb->posts}.post_status = 'publish' OR {$wpdb->posts}.post_status = 'private') " .
 		          ")";
@@ -97,6 +98,21 @@ class QueryManipulation {
 
 		global $wpdb;
 		$groupby = "{$wpdb->posts}.ID";
+
 		return $groupby;
+	}
+
+	function change_num_posts( $count, $userid, $post_type, $public_only ) {
+
+		global $wpdb;
+
+		$select = "SELECT count(*) FROM $wpdb->posts LEFT JOIN $wpdb->postmeta ON post_id = ID ";
+		$where = "WHERE meta_key = '".Plugin::META_POST_ADDITIONAL_AUTHORS."' AND meta_value = '$userid'";
+		if($post_type != "any") $where.= " AND post_type = '$post_type'";
+
+
+		$additional_count = $wpdb->get_var( $select.$where );
+
+		return (int)$count + (int)$additional_count;
 	}
 }
