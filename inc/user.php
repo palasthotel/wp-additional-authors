@@ -32,6 +32,7 @@ class User {
 				'%d',
 			)
 		);
+		Table\delete_all_of_author($user_id);
 	}
 	
 	/**

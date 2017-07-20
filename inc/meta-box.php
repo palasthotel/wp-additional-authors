@@ -38,13 +38,7 @@ class MetaBox {
 		/**
 		 * get selected users
 		 */
-		$selected=array();
-		$selected[]=$post->post_author;
-		$additional = get_post_custom_values( Plugin::META_POST_ADDITIONAL_AUTHORS, $post->ID );
-		$additional = ($additional != null)? array_unique($additional) : array();
-		if(is_array($additional)) {
-			$selected = array_merge( $selected, $additional );
-		}
+		$selected=Table\get_author_ids($post->ID);
 		
 		/**
 		 * get all users
@@ -98,6 +92,7 @@ class MetaBox {
 			 * we are in post edit form action
 			 */
 			delete_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS );
+			Table\delete_all_of_post($post_id);
 			
 			foreach ( $_POST[self::POST_AUTORS]["ids"] as $index => $additional_author ) {
 				
@@ -115,6 +110,7 @@ class MetaBox {
 				}
 				
 				add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author );
+				Table\set($post_id, $additional_author);
 			}
 			
 		} else {
@@ -125,6 +121,7 @@ class MetaBox {
 				if($post->post_author == $user_ids[$i]){
 					// additional author is now main author
 					delete_post_meta($post_id,Plugin::META_POST_ADDITIONAL_AUTHORS, $post->post_author);
+					Table\delete($post_id, $post->post_author);
 					break;
 				}
 			}

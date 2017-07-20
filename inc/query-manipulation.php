@@ -1,6 +1,7 @@
 <?php
 
 namespace AdditionalAuthors;
+use function AdditionalAuthors\Table\tablename;
 
 /**
  * Class QueryManipulation
@@ -46,7 +47,7 @@ class QueryManipulation {
 		}
 
 		global $wpdb;
-		$join .= "INNER JOIN {$wpdb->postmeta} ON ({$wpdb->posts}.ID = {$wpdb->postmeta}.post_id)";
+		$join .= "LEFT JOIN ".Table\tablename()." ON ({$wpdb->posts}.ID = ".Table\tablename().".post_id)";
 
 		return $join;
 	}
@@ -71,9 +72,8 @@ class QueryManipulation {
 		}
 
 		global $wpdb;
-		$where .= "OR ( " .
-		          "{$wpdb->postmeta}.meta_key = '" . \AdditionalAuthors::META_POST_ADDITIONAL_AUTHORS . "' AND " .
-		          "CAST({$wpdb->postmeta}.meta_value AS CHAR) = '{$author_id}' AND " .
+		// TODO: need to look for post type?
+		$where .= "OR ( " .Table\tablename().".author_id = '{$author_id}' AND " .
 		          "{$wpdb->posts}.post_password = '' AND " .
 		          "{$wpdb->posts}.post_type = 'post' AND " .
 		          "({$wpdb->posts}.post_status = 'publish' OR {$wpdb->posts}.post_status = 'private') " .
@@ -106,10 +106,9 @@ class QueryManipulation {
 
 		global $wpdb;
 
-		$select = "SELECT count(*) FROM $wpdb->posts LEFT JOIN $wpdb->postmeta ON post_id = ID ";
-		$where = "WHERE meta_key = '".Plugin::META_POST_ADDITIONAL_AUTHORS."' AND meta_value = '$userid'";
+		$select = "SELECT count(*) FROM $wpdb->posts LEFT JOIN ".tablename()." ON ".tablename().".post_id = $wpdb->posts.ID ";
+		$where = "WHERE author_id = $userid";
 		if($post_type != "any") $where.= " AND post_type = '$post_type'";
-
 
 		$additional_count = $wpdb->get_var( $select.$where );
 
