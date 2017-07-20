@@ -103,6 +103,7 @@ function migration_handler($post, $fields)
 					
 					 // make author additional, so info doesnt get lost
 					add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author[Migrate::FIELD_USERS_ID] );
+					Table\set($post_id, $additional_author[Migrate::FIELD_USERS_ID]);
 					 
 					continue;
 				}
@@ -121,6 +122,7 @@ function migration_handler($post, $fields)
 				 * no main author so additional
 				 */
 				add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author[Migrate::FIELD_USERS_ID] );
+				Table\set($post_id, $additional_author[Migrate::FIELD_USERS_ID]);
 			}
 			
 			
@@ -135,6 +137,7 @@ function migration_handler($post, $fields)
 				));
 			} else {
 				add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author );
+				Table\set($post_id, $additional_author);
 			}
 		}
 		
