@@ -20,6 +20,8 @@ if ( ! defined( 'WPINC' ) ) {
  */
 class Plugin {
 
+	const OPTION_DATA_VERSION = "additional_authors_data_version";
+
 	/**
 	 * all outputs via themes
 	 */
@@ -71,6 +73,8 @@ class Plugin {
 		$this->dir = plugin_dir_path( __FILE__ );
 		$this->url = plugin_dir_url( __FILE__ );
 
+		require dirname( __FILE__ ) . "/inc/authors-table.php";
+
 		require dirname( __FILE__ ) . "/inc/query-manipulation.php";
 		$this->query_manipulation = new QueryManipulation( $this );
 
@@ -86,6 +90,9 @@ class Plugin {
 		require dirname( __FILE__ ) . "/inc/migrate.php";
 		$this->migrate = new Migrate( $this );
 
+		require dirname( __FILE__ ) . "/inc/update.php";
+		$this->update = new Update( $this );
+
 	}
 
 	/**
@@ -96,34 +103,7 @@ class Plugin {
 	 * @return array
 	 */
 	public function get_ids( $post_id = null ) {
-		/**
-		 * first id is main author
-		 */
-		$post                   = get_post( $post_id );
-		$additional_authors_ids = array(
-			$post->post_author,
-		);
-
-		/**
-		 * than get all additional ids
-		 */
-		if ( ! empty( $post_id ) ) {
-			$additional_authors_ids_as_string = get_post_custom_values( self::META_POST_ADDITIONAL_AUTHORS, $post_id );
-		} else {
-			$additional_authors_ids_as_string = get_post_custom_values( self::META_POST_ADDITIONAL_AUTHORS );
-		}
-		if ( ! empty( $additional_authors_ids_as_string ) ) {
-			foreach ( $additional_authors_ids_as_string as $author_id_as_string ) {
-				if ( is_numeric( $author_id_as_string ) ) {
-					$author_id = intval( $author_id_as_string );
-					if ( $author_id > 0 ) {
-						$additional_authors_ids[] = $author_id;
-					}
-				}
-			}
-		}
-
-		return array_unique( $additional_authors_ids );
+		return Table\get_author_ids($post_id);
 	}
 
 	/**
