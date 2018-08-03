@@ -86,7 +86,7 @@ class MetaBox {
 		if ( $parent_id = wp_is_post_revision( $post_id ) ) {
 			$post_id = $parent_id;
 		}
-		
+
 		if(isset($_POST) && is_array($_POST[self::POST_AUTORS])){
 			/**
 			 * we are in post edit form action
@@ -99,7 +99,15 @@ class MetaBox {
 				/**
 				 * skip first because it is main author and saved on post
 				 */
-				if($index == 0) continue;
+				if($index == 0){
+					remove_action('save_post', array($this, 'save'));
+					wp_update_post(array(
+						"ID" => $post_id,
+						"post_author" => $additional_author,
+					));
+					add_action('save_post', array($this, 'save'));
+					continue;
+				}
 				
 				if(intval($additional_author) <= 0){
 					$name = $_POST[self::POST_AUTORS]["names"][$index];

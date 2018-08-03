@@ -14,15 +14,25 @@ class MetaBox extends Component {
 	constructor(props) {
 		super(props);
 		
-		this._main_user_select = document.getElementById("post_author_override");
-		this._main_user_select.addEventListener("change",this.onMainAuthorChanged.bind(this));
-		
 		this.state = {
 			users: props.users,
 			selected: this.props.selected,
 			new_user_id: -1,
 		};
 		
+	}
+
+	getMailUserControl(){
+		if(this._main_user_select != null) return this._main_user_select;
+		let control = document.getElementById("post_author_override");
+		if(control == null)
+			control = document.getElementById("post-author-selector-1");
+
+		if(control != null){
+			this._main_user_select = control;
+			this._main_user_select.addEventListener("change",this.onMainAuthorChanged.bind(this));
+		}
+		return this._main_user_select;
 	}
 	
 	/**
@@ -48,11 +58,10 @@ class MetaBox extends Component {
 				
 				<div>
 					{selected.map((id, index)=>{
-						
 						let user = null;
 						let first = true;
 						for(let _user of users){
-							if(_user.ID == id){
+							if(parseInt(_user.ID) === parseInt(id)){
 								return (
 									<AuthorItem
 										key={id}
@@ -60,7 +69,7 @@ class MetaBox extends Component {
 										author={_user}
 									    onUnselect={this.onUnselect.bind(this,_user)}
 									    onChangePosition={this.onChangePosition.bind(this,_user, index)}
-									    isMainAuthor={(index == 0)}
+									    isMainAuthor={(index === 0)}
 									/>
 								)
 							}
@@ -157,14 +166,21 @@ class MetaBox extends Component {
 	 * ------------------------------------------------
 	 */
 	setMainUserID(user_id){
-		this._main_user_select.value = user_id;
+		const control = this.getMailUserControl();
+		if(control != null){
+			this._main_user_select.value = user_id;
+			this._main_user_select.dispatchEvent(new Event("change"));
+			console.log(this._main_user_select)
+		}
+
 	}
 	getMainUserID(){
-		return this._main_user_select.value;
+		const control = this.getMailUserControl();
+		return control.value;
 	}
 	isSelected(user_id){
 		for(let _uid of this.state.selected){
-			if(_uid == user_id) return true;
+			if(_uid === user_id) return true;
 		}
 		return false;
 	}
