@@ -3,8 +3,8 @@ Contributors: palasthotel, edwardbock, greatestview
 Donate link: http://palasthotel.de/
 Tags: author, meta fields
 Requires at least: 4.0
-Tested up to: 4.8
-Stable tag: 1.1
+Tested up to: 4.9.8
+Stable tag: 1.1.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -27,6 +27,10 @@ Let's you add more than one author to your posts.
 
 
 == Changelog ==
+
+= 1.1.1 =
+* Added Gutenberg support
+* CSS styles
 
 = 1.1 =
 * Author keys move from postmeta to custom table

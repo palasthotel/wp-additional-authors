@@ -75,7 +75,7 @@
 		    selected = _AdditionalAuthors.selected,
 		    root_id = _AdditionalAuthors.root_id;
 	
-		console.log(selected);
+	
 		_reactDom2.default.render(_react2.default.createElement(_metaBox2.default, {
 			language: language,
 			users: users,
@@ -21580,7 +21580,6 @@
 				    new_users = _state.new_users,
 				    main_author = _state.main_author;
 	
-				console.log("meta-box", selected, users);
 				return _react2.default.createElement(
 					'div',
 					{ className: 'additional-authors' },
@@ -23897,10 +23896,16 @@
 					{
 						className: "author-item" + (isMainAuthor ? " is-main-author" : "") + (author.ID < 0 ? " is-new-author" : "")
 					},
-					author.display_name,
-					" (",
-					author.user_nicename,
-					")",
+					_react2.default.createElement(
+						"span",
+						{ className: "autor-item__name" },
+						author.display_name,
+						_react2.default.createElement(
+							"span",
+							{ className: "author-item__nicename" },
+							author.user_nicename
+						)
+					),
 					this.renderDelete(),
 					_react2.default.createElement(
 						"span",
@@ -23932,7 +23937,7 @@
 						className: "author-item__delete",
 						onClick: this.props.onUnselect
 					},
-					"X"
+					"\xD7"
 				);
 			}
 	

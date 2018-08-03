@@ -105,7 +105,7 @@ class MetaBox {
 						"ID" => $post_id,
 						"post_author" => $additional_author,
 					));
-					add_action('save_post', array($this, 'save'));
+					add_action('save_post', array($this, 'save'), 10, 2);
 					continue;
 				}
 				
