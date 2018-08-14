@@ -29,8 +29,12 @@ function get_author_ids( $post_id = null ) {
 	/**
 	 * than get all additional ids
 	 */
-
-	return array_unique( $additional_authors_ids );
+	$unique = array_unique( $additional_authors_ids );
+	$result = array();
+	foreach ($unique as $u){
+		$result[] = $u;
+	}
+	return $result;
 }
 
 /**

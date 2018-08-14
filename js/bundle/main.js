@@ -21539,9 +21539,6 @@
 	
 			var _this = _possibleConstructorReturn(this, (MetaBox.__proto__ || Object.getPrototypeOf(MetaBox)).call(this, props));
 	
-			_this._main_user_select = document.getElementById("post_author_override");
-			_this._main_user_select.addEventListener("change", _this.onMainAuthorChanged.bind(_this));
-	
 			_this.state = {
 				users: props.users,
 				selected: _this.props.selected,
@@ -21551,14 +21548,27 @@
 			return _this;
 		}
 	
-		/**
-	  * ------------------------------------------------
-	  * rendering
-	  * ------------------------------------------------
-	  */
-	
-	
 		_createClass(MetaBox, [{
+			key: 'getMailUserControl',
+			value: function getMailUserControl() {
+				if (this._main_user_select != null) return this._main_user_select;
+				var control = document.getElementById("post_author_override");
+				if (control == null) control = document.getElementById("post-author-selector-1");
+	
+				if (control != null) {
+					this._main_user_select = control;
+					this._main_user_select.addEventListener("change", this.onMainAuthorChanged.bind(this));
+				}
+				return this._main_user_select;
+			}
+	
+			/**
+	   * ------------------------------------------------
+	   * rendering
+	   * ------------------------------------------------
+	   */
+	
+		}, {
 			key: 'render',
 			value: function render() {
 				var _this2 = this;
@@ -21593,7 +21603,6 @@
 						'div',
 						null,
 						selected.map(function (id, index) {
-	
 							var user = null;
 							var first = true;
 							var _iteratorNormalCompletion = true;
@@ -21604,14 +21613,14 @@
 								for (var _iterator = users[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 									var _user = _step.value;
 	
-									if (_user.ID == id) {
+									if (parseInt(_user.ID) === parseInt(id)) {
 										return _react2.default.createElement(_authorItem2.default, {
 											key: id,
 											index: index,
 											author: _user,
 											onUnselect: _this2.onUnselect.bind(_this2, _user),
 											onChangePosition: _this2.onChangePosition.bind(_this2, _user, index),
-											isMainAuthor: index == 0
+											isMainAuthor: index === 0
 										});
 									}
 								}
@@ -21754,12 +21763,18 @@
 		}, {
 			key: 'setMainUserID',
 			value: function setMainUserID(user_id) {
-				this._main_user_select.value = user_id;
+				var control = this.getMailUserControl();
+				if (control != null) {
+					this._main_user_select.value = user_id;
+					this._main_user_select.dispatchEvent(new Event("change"));
+					console.log(this._main_user_select);
+				}
 			}
 		}, {
 			key: 'getMainUserID',
 			value: function getMainUserID() {
-				return this._main_user_select.value;
+				var control = this.getMailUserControl();
+				return control.value;
 			}
 		}, {
 			key: 'isSelected',
@@ -21772,7 +21787,7 @@
 					for (var _iterator3 = this.state.selected[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
 						var _uid = _step3.value;
 	
-						if (_uid == user_id) return true;
+						if (_uid === user_id) return true;
 					}
 				} catch (err) {
 					_didIteratorError3 = true;
@@ -23881,10 +23896,16 @@
 					{
 						className: "author-item" + (isMainAuthor ? " is-main-author" : "") + (author.ID < 0 ? " is-new-author" : "")
 					},
-					author.display_name,
-					" (",
-					author.user_nicename,
-					")",
+					_react2.default.createElement(
+						"span",
+						{ className: "autor-item__name" },
+						author.display_name,
+						_react2.default.createElement(
+							"span",
+							{ className: "author-item__nicename" },
+							author.user_nicename
+						)
+					),
 					this.renderDelete(),
 					_react2.default.createElement(
 						"span",
@@ -23916,7 +23937,7 @@
 						className: "author-item__delete",
 						onClick: this.props.onUnselect
 					},
-					"X"
+					"\xD7"
 				);
 			}
 	
