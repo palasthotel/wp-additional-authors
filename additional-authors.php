@@ -11,6 +11,8 @@ namespace AdditionalAuthors;
  */
 
 // If this file is called directly, abort.
+use function AdditionalAuthors\Table\install;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -93,6 +95,12 @@ class Plugin {
 		require dirname( __FILE__ ) . "/inc/update.php";
 		$this->update = new Update( $this );
 
+		/**
+		 * on activate or deactivate plugin
+		 */
+		register_activation_hook(__FILE__, array($this, "activation"));
+		register_deactivation_hook(__FILE__, array($this, "deactivation"));
+
 	}
 
 	/**
@@ -121,6 +129,20 @@ class Plugin {
 	 */
 	public function generatePassword() {
 		return wp_generate_password( 20, true );
+	}
+
+	/**
+	 * on plugin activation
+	 */
+	function activation(){
+		install();
+	}
+
+	/**
+	 * on plugin deactivation
+	 */
+	function deactivation(){
+
 	}
 }
 
