@@ -18,6 +18,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			language={language}
 			users={users}
 		    selected={selected}
+			onAuthorsChange={(authors)=>{
+				document.dispatchEvent(new CustomEvent("onAdditionalAuthorsChange", { detail: authors }));
+			}}
 		/>,
 		document.getElementById(root_id)
 	);

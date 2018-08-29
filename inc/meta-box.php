@@ -42,7 +42,6 @@ class MetaBox {
 		
 		/**
 		 * get all users
-		 * // TODO: async request because of too many users better
 		 */
 		$users = get_users(
 			array(
@@ -63,10 +62,12 @@ class MetaBox {
 			
 		);
 		wp_localize_script('additional_authors_meta_box_script', 'AdditionalAuthors', $config);
-		
+
+		do_action(Plugin::ACTION_META_BOX_BEFORE, $post);
 		?>
 		<div id="meta_additional_authors"></div>
 		<?php
+		do_action(Plugin::ACTION_META_BOX_AFTER, $post);
 	}
 	
 	

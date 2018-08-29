@@ -79,7 +79,10 @@
 		_reactDom2.default.render(_react2.default.createElement(_metaBox2.default, {
 			language: language,
 			users: users,
-			selected: selected
+			selected: selected,
+			onAuthorsChange: function onAuthorsChange(authors) {
+				document.dispatchEvent(new CustomEvent("onAdditionalAuthorsChange", { detail: authors }));
+			}
 		}), document.getElementById(root_id));
 	});
 
@@ -21500,6 +21503,8 @@
 		value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(1);
@@ -21549,8 +21554,13 @@
 		}
 	
 		_createClass(MetaBox, [{
-			key: 'getMailUserControl',
-			value: function getMailUserControl() {
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				this.dispatchChanged();
+			}
+		}, {
+			key: 'getMainUserControl',
+			value: function getMainUserControl() {
 				if (this._main_user_select != null) return this._main_user_select;
 				var control = document.getElementById("post_author_override");
 				if (control == null) control = document.getElementById("post-author-selector-1");
@@ -21663,7 +21673,7 @@
 				this.state.selected = _underscore2.default.unique(this.state.selected);
 				this.setState({ selected: this.state.selected });
 	
-				this.props.onAuthorsChange(this.state.selected);
+				this.dispatchChanged();
 			}
 		}, {
 			key: 'onUnselect',
@@ -21701,6 +21711,7 @@
 				}
 	
 				this.setState({ selected: selected });
+				this.dispatchChanged();
 			}
 		}, {
 			key: 'onChangePosition',
@@ -21726,6 +21737,7 @@
 				}
 				this.setMainUserID(selected[0]);
 				this.setState({ selected: selected, main_author: this.getMainUserID() });
+				this.dispatchChanged();
 			}
 		}, {
 			key: 'onMainAuthorChanged',
@@ -21763,17 +21775,16 @@
 		}, {
 			key: 'setMainUserID',
 			value: function setMainUserID(user_id) {
-				var control = this.getMailUserControl();
+				var control = this.getMainUserControl();
 				if (control != null) {
 					this._main_user_select.value = user_id;
 					this._main_user_select.dispatchEvent(new Event("change"));
-					console.log(this._main_user_select);
 				}
 			}
 		}, {
 			key: 'getMainUserID',
 			value: function getMainUserID() {
-				var control = this.getMailUserControl();
+				var control = this.getMainUserControl();
 				return control.value;
 			}
 		}, {
@@ -21805,6 +21816,66 @@
 				}
 	
 				return false;
+			}
+		}, {
+			key: 'dispatchChanged',
+			value: function dispatchChanged() {
+				var _this3 = this;
+	
+				clearTimeout(this.dispatchTimeout);
+				this.dispatchTimeout = setTimeout(function () {
+					var users = [];
+					var _iteratorNormalCompletion4 = true;
+					var _didIteratorError4 = false;
+					var _iteratorError4 = undefined;
+	
+					try {
+						for (var _iterator4 = _this3.state.selected[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+							var uid = _step4.value;
+							var _iteratorNormalCompletion5 = true;
+							var _didIteratorError5 = false;
+							var _iteratorError5 = undefined;
+	
+							try {
+								for (var _iterator5 = _this3.props.users[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+									var user = _step5.value;
+	
+									if (parseInt(user.ID) === parseInt(uid)) {
+										users.push(_extends({}, user));
+									}
+								}
+							} catch (err) {
+								_didIteratorError5 = true;
+								_iteratorError5 = err;
+							} finally {
+								try {
+									if (!_iteratorNormalCompletion5 && _iterator5.return) {
+										_iterator5.return();
+									}
+								} finally {
+									if (_didIteratorError5) {
+										throw _iteratorError5;
+									}
+								}
+							}
+						}
+					} catch (err) {
+						_didIteratorError4 = true;
+						_iteratorError4 = err;
+					} finally {
+						try {
+							if (!_iteratorNormalCompletion4 && _iterator4.return) {
+								_iterator4.return();
+							}
+						} finally {
+							if (_didIteratorError4) {
+								throw _iteratorError4;
+							}
+						}
+					}
+	
+					_this3.props.onAuthorsChange(users);
+				}, 300);
 			}
 		}]);
 	

@@ -22,7 +22,11 @@ class MetaBox extends Component {
 		
 	}
 
-	getMailUserControl(){
+	componentDidMount(){
+		this.dispatchChanged();
+	}
+
+	getMainUserControl(){
 		if(this._main_user_select != null) return this._main_user_select;
 		let control = document.getElementById("post_author_override");
 		if(control == null)
@@ -95,8 +99,8 @@ class MetaBox extends Component {
 		this.state.selected.push(author.ID);
 		this.state.selected = _.unique(this.state.selected);
 		this.setState({ selected: this.state.selected });
-		
-		this.props.onAuthorsChange(this.state.selected);
+
+		this.dispatchChanged();
 		
 	}
 	onUnselect(author){
@@ -111,6 +115,7 @@ class MetaBox extends Component {
 			selected.push(_id);
 		}
 		this.setState({selected: selected});
+		this.dispatchChanged()
 	}
 	onChangePosition(user, from, to){
 		let selected = [];
@@ -134,6 +139,7 @@ class MetaBox extends Component {
 		}
 		this.setMainUserID(selected[0]);
 		this.setState({selected: selected, main_author: this.getMainUserID()});
+		this.dispatchChanged();
 	}
 	onMainAuthorChanged(e){
 		const author_id = e.target.value;
@@ -166,16 +172,15 @@ class MetaBox extends Component {
 	 * ------------------------------------------------
 	 */
 	setMainUserID(user_id){
-		const control = this.getMailUserControl();
+		const control = this.getMainUserControl();
 		if(control != null){
 			this._main_user_select.value = user_id;
 			this._main_user_select.dispatchEvent(new Event("change"));
-			console.log(this._main_user_select)
 		}
 
 	}
 	getMainUserID(){
-		const control = this.getMailUserControl();
+		const control = this.getMainUserControl();
 		return control.value;
 	}
 	isSelected(user_id){
@@ -183,6 +188,21 @@ class MetaBox extends Component {
 			if(_uid === user_id) return true;
 		}
 		return false;
+	}
+	dispatchChanged(){
+		clearTimeout(this.dispatchTimeout);
+		this.dispatchTimeout = setTimeout(()=>{
+			const users = [];
+			for(const uid of this.state.selected){
+				for(const user of this.props.users){
+					if(parseInt(user.ID) === parseInt(uid)){
+						users.push({...user});
+					}
+				}
+			}
+			this.props.onAuthorsChange(users);
+		}, 300);
+
 	}
 }
 

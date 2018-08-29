@@ -5,7 +5,7 @@ namespace AdditionalAuthors;
 /**
  * Plugin Name: Additional Authors
  * Description: Provides a meta box for additional authors from existing users or taxonomy.
- * Version: 1.1.1
+ * Version: 1.1.2
  * Author: PALASTHOTEL (by Kim-Christian Meyer, Edward Bock, Stephan Kroppenstedt)
  * Author URI: https://palasthotel.de
  */
@@ -38,6 +38,8 @@ class Plugin {
 	const ACTION_THE_AUTHORS = "additional_authors_the_authors";
 	const ACTION_THE_AUTHORS_POSTS_LINKS = "additional_authors_the_authors_posts_links";
 	const ACTION_THE_AUTHOR_POSTS_LINK = "additional_authors_the_author_posts_link";
+	const ACTION_META_BOX_BEFORE = "additional_authors_meta_box_before";
+	const ACTION_META_BOX_AFTER = "additional_authors_meta_box_after";
 
 	// migration action
 	const ACTION_ADDITIONAL_AUTHOR_DESTINATION = "additional_authors_load_additional_author_destination";
