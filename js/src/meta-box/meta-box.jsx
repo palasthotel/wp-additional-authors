@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import _ from 'underscore';
+import "@babel/polyfill";
 
 import Search from './search.jsx';
 import AuthorItem from './author-item.jsx';
@@ -64,7 +65,9 @@ class MetaBox extends Component {
 					{selected.map((id, index)=>{
 						let user = null;
 						let first = true;
-						for(let _user of users){
+						for(const key in users){
+							if(!users.hasOwnProperty(key)) continue;
+							const _user = users[key];
 							if(parseInt(_user.ID) === parseInt(id)){
 								return (
 									<AuthorItem
