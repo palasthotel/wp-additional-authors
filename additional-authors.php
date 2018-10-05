@@ -45,6 +45,11 @@ class Plugin {
 	const ACTION_ADDITIONAL_AUTHOR_DESTINATION = "additional_authors_load_additional_author_destination";
 
 	/**
+	 * all filters
+	 */
+	const FILTER_TEMPLATE_PATH = "additional_authors_template_paths";
+
+	/**
 	 * meta values
 	 */
 	const META_POST_ADDITIONAL_AUTHORS = "_additional_authors";
