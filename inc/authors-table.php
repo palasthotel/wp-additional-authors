@@ -13,7 +13,7 @@ function get_author_ids( $post_id = null ) {
 	);
 
 	global $wpdb;
-	$additional_authors_ids_as_string = $wpdb->get_col("SELECT author_id FROM ".tablename()." WHERE post_id = {$post->ID}");
+	$additional_authors_ids_as_string = $wpdb->get_col("SELECT author_id FROM ".tablename()." WHERE post_id = {$post->ID} ORDER BY id ASC");
 
 	if ( ! empty( $additional_authors_ids_as_string ) ) {
 		foreach ( $additional_authors_ids_as_string as $author_id_as_string ) {
