@@ -4,7 +4,7 @@ Donate link: http://palasthotel.de/
 Tags: author, meta fields
 Requires at least: 4.0
 Tested up to: 4.9.8
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -28,8 +28,11 @@ Let's you add more than one author to your posts.
 
 == Changelog ==
 
+= 1.1.4 =
+ * BugFix: authors could not be added because of bad timing with onBlur
+
 = 1.1.3 =
- * IE11 bugfix
+ * BugFix: IE11
 
 = 1.1.2 =
  * Extendable meta box
