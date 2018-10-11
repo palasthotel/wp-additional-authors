@@ -33,6 +33,17 @@ class QueryManipulation {
 	}
 
 	/**
+	 * @return bool|int
+	 */
+	private function getAuthorId(){
+		$author_id = get_query_var( 'author', false );
+		if ( $author_id === false || ! is_int( $author_id ) ) {
+			return false;
+		}
+		return $author_id;
+	}
+
+	/**
 	 * JOIN statement
 	 *
 	 * @param  string $join The JOIN clause of the query.
@@ -66,20 +77,18 @@ class QueryManipulation {
 			return $where;
 		}
 
-		$author_id = get_query_var( 'author', false );
-		if ( $author_id === false || ! is_int( $author_id ) ) {
+		$author_id = $this->getAuthorId();
+		if ( $author_id === false ) {
 			return $where;
 		}
 
 		global $wpdb;
-		// TODO: need to look for post type?
-		$where .= "OR ( " .Table\tablename().".author_id = '{$author_id}' AND " .
-		          "{$wpdb->posts}.post_password = '' AND " .
-		          "{$wpdb->posts}.post_type = 'post' AND " .
-		          "({$wpdb->posts}.post_status = 'publish' OR {$wpdb->posts}.post_status = 'private') " .
-		          ")";
 
-		return $where;
+		return str_replace(
+			"{$wpdb->posts}.post_author = {$author_id}",
+			Table\tablename().".author_id = {$author_id} OR {$wpdb->posts}.post_author = {$author_id}",
+			$where
+		);
 	}
 
 	/**
