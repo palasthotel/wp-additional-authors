@@ -31,6 +31,7 @@ Let's you add more than one author to your posts.
 = 1.1.4 =
  * BugFix: authors could not be added because of bad timing with onBlur
  * BugFix: keep order of additional authors
+ * Optimization: Query manipulation optimization for author page
 
 = 1.1.3 =
  * BugFix: IE11
@@ -50,6 +51,8 @@ Let's you add more than one author to your posts.
 * First release
 
 == Upgrade Notice ==
+
+There was an update on query manipulation. Please make shure your results are still as expected/before.
 
 
 == Arbitrary section ==

@@ -36,6 +36,7 @@ class QueryManipulation {
 	 * @return bool|int
 	 */
 	private function getAuthorId(){
+		// at the moment we are only compatible with an single author id
 		$author_id = get_query_var( 'author', false );
 		if ( $author_id === false || ! is_int( $author_id ) ) {
 			return false;
@@ -52,8 +53,7 @@ class QueryManipulation {
 	 */
 	function posts_join( $join ) {
 
-		// Only manipulate SQL on author page.
-		if ( is_admin() || ! is_author() || ! is_main_query() ) {
+		if ( $this->getAuthorId() === false ) {
 			return $join;
 		}
 
@@ -71,11 +71,6 @@ class QueryManipulation {
 	 * @return string $where
 	 */
 	function posts_where( $where ) {
-
-		// Only manipulate SQL on author page.
-		if ( is_admin() || ! is_author() || ! is_main_query() ) {
-			return $where;
-		}
 
 		$author_id = $this->getAuthorId();
 		if ( $author_id === false ) {
