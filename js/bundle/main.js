@@ -31301,11 +31301,12 @@
 			value: function onFocusSearch(focus) {
 				var _this3 = this;
 	
+				clearTimeout(this.closeTimeout);
 				if (!focus) {
 					// just enough time to check if list item was clicked
-					setTimeout(function () {
+					this.closeTimeout = setTimeout(function () {
 						_this3.setState({ focus: focus });
-					}, 100);
+					}, 600);
 					return;
 				}
 				this.setState({ focus: focus });
@@ -31314,6 +31315,7 @@
 			key: 'onSelect',
 			value: function onSelect(user) {
 				this.props.onSelect(user);
+				this.setState({ focus: false });
 				this.onChange();
 			}
 		}, {

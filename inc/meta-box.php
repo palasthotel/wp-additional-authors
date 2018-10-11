@@ -33,7 +33,16 @@ class MetaBox {
 		wp_nonce_field( '_additional_authors_nonce', 'additional_authors_nonce' );
 		
 		wp_enqueue_style("additional_authors_meta_box_style", $this->plugin->url."/css/meta-box.css");
-		wp_enqueue_script("additional_authors_meta_box_script", $this->plugin->url."/js/bundle/main.js",array(),1, true);
+
+		$min = ( defined('SCRIPT_DEBUG') && SCRIPT_DEBUG == true )? "" : ".min";
+		wp_enqueue_script(
+				"additional_authors_meta_box_script",
+			$this->plugin->url."/js/bundle/main".$min.".js",
+				array(),
+				1,
+				true
+		);
+
 		
 		/**
 		 * get selected users

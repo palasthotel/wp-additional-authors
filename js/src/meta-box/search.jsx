@@ -104,18 +104,21 @@ class Search extends Component {
 		
 		
 	}
+
 	onFocusSearch(focus){
+		clearTimeout(this.closeTimeout);
 		if(!focus){
 			// just enough time to check if list item was clicked
-			setTimeout(()=>{
+			this.closeTimeout = setTimeout(()=>{
 				this.setState({focus: focus});
-			},100);
+			},600);
 			return;
 		}
 		this.setState({focus: focus});
 	}
 	onSelect(user){
 		this.props.onSelect(user);
+		this.setState({focus: false});
 		this.onChange();
 	}
 	onNewItem(name){
