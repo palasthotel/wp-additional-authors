@@ -31,6 +31,8 @@ Let's you add more than one author to your posts.
 = 1.1.4 =
  * BugFix: authors could not be added because of bad timing with onBlur
  * BugFix: keep order of additional authors
+ * Feature: All WP_Query will use additional authors not only on authors page
+ * Feature: new filter to set the default for ignoring or using additional authors with WP_Query
  * Optimization: Query manipulation optimization for author page
 
 = 1.1.3 =

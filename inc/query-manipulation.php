@@ -23,25 +23,52 @@ class QueryManipulation {
 	function __construct( Plugin $plugin ) {
 
 		$this->plugin = $plugin;
+		$this->isGroupingNeeded = false;
 
 		// Manipulate author query to show also posts, where this author is set
 		// in a post meta field.
-		add_filter( 'posts_join', array( $this, 'posts_join' ) );
-		add_filter( 'posts_where', array( $this, 'posts_where' ) );
+		add_filter( 'posts_join', array( $this, 'posts_join' ), 10, 2 );
+		add_filter( 'posts_where', array( $this, 'posts_where' ), 10, 2 );
 		add_filter( 'posts_groupby', array( $this, 'posts_groupby' ) );
 		add_filter( 'get_usernumposts', array( $this, 'change_num_posts' ), 10, 4 );
 	}
 
 	/**
+	 * @param \WP_Query $wp_query
+	 *
+	 * @return bool
+	 */
+	private function isIgnored($wp_query){
+		return $wp_query->get('author_ignore_additional', apply_filters(Plugin::FILTER_WP_QUERY_IGNORE_ADDITIONAL_DEFAULT, false)) !== false;
+	}
+
+	/**
+	 * @param \WP_Query $wp_query
+	 *
 	 * @return bool|int
 	 */
-	private function getAuthorId(){
+	private function getAuthorId($wp_query){
+
 		// at the moment we are only compatible with an single author id
-		$author_id = get_query_var( 'author', false );
-		if ( $author_id === false || ! is_int( $author_id ) ) {
-			return false;
+		// TODO: handle coma separated list of ids
+		// TODO: handle author__in
+		// TODO: handle author__not_in
+		$author_id = $wp_query->get('author');
+		if( (is_int($author_id) && $author_id > 0) || (is_string($author_id) && $author_id != "" && intval($author_id)."" === $author_id)){
+			return intval($author_id);
 		}
-		return $author_id;
+		return false;
+	}
+
+	/**
+	 * @param \WP_Query $wp_query
+	 *
+	 * @return bool
+	 */
+	private function isManipulationNeeded($wp_query){
+		$author_id = $this->getAuthorId($wp_query);
+		return $author_id !== false && (is_author() || !$this->isIgnored($wp_query));
+
 	}
 
 	/**
@@ -49,16 +76,19 @@ class QueryManipulation {
 	 *
 	 * @param  string $join The JOIN clause of the query.
 	 *
+	 * @param \WP_Query $wp_query
+	 *
 	 * @return string $join
 	 */
-	function posts_join( $join ) {
-
-		if ( $this->getAuthorId() === false ) {
-			return $join;
+	function posts_join( $join, $wp_query ) {
+		if(
+			$this->isManipulationNeeded($wp_query)
+		){
+			global $wpdb;
+			$join .= "LEFT JOIN ".Table\tablename()." ON ({$wpdb->posts}.ID = ".Table\tablename().".post_id)";
+			$this->isGroupingNeeded = true;
 		}
-
-		global $wpdb;
-		$join .= "LEFT JOIN ".Table\tablename()." ON ({$wpdb->posts}.ID = ".Table\tablename().".post_id)";
+		$this->isGroupingNeeded = false;
 
 		return $join;
 	}
@@ -68,22 +98,33 @@ class QueryManipulation {
 	 *
 	 * @param  string $where The WHERE clause of the query.
 	 *
+	 * @param \WP_Query $wp_query
+	 *
 	 * @return string $where
 	 */
-	function posts_where( $where ) {
+	function posts_where( $where, $wp_query ) {
 
-		$author_id = $this->getAuthorId();
-		if ( $author_id === false ) {
+		if ( !$this->isManipulationNeeded($wp_query) ) {
 			return $where;
 		}
 
+		$author_id = $this->getAuthorId($wp_query);
+
 		global $wpdb;
 
-		return str_replace(
+		$where = str_replace(
+			"{$wpdb->posts}.post_author IN ({$author_id})",
+			"( {$wpdb->posts}.post_author IN ({$author_id}) OR ".Table\tablename().".author_id = {$author_id})",
+			$where
+		);
+
+		$where = str_replace(
 			"{$wpdb->posts}.post_author = {$author_id}",
 			Table\tablename().".author_id = {$author_id} OR {$wpdb->posts}.post_author = {$author_id}",
 			$where
 		);
+
+		return $where;
 	}
 
 	/**
@@ -95,15 +136,12 @@ class QueryManipulation {
 	 */
 	function posts_groupby( $groupby ) {
 
-		// Only manipulate SQL on author page.
-		if ( is_admin() || ! is_author() || ! is_main_query() ) {
+		if ( !$this->isGroupingNeeded ) {
 			return $groupby;
 		}
 
 		global $wpdb;
-		$groupby = "{$wpdb->posts}.ID";
-
-		return $groupby;
+		return "{$wpdb->posts}.ID";
 	}
 
 	function change_num_posts( $count, $userid, $post_type, $public_only ) {
