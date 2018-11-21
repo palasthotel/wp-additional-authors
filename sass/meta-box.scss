@@ -86,7 +86,8 @@
     }
 
     &.is-new-author {
-      background-color: forestgreen;
+      border-color: forestgreen;
+      border-width: 2px;
     }
     &.is-new-author:nth-child(2) {
       .author-item__up {
