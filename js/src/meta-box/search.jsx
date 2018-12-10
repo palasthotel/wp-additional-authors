@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import SearchItem from './search-item.jsx';
 import NewItem from './new-item.jsx';
 
@@ -52,6 +53,11 @@ class Search extends Component {
 		const {selected} = this.props;
 		const {over_index, search_result, focus, query} = this.state;
 		if(focus){
+			const newItem = (query !== "") ? (<NewItem
+			name={query}
+			isOver={(over_index == search_result.length)}
+			onSelect={this.onNewItem.bind(this)}
+			/>): null;
 			return (
 				<div
 					className="additional-authors-search-list"
@@ -64,11 +70,7 @@ class Search extends Component {
 							isOver={(over_index == index)}
 						/>
 					})}
-					<NewItem
-						name={query}
-						isOver={(over_index == search_result.length)}
-					    onSelect={this.onNewItem.bind(this)}
-					/>
+					{newItem}
 				</div>
 			)
 		}
@@ -122,11 +124,13 @@ class Search extends Component {
 		this.onChange();
 	}
 	onNewItem(name){
+		if(name === "") return;
 		this.props.onSelect({
 			ID: 0,
 			display_name: name,
 			user_nicename: "-",
 		});
+		this.setState({query:"", search_result:[] });
 	}
 	onKeyDown(e){
 		const ENTER = 13;

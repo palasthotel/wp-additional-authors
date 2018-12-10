@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import _ from 'underscore';
 import "@babel/polyfill";
 
@@ -25,6 +26,7 @@ class MetaBox extends Component {
 
 	componentDidMount(){
 		this.dispatchChanged();
+		this.getMainUserControl();
 	}
 
 	getMainUserControl(){
@@ -37,6 +39,7 @@ class MetaBox extends Component {
 			this._main_user_select = control;
 			this._main_user_select.addEventListener("change",this.onMainAuthorChanged.bind(this));
 		}
+		
 		return this._main_user_select;
 	}
 	

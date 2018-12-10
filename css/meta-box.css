@@ -26,7 +26,7 @@
 
 .additional-authors .author-item.is-main-author { border: 1px solid red; }
 
-.additional-authors .author-item.is-new-author { background-color: forestgreen; }
+.additional-authors .author-item.is-new-author { border-color: forestgreen; border-width: 2px; }
 
 .additional-authors .author-item.is-new-author:nth-child(2) .author-item__up { display: none; }
 

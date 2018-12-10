@@ -2,8 +2,9 @@
   "name": "additional-authors",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "react": "^15.4.1",
-    "react-dom": "^15.4.1",
-    "underscore": "^1.8.3"
+    "prop-types": "^15.6.2",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "underscore": "^1.9.1"
   }
 }
