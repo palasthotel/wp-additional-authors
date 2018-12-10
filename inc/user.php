@@ -18,13 +18,12 @@ class User {
 	/**
 	 * delete all additional author meta if user is deleted
 	 * @param $user_id
-	 * @param $old_user_data
 	 */
-	function delete_user($user_id, $old_user_data){
+	function delete_user($user_id){
 		global $wpdb;
 		$wpdb->delete($wpdb->prefix.'postmeta',
 			array(
-				'meta_key' => \AdditionalAuthors::META_POST_ADDITIONAL_AUTHORS,
+				'meta_key' => Plugin::META_POST_ADDITIONAL_AUTHORS,
 				'meta_value' => $user_id,
 			),
 			array(
