@@ -3,8 +3,8 @@ Contributors: palasthotel, edwardbock, greatestview
 Donate link: http://palasthotel.de/
 Tags: author, meta fields
 Requires at least: 4.0
-Tested up to: 4.9.8
-Stable tag: 1.1.5
+Tested up to: 5.0.2
+Stable tag: 1.2.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -27,6 +27,12 @@ Let's you add more than one author to your posts.
 
 
 == Changelog ==
+
+= 1.2.0 =
+ * Ready for 5.0 and Gutenberg
+ * Optimization: With Gutenberg editor only the additional authors will be visible in post meta box. The post author was removed and needs to be handle with default post edit controls.
+ * Info: post_meta _additional_authors is deprecated and will be will not be saved anymore
+ * Bugfix: Delete user
 
 = 1.1.5 =
  * Bugfix: Add empty additional author fix
