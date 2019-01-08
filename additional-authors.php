@@ -53,6 +53,7 @@ class Plugin {
 	/**
 	 * meta values
 	 */
+	// @deprecated
 	const META_POST_ADDITIONAL_AUTHORS = "_additional_authors";
 	const META_USER_GENERATED = "_additional_authors_generated_user";
 
