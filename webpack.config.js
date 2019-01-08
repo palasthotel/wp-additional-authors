@@ -1,4 +1,5 @@
 
+const path = require('path');
 // const webpack = require('webpack');
 
 const config = {
@@ -6,28 +7,32 @@ const config = {
   	main: './js/src/meta-box/main.jsx',
   },
 	output: {
-		path: './js/bundle/',
+
+		path: path.resolve(__dirname, 'js/bundle/'),
 		filename: '[name].js',
 		sourceMapFilename: '[name].map',
 	},
 	devtool: 'source-map',
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /\.jsx$/,
 				exclude: /node_modules/,
-				loader: 'babel-loader',
-				query: {
-					presets: ["es2015", "react"],
-					plugins: ["transform-object-rest-spread"],
-				}
+				use: {
+					loader: 'babel-loader',
+					options: {
+						presets: ["@babel/preset-env", "@babel/react"],
+						plugins: ["@babel/plugin-proposal-object-rest-spread"],
+					}
+				},
+
 			}
 		]
 	},
 };
 
 
-if(process.env.NODE_ENV == "production"){
+if(process.env.NODE_ENV === "production"){
 	config.output.filename = "[name].min.js";
 	config.output.sourceMapFilename = "[name].min.map";
 	config.plugins = [
