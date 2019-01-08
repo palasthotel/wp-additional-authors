@@ -30,6 +30,7 @@ class MetaBox extends Component {
 	}
 
 	getMainUserControl(){
+		if(!this.props.isGutenbergActive) return null;
 		if(this._main_user_select != null) return this._main_user_select;
 		let control = document.getElementById("post_author_override");
 		if(control == null)
@@ -49,10 +50,15 @@ class MetaBox extends Component {
 	 * ------------------------------------------------
 	 */
 	render() {
-		const {language} = this.props;
+		const {language, isGutenbergActive} = this.props;
 		const {selected, users, new_users, main_author} = this.state;
+		let gutenbergInfo = null;
+		if(isGutenbergActive){
+			gutenbergInfo = <input type="hidden" name="additional_authors_is_gutenberg" value="it-is" />
+		}
 		return (
 			<div className="additional-authors">
+				{gutenbergInfo}
 				<Search
 					users={users}
 					selected={selected}
@@ -63,11 +69,11 @@ class MetaBox extends Component {
 				<hr/>
 				
 				<p><i>{language.description}</i></p>
-				
+
 				<div>
+
 					{selected.map((id, index)=>{
-						let user = null;
-						let first = true;
+						if(isGutenbergActive && index === 0) return null;
 						for(const key in users){
 							if(!users.hasOwnProperty(key)) continue;
 							const _user = users[key];
@@ -187,7 +193,8 @@ class MetaBox extends Component {
 	}
 	getMainUserID(){
 		const control = this.getMainUserControl();
-		return control.value;
+		if(typeof control !== typeof undefined && control !== null) return control.value;
+ 		return -1;
 	}
 	isSelected(user_id){
 		for(let _uid of this.state.selected){
@@ -225,6 +232,7 @@ MetaBox.defaultProps = {
  * define property types
  */
 MetaBox.propTypes = {
+	isGutenbergActive: PropTypes.bool.isRequired,
 	users: PropTypes.array.isRequired,
 	selected: PropTypes.array.isRequired,
 	language: PropTypes.object.isRequired,
