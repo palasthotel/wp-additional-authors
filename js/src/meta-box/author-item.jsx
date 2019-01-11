@@ -25,8 +25,8 @@ class AuthorItem extends Component {
 				className={`author-item${(isMainAuthor)?" is-main-author":""}${(author.ID < 0)?" is-new-author":""}`}
 			>
 				<span className="autor-item__name">
-					{author.display_name}
-                    <span className="author-item__nicename">{author.user_nicename}</span>
+					{this.wrapWithProfileLink(author.display_name)}
+					<span className="author-item__nicename">{author.user_nicename}</span>
 				</span>
 
 				{this.renderDelete()}
@@ -48,6 +48,7 @@ class AuthorItem extends Component {
 			</div>
 		)
 	}
+
 	renderDelete(){
 		if(this.props.isMainAuthor) return null;
 		return (
@@ -59,7 +60,14 @@ class AuthorItem extends Component {
 			</span>
 		)
 	}
-	
+	wrapWithProfileLink(frag){
+		const {ID} = this.props.author;
+		if(ID > 0){
+			return <a href={`/wp-admin/user-edit.php?user_id=${ID}`} target="_blank">{frag}</a>
+		}
+		return frag
+	}
+
 	/**
 	 * ------------------------------------------------
 	 * events
