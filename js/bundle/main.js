@@ -216,7 +216,7 @@ function (_Component) {
         className: "author-item".concat(isMainAuthor ? " is-main-author" : "").concat(author.ID < 0 ? " is-new-author" : "")
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "autor-item__name"
-      }, author.display_name, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      }, this.wrapWithProfileLink(author.display_name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "author-item__nicename"
       }, author.user_nicename)), this.renderDelete(), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "author-item__move author-item__up",
@@ -242,6 +242,20 @@ function (_Component) {
         className: "author-item__delete",
         onClick: this.props.onUnselect
       }, "\xD7");
+    }
+  }, {
+    key: "wrapWithProfileLink",
+    value: function wrapWithProfileLink(frag) {
+      var ID = this.props.author.ID;
+
+      if (ID > 0) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "/wp-admin/user-edit.php?user_id=".concat(ID),
+          target: "_blank"
+        }, frag);
+      }
+
+      return frag;
     }
     /**
      * ------------------------------------------------
@@ -421,22 +435,6 @@ function (_Component) {
       this.dispatchChanged();
       this.getMainUserControl();
     }
-  }, {
-    key: "getMainUserControl",
-    value: function getMainUserControl() {
-      if (!this.props.isGutenbergActive) return null;
-      if (this._main_user_select != null) return this._main_user_select;
-      var control = document.getElementById("post_author_override");
-      if (control == null) control = document.getElementById("post-author-selector-1");
-
-      if (control != null) {
-        this._main_user_select = control;
-
-        this._main_user_select.addEventListener("change", this.onMainAuthorChanged.bind(this));
-      }
-
-      return this._main_user_select;
-    }
     /**
      * ------------------------------------------------
      * rendering
@@ -597,7 +595,7 @@ function (_Component) {
       var index = 0;
 
       while (index < this.state.selected.length) {
-        if (this.state.selected[index] == author_id) {
+        if (this.state.selected[index] === author_id) {
           this.state.selected.splice(index, 1);
           break;
         }
@@ -622,14 +620,29 @@ function (_Component) {
      */
 
   }, {
+    key: "getMainUserControl",
+    value: function getMainUserControl() {
+      if (this.props.isGutenbergActive) return null;
+      if (this._main_user_select != null) return this._main_user_select;
+      var control = document.getElementById("post_author_override");
+      if (control == null) control = document.getElementById("post-author-selector-1");
+
+      if (control != null) {
+        this._main_user_select = control;
+
+        this._main_user_select.addEventListener("change", this.onMainAuthorChanged.bind(this));
+      }
+
+      return this._main_user_select;
+    }
+  }, {
     key: "setMainUserID",
     value: function setMainUserID(user_id) {
       var control = this.getMainUserControl();
 
-      if (control != null) {
-        this._main_user_select.value = user_id;
-
-        this._main_user_select.dispatchEvent(new Event("change"));
+      if (_typeof(control) !== ( true ? "undefined" : undefined) && control != null) {
+        control.value = user_id;
+        control.dispatchEvent(new Event("change"));
       }
     }
   }, {
