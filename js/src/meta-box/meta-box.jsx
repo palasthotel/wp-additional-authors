@@ -28,21 +28,6 @@ class MetaBox extends Component {
 		this.dispatchChanged();
 		this.getMainUserControl();
 	}
-
-	getMainUserControl(){
-		if(!this.props.isGutenbergActive) return null;
-		if(this._main_user_select != null) return this._main_user_select;
-		let control = document.getElementById("post_author_override");
-		if(control == null)
-			control = document.getElementById("post-author-selector-1");
-
-		if(control != null){
-			this._main_user_select = control;
-			this._main_user_select.addEventListener("change",this.onMainAuthorChanged.bind(this));
-		}
-		
-		return this._main_user_select;
-	}
 	
 	/**
 	 * ------------------------------------------------
@@ -162,7 +147,7 @@ class MetaBox extends Component {
 		 */
 		let index = 0;
 		while(index < this.state.selected.length){
-			if(this.state.selected[index] == author_id){
+			if(this.state.selected[index] === author_id){
 				this.state.selected.splice(index,1);
 				break;
 			}
@@ -183,11 +168,25 @@ class MetaBox extends Component {
 	 * other functions
 	 * ------------------------------------------------
 	 */
+	getMainUserControl(){
+		if(this.props.isGutenbergActive) return null;
+
+		if(this._main_user_select != null) return this._main_user_select;
+		let control = document.getElementById("post_author_override");
+		if(control == null)
+			control = document.getElementById("post-author-selector-1");
+
+		if(control != null){
+			this._main_user_select = control;
+			this._main_user_select.addEventListener("change",this.onMainAuthorChanged.bind(this));
+		}
+		return this._main_user_select;
+	}
 	setMainUserID(user_id){
 		const control = this.getMainUserControl();
-		if(control != null){
-			this._main_user_select.value = user_id;
-			this._main_user_select.dispatchEvent(new Event("change"));
+		if(typeof control !== typeof undefined && control != null){
+			control.value = user_id;
+			control.dispatchEvent(new Event("change"));
 		}
 
 	}
