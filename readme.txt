@@ -3,8 +3,8 @@ Contributors: palasthotel, edwardbock, greatestview
 Donate link: http://palasthotel.de/
 Tags: author, meta fields
 Requires at least: 4.0
-Tested up to: 5.0.3
-Stable tag: 1.2.2
+Tested up to: 5.1.1
+Stable tag: 1.2.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -27,6 +27,10 @@ Let's you add more than one author to your posts.
 
 
 == Changelog ==
+
+= 1.2.3 =
+ * Optimization: Additional authors are included in has_published_posts WP_User_Query
+ * Feature: New WP_User_Query argument "ignore_published_as_additional_author" for ignoring additional authors with "has_published_posts"
 
 = 1.2.2 =
  * Fix: Query manipulation fix which lead to duplicate posts
@@ -70,7 +74,9 @@ Let's you add more than one author to your posts.
 
 == Upgrade Notice ==
 
-There was an update on query manipulation. Please make shure your results are still as expected/before.
+Since 1.2.3: Author lists will change if you use "has_published_posts" in WP_User_Query as additional authors are included.
+
+Since 1.2.2: There was an update on query manipulation. Please make shure your results are still as expected/befor.
 
 
 == Arbitrary section ==
