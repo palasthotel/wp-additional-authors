@@ -90,6 +90,8 @@ class QueryManipulation {
 			global $wpdb;
 			$join .= "LEFT JOIN ".Table\tablename()." ON ({$wpdb->posts}.ID = ".Table\tablename().".post_id)";
 			$this->isGroupingNeeded = true;
+		} else {
+			$this->isGroupingNeeded = false;
 		}
 
 		return $join;
