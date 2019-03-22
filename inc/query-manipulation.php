@@ -31,6 +31,9 @@ class QueryManipulation {
 		add_filter( 'posts_where', array( $this, 'posts_where' ), 10, 2 );
 		add_filter( 'posts_groupby', array( $this, 'posts_groupby' ) );
 		add_filter( 'get_usernumposts', array( $this, 'change_num_posts' ), 10, 4 );
+
+		// WP_User query
+		add_action('pre_user_query', array($this, 'pre_user_query'));
 	}
 
 	/**
@@ -155,5 +158,34 @@ class QueryManipulation {
 		$additional_count = $wpdb->get_var( $select.$where );
 
 		return (int)$count + (int)$additional_count;
+	}
+
+	/**
+	 * @param \WP_User_Query $query
+	 */
+	function pre_user_query($query){
+		global $wpdb;
+		if(
+			$query->get("has_published_posts") === true
+		   &&
+			$query->get(Plugin::WP_USER_QUERY_ARG_IGNORE_PUBLISHED_AS_ADDITIONAL_AUTHOR) !== true
+		) {
+			$start_string = "AND $wpdb->users.ID IN ( ";
+			
+			$inject_where_additional_authors = " $wpdb->users.ID IN ( SELECT author_id FROM ".Table\tablename()." ) ";
+
+			$new_start    = "AND ( $inject_where_additional_authors OR $wpdb->users.ID IN ( ";
+			$end_string   = ") )";
+
+			$where = $query->query_where;
+			$start = strpos( $where, $start_string );
+			$end   = strpos( $where, $end_string, $start );
+
+			$where = substr_replace( $where, ") ", $end, 0 );
+
+			$where = str_replace( $start_string, $new_start, $where );
+
+			$query->query_where = $where;
+		}
 	}
 }

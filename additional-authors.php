@@ -25,6 +25,11 @@ class Plugin {
 	const OPTION_DATA_VERSION = "additional_authors_data_version";
 
 	/**
+	 * WP_User_Query arguments
+	 */
+	const WP_USER_QUERY_ARG_IGNORE_PUBLISHED_AS_ADDITIONAL_AUTHOR = "ignore_published_as_additional_author";
+
+	/**
 	 * all outputs via themes
 	 */
 	const THEME_FOLDER = "plugin-parts";
