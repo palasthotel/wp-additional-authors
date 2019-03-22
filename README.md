@@ -16,4 +16,4 @@ You can overwrite templates by copying from plugins folder templates to your the
 
 ## WP_User_Query
 
-If you don't want additional authors to show up when using "has_published_posts" argument than you can set "ignore_published_as_additional_author" to TRUE to ignore them.
+If you don't want additional authors to show up when using ```has_published_posts``` argument than you can set ```ignore_published_as_additional_author``` to `TRUE to ignore them.
