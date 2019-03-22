@@ -13,3 +13,7 @@ Best practice: Use ```do_action('additional_authors_the_authors')``` to render. 
 ## Templates
 
 You can overwrite templates by copying from plugins folder templates to your theme/plugin-parts/*.
+
+## WP_User_Query
+
+If you don't want additional authors to show up when using "has_published_posts" argument than you can set "ignore_published_as_additional_author" to TRUE to ignore them.
