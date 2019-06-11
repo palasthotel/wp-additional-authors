@@ -53,6 +53,7 @@ class Plugin {
 	 * all filters
 	 */
 	const FILTER_TEMPLATE_PATH = "additional_authors_template_paths";
+	const FILTER_META_BOX_GET_USERS = "additional_authors_meta_box_get_users";
 	const FILTER_WP_QUERY_IGNORE_ADDITIONAL_DEFAULT = "additional_authors_wp_query_ignore_additional_default";
 
 	/**
