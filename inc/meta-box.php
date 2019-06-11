@@ -17,7 +17,7 @@ class MetaBox {
 	 * @param Plugin $plugin
 	 */
 	function __construct( Plugin $plugin ) {
-		$this->plugin = $plugin;
+		$this->plugin  = $plugin;
 		$this->screens = array( 'post' );
 
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
@@ -25,11 +25,11 @@ class MetaBox {
 	}
 
 	function add_meta_box() {
-		$args = array(
-			'_builtin' => false
+		$args      = array(
+			'_builtin' => false,
 		);
 		$posttypes = get_post_types( $args );
-		foreach( $posttypes as $posttype ) {
+		foreach ( $posttypes as $posttype ) {
 			if ( post_type_supports( $posttype, 'author' ) ) {
 				$this->screens[] = $posttype;
 			}
@@ -68,15 +68,18 @@ class MetaBox {
 		 * get all users
 		 */
 		$users = get_users(
-			array(
-				'who'     => 'authors',
-				'orderby' => 'display_name',
-				'fields'  => array(
-					'ID',
-					'display_name',
-					'user_login',
-					'user_nicename',
-				),
+			apply_filters(
+				Plugin::FILTER_META_BOX_GET_USERS,
+				array(
+					'who'     => 'authors',
+					'orderby' => 'display_name',
+					'fields'  => array(
+						'ID',
+						'display_name',
+						'user_login',
+						'user_nicename',
+					),
+				)
 			)
 		);
 		array_shift( $users );
@@ -140,7 +143,7 @@ class MetaBox {
 				 * skip first because it is main author and saved on post
 				 * only if is not gutenberg
 				 */
-				if ( $index == 0 && !$is_gutenberg ) {
+				if ( $index == 0 && ! $is_gutenberg ) {
 					remove_action( 'save_post', array( $this, 'save' ) );
 					wp_update_post( array(
 						"ID"          => $post_id,
@@ -151,7 +154,7 @@ class MetaBox {
 				}
 
 				// to not add main author as additional author
-				if(intval($additional_author) > 0 && $additional_author == $post->post_author){
+				if ( intval( $additional_author ) > 0 && $additional_author == $post->post_author ) {
 					continue;
 				}
 
@@ -163,7 +166,7 @@ class MetaBox {
 					}
 				}
 				// @deprecated
-//				add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author );
+				//				add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author );
 				Table\set( $post_id, $additional_author );
 			}
 
