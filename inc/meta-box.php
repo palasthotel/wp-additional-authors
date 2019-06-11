@@ -9,6 +9,8 @@ class MetaBox {
 
 	const POST_AUTORS_IS_GUTENGERG = "additional_authors_is_gutenberg";
 
+	public $screens;
+
 	/**
 	 * MetaBox constructor.
 	 *
@@ -16,16 +18,27 @@ class MetaBox {
 	 */
 	function __construct( Plugin $plugin ) {
 		$this->plugin = $plugin;
-		add_action( 'add_meta_boxes_post', array( $this, 'add_meta_box' ) );
+		$this->screens = array( 'post' );
+
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
 		add_action( 'save_post', array( $this, 'save' ), 10, 2 );
 	}
 
 	function add_meta_box() {
+		$args = array(
+			'_builtin' => false
+		);
+		$posttypes = get_post_types( $args );
+		foreach( $posttypes as $posttype ) {
+			if ( post_type_supports( $posttype, 'author' ) ) {
+				$this->screens[] = $posttype;
+			}
+		}
 		add_meta_box(
 			'additional-authors-meta-box',
 			__( 'Additional Authors', 'additional_authors' ),
 			array( $this, 'additional_authors_html' ),
-			'post',
+			$this->screens,
 			'side',
 			'high'
 		);
