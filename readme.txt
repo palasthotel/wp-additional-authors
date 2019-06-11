@@ -3,8 +3,8 @@ Contributors: palasthotel, edwardbock, greatestview
 Donate link: http://palasthotel.de/
 Tags: author, meta fields
 Requires at least: 4.0
-Tested up to: 5.1.1
-Stable tag: 1.2.3
+Tested up to: 5.2.1
+Stable tag: 1.2.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -27,6 +27,10 @@ Let's you add more than one author to your posts.
 
 
 == Changelog ==
+
+= 1.2.4 =
+ * Optimization: only show additional authors im post type supports author feature
+ * Feature: Customizing filter for get_users args in meta box
 
 = 1.2.3 =
  * Optimization: Additional authors are included in has_published_posts WP_User_Query
