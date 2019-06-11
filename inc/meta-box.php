@@ -5,9 +5,9 @@ namespace AdditionalAuthors;
 
 class MetaBox {
 
-	const POST_AUTORS = "additional_authors";
+	const POST_AUTHORS = "additional_authors";
 
-	const POST_AUTORS_IS_GUTENGERG = "additional_authors_is_gutenberg";
+	const POST_AUTHORS_IS_GUTENGERG = "additional_authors_is_gutenberg";
 
 	public $screens;
 
@@ -122,19 +122,19 @@ class MetaBox {
 			$post_id = $parent_id;
 		}
 
-		if ( isset( $_POST ) && is_array( $_POST[ self::POST_AUTORS ] ) ) {
+		if ( isset( $_POST ) && is_array( $_POST[ self::POST_AUTHORS ] ) ) {
 			/**
 			 * we are in post edit form action
 			 */
 			delete_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS );
 			Table\delete_all_of_post( $post_id );
 			$is_gutenberg = (
-				isset( $_POST[ self::POST_AUTORS_IS_GUTENGERG ] )
+				isset( $_POST[ self::POST_AUTHORS_IS_GUTENGERG ] )
 				&&
-				$_POST[ self::POST_AUTORS_IS_GUTENGERG ] == "it-is"
+				$_POST[ self::POST_AUTHORS_IS_GUTENGERG ] == "it-is"
 			);
 
-			foreach ( $_POST[ self::POST_AUTORS ]["ids"] as $index => $additional_author ) {
+			foreach ( $_POST[ self::POST_AUTHORS ]["ids"] as $index => $additional_author ) {
 
 				/**
 				 * skip first because it is main author and saved on post
@@ -156,7 +156,7 @@ class MetaBox {
 				}
 
 				if ( intval( $additional_author ) <= 0 ) {
-					$name              = $_POST[ self::POST_AUTORS ]["names"][ $index ];
+					$name              = $_POST[ self::POST_AUTHORS ]["names"][ $index ];
 					$additional_author = $this->plugin->user->create( $name );
 					if ( is_wp_error( $additional_author ) ) {
 						// TODO: error display
