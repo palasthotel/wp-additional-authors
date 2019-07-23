@@ -125,7 +125,7 @@ class MetaBox {
 			$post_id = $parent_id;
 		}
 
-		if ( isset( $_POST ) && is_array( $_POST[ self::POST_AUTHORS ] ) ) {
+		if ( isset( $_POST ) && isset($_POST[ self::POST_AUTHORS ]) && is_array( $_POST[ self::POST_AUTHORS ] ) ) {
 			/**
 			 * we are in post edit form action
 			 */
