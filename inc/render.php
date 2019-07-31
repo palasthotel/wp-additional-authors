@@ -31,7 +31,6 @@ class Render {
 	/**
 	 * @param null|int $post_id
 	 *
-	 * @return array
 	 */
 	public function the_authors_posts_links($post_id = null , $additional_vars = null){
 		$additional_authors_ids = $this->plugin->get_ids( $post_id );

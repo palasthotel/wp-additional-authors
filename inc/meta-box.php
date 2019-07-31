@@ -7,7 +7,7 @@ class MetaBox {
 
 	const POST_AUTHORS = "additional_authors";
 
-	const POST_AUTHORS_IS_GUTENGERG = "additional_authors_is_gutenberg";
+	const POST_AUTHORS_IS_GUTENBERG = "additional_authors_is_gutenberg";
 
 	public $screens;
 
@@ -132,9 +132,9 @@ class MetaBox {
 			delete_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS );
 			Table\delete_all_of_post( $post_id );
 			$is_gutenberg = (
-				isset( $_POST[ self::POST_AUTHORS_IS_GUTENGERG ] )
+				isset( $_POST[ self::POST_AUTHORS_IS_GUTENBERG ] )
 				&&
-				$_POST[ self::POST_AUTHORS_IS_GUTENGERG ] == "it-is"
+				$_POST[ self::POST_AUTHORS_IS_GUTENBERG ] == "it-is"
 			);
 
 			foreach ( $_POST[ self::POST_AUTHORS ]["ids"] as $index => $additional_author ) {
