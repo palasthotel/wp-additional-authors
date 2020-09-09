@@ -95,6 +95,9 @@ class Plugin {
 		require dirname( __FILE__ ) . "/inc/query-manipulation.php";
 		$this->query_manipulation = new QueryManipulation( $this );
 
+		require dirname( __FILE__ ) . "/inc/Assets.php";
+		$this->assets = new Assets();
+
 		require dirname( __FILE__ ) . "/inc/meta-box.php";
 		$this->meta_box = new MetaBox( $this );
 

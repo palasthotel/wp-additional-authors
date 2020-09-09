@@ -29,7 +29,7 @@ class MetaBox {
 	}
 
 	function add_meta_box() {
-	    if(!get_current_screen()->is_block_editor()){
+        //if(!get_current_screen()->is_block_editor()){
 		    $args      = array(
 			    '_builtin' => false,
 		    );
@@ -47,7 +47,7 @@ class MetaBox {
 			    'side',
 			    'high'
 		    );
-        }
+        //}
 	}
 
 	function additional_authors_html( $post ) {
