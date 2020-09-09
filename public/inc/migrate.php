@@ -25,7 +25,7 @@ class Migrate {
 	 * load author destination for migrate
 	 */
 	function author_destination(){
-		require_once('migrate.additional-author-destination.php');
+		require_once( 'migrate.additional-author-destination.php' );
 	}
 	
 	/**

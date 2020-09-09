@@ -3,8 +3,12 @@
 namespace AdditionalAuthors;
 
 
+/**
+ * @property Plugin plugin
+ */
 class MetaBox {
 
+    const POST_IS_META_BOX_REQUEST = "meta_additional_authors_for_real";
 	const POST_AUTHORS = "additional_authors";
 
 	const POST_AUTHORS_IS_GUTENBERG = "additional_authors_is_gutenberg";
@@ -25,36 +29,36 @@ class MetaBox {
 	}
 
 	function add_meta_box() {
-		$args      = array(
-			'_builtin' => false,
-		);
-		$posttypes = get_post_types( $args );
-		foreach ( $posttypes as $posttype ) {
-			if ( post_type_supports( $posttype, 'author' ) ) {
-				$this->screens[] = $posttype;
-			}
-		}
-		add_meta_box(
-			'additional-authors-meta-box',
-			__( 'Additional Authors', 'additional_authors' ),
-			array( $this, 'additional_authors_html' ),
-			$this->screens,
-			'side',
-			'high'
-		);
+	    //if(!get_current_screen()->is_block_editor()){
+		    $args      = array(
+			    '_builtin' => false,
+		    );
+		    $posttypes = get_post_types( $args );
+		    foreach ( $posttypes as $posttype ) {
+			    if ( post_type_supports( $posttype, 'author' ) ) {
+				    $this->screens[] = $posttype;
+			    }
+		    }
+		    add_meta_box(
+			    'additional-authors-meta-box',
+			    __( 'Additional Authors', 'additional_authors' ),
+			    array( $this, 'additional_authors_html' ),
+			    $this->screens,
+			    'side',
+			    'high'
+		    );
+        //}
 	}
 
 	function additional_authors_html( $post ) {
 		wp_nonce_field( '_additional_authors_nonce', 'additional_authors_nonce' );
 
 		wp_enqueue_style( "additional_authors_meta_box_style", $this->plugin->url . "/css/meta-box.css" );
-
-		$min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG == true ) ? "" : ".min";
 		wp_enqueue_script(
 			"additional_authors_meta_box_script",
-			$this->plugin->url . "/js/bundle/main" . $min . ".js",
-			array(),
-			1,
+			$this->plugin->url . "/dist/main.js",
+			array("react", "react-dom", 'underscore'),
+			filemtime( $this->plugin->path . "/dist/main.js"),
 			true
 		);
 
@@ -97,6 +101,7 @@ class MetaBox {
 		do_action( Plugin::ACTION_META_BOX_BEFORE, $post );
 		?>
 		<div id="meta_additional_authors"></div>
+        <input type="hidden" name="<?= self::POST_IS_META_BOX_REQUEST; ?>" value="yes" />
 		<?php
 		do_action( Plugin::ACTION_META_BOX_AFTER, $post );
 	}
@@ -125,17 +130,21 @@ class MetaBox {
 			$post_id = $parent_id;
 		}
 
-		if ( isset( $_POST ) && isset($_POST[ self::POST_AUTHORS ]) && is_array( $_POST[ self::POST_AUTHORS ] ) ) {
+		$is_gutenberg = (
+			isset( $_POST[ self::POST_AUTHORS_IS_GUTENBERG ] )
+			&&
+			$_POST[ self::POST_AUTHORS_IS_GUTENBERG ] == "it-is"
+		);
+
+		if( isset($_POST) && isset($_POST[self::POST_IS_META_BOX_REQUEST]) && $_POST[self::POST_IS_META_BOX_REQUEST] === "yes"){
 			/**
 			 * we are in post edit form action
 			 */
 			delete_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS );
 			Table\delete_all_of_post( $post_id );
-			$is_gutenberg = (
-				isset( $_POST[ self::POST_AUTHORS_IS_GUTENBERG ] )
-				&&
-				$_POST[ self::POST_AUTHORS_IS_GUTENBERG ] == "it-is"
-			);
+		}
+
+		if ( isset( $_POST ) && isset($_POST[ self::POST_AUTHORS ]) && is_array( $_POST[ self::POST_AUTHORS ] ) ) {
 
 			foreach ( $_POST[ self::POST_AUTHORS ]["ids"] as $index => $additional_author ) {
 

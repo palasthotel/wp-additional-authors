@@ -33,7 +33,7 @@
 			],
 			"input" : "sass/meta-box.scss",
 			"type" : "watch",
-			"output" : "css/meta-box.css",
+			"output" : "public/css/meta-box.css",
 			"observe" : {
 				"path" : "sass"
 			}

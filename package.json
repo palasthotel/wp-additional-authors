@@ -1,15 +1,25 @@
 {
   "name": "additional-authors",
-  "dependencies": {
-    "@babel/polyfill": "^7.0.0",
-    "prop-types": "^15.6.2",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
-    "underscore": "^1.9.1"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "./node_modules/webpack/bin/webpack.js --watch --progress --config webpack.dev.js",
+    "build": "./node_modules/webpack/bin/webpack.js --progress --config webpack.prod.js",
+    "watchGutenberg": "wp-scripts start --config webpack.gutenberg.js",
+    "buildGutenberg": "wp-scripts build --config webpack.gutenberg.js"
   },
-  "devDependencies": {
-    "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
-    "@babel/preset-es2015": "^7.0.0-beta.53",
-    "@babel/preset-react": "^7.0.0"
+  "dependencies": {
+    "@babel/polyfill": "^7.11.5",
+    "@babel/core": "^7.11.4",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-react": "^7.10.4",
+    "@wordpress/scripts": "^12.1.1",
+    "babel-loader": "^8.1.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "underscore": "^1.11.0",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-merge": "^5.1.4"
   }
 }
