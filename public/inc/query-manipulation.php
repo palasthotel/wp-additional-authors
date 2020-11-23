@@ -1,19 +1,14 @@
 <?php
 
 namespace AdditionalAuthors;
+use WP_Query;
 use function AdditionalAuthors\Table\tablename;
 
 /**
  * Class QueryManipulation
  * @package AdditionalAuthors
- * @deprecated Use taxonomy solution
  */
 class QueryManipulation {
-
-	/**
-	 * @var string author query
-	 */
-	private $author_name;
 
 	/**
 	 * Query constructor.
@@ -23,13 +18,9 @@ class QueryManipulation {
 	function __construct( Plugin $plugin ) {
 
 		$this->plugin = $plugin;
-		$this->isGroupingNeeded = false;
-
 		// Manipulate author query to show also posts, where this author is set
 		// in a post meta field.
-		add_filter( 'posts_join', array( $this, 'posts_join' ), 10, 2 );
 		add_filter( 'posts_where', array( $this, 'posts_where' ), 10, 2 );
-		add_filter( 'posts_groupby', array( $this, 'posts_groupby' ) );
 		add_filter( 'get_usernumposts', array( $this, 'change_num_posts' ), 10, 4 );
 
 		// WP_User query
@@ -37,7 +28,7 @@ class QueryManipulation {
 	}
 
 	/**
-	 * @param \WP_Query $wp_query
+	 * @param WP_Query $wp_query
 	 *
 	 * @return bool
 	 */
@@ -46,7 +37,7 @@ class QueryManipulation {
 	}
 
 	/**
-	 * @param \WP_Query $wp_query
+	 * @param WP_Query $wp_query
 	 *
 	 * @return bool|int
 	 */
@@ -54,8 +45,6 @@ class QueryManipulation {
 
 		// at the moment we are only compatible with an single author id
 		// TODO: handle coma separated list of ids
-		// TODO: handle author__in
-		// TODO: handle author__not_in
 		$author_id = $wp_query->get('author');
 		if( (is_int($author_id) && $author_id > 0) || (is_string($author_id) && $author_id != "" && intval($author_id)."" === $author_id)){
 			return intval($author_id);
@@ -64,7 +53,24 @@ class QueryManipulation {
 	}
 
 	/**
-	 * @param \WP_Query $wp_query
+	 * @param WP_Query $wp_query
+	 */
+	private function getNotIn($wp_query){
+		// TODO: handle author__not_in
+		$ids = $wp_query->get('author__not_in');
+
+	}
+
+	/**
+	 * @param WP_Query $wp_query
+	 */
+	private function getIn($wp_query){
+		// TODO: handle author__in
+		$ids = $wp_query->get('author__in');
+	}
+
+	/**
+	 * @param WP_Query $wp_query
 	 *
 	 * @return bool
 	 */
@@ -74,35 +80,13 @@ class QueryManipulation {
 
 	}
 
-	/**
-	 * JOIN statement
-	 *
-	 * @param  string $join The JOIN clause of the query.
-	 *
-	 * @param \WP_Query $wp_query
-	 *
-	 * @return string $join
-	 */
-	function posts_join( $join, $wp_query ) {
-		if(
-			$this->isManipulationNeeded($wp_query)
-		){
-			global $wpdb;
-			$join .= "LEFT JOIN ".Table\tablename()." ON ({$wpdb->posts}.ID = ".Table\tablename().".post_id)";
-			$this->isGroupingNeeded = true;
-		} else {
-			$this->isGroupingNeeded = false;
-		}
-
-		return $join;
-	}
 
 	/**
 	 * WHERE statement
 	 *
 	 * @param  string $where The WHERE clause of the query.
 	 *
-	 * @param \WP_Query $wp_query
+	 * @param WP_Query $wp_query
 	 *
 	 * @return string $where
 	 */
@@ -118,45 +102,30 @@ class QueryManipulation {
 
 		$where = str_replace(
 			"{$wpdb->posts}.post_author IN ({$author_id})",
-			"( {$wpdb->posts}.post_author IN ({$author_id}) OR ".Table\tablename().".author_id = {$author_id})",
+			"( {$wpdb->posts}.post_author IN ({$author_id}) OR {$wpdb->posts}.ID IN ( SELECT post_id FROM ".tablename()." WHERE author_id IN ({$author_id})) )",
 			$where
 		);
 
 		$where = str_replace(
 			"{$wpdb->posts}.post_author = {$author_id}",
-			Table\tablename().".author_id = {$author_id} OR {$wpdb->posts}.post_author = {$author_id}",
+			"( {$wpdb->posts}.ID IN (SELECT post_id FROM ".tablename()." WHERE author_id = {$author_id}) OR {$wpdb->posts}.post_author = {$author_id} )",
 			$where
 		);
 
 		return $where;
 	}
 
-	/**
-	 * GROUP BY statement
-	 *
-	 * @param  string $groupby The GROUP BY clause of the query.
-	 *
-	 * @return string $groupby
-	 */
-	function posts_groupby( $groupby ) {
-
-		if ( !$this->isGroupingNeeded ) {
-			return $groupby;
-		}
-
-		global $wpdb;
-		return "{$wpdb->posts}.ID";
-	}
-
 	function change_num_posts( $count, $userid, $post_type, $public_only ) {
 
 		global $wpdb;
 
-		$select = "SELECT count(*) FROM $wpdb->posts LEFT JOIN ".tablename()." ON ".tablename().".post_id = $wpdb->posts.ID ";
-		$where = "WHERE author_id = $userid";
-		if($post_type != "any") $where.= " AND post_type = '$post_type'";
+		$select = "SELECT count(*) FROM {$wpdb->posts} WHERE {$wpdb->posts}.ID IN ( SELECT post_id FROM ".tablename()." WHERE author_id = $userid)";
 
-		$additional_count = $wpdb->get_var( $select.$where );
+		if($post_type != "any"){
+			$select.= " AND post_type = '$post_type'";
+		}
+
+		$additional_count = $wpdb->get_var( $select );
 
 		return (int)$count + (int)$additional_count;
 	}
@@ -173,7 +142,7 @@ class QueryManipulation {
 		) {
 			$start_string = "AND $wpdb->users.ID IN ( ";
 			
-			$inject_where_additional_authors = " $wpdb->users.ID IN ( SELECT author_id FROM ".Table\tablename()." ) ";
+			$inject_where_additional_authors = " $wpdb->users.ID IN ( SELECT author_id FROM ".tablename()." ) ";
 
 			$new_start    = "AND ( $inject_where_additional_authors OR $wpdb->users.ID IN ( ";
 			$end_string   = ") )";
