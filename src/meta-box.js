@@ -1,6 +1,7 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
-import MetaBox from './meta-box.jsx';
+import MetaBox from './meta-box/meta-box.jsx';
+
+import "./meta-box.scss";
 
 /**
  * wait for dom to be ready so all plugins etc are loaded

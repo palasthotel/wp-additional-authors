@@ -53,12 +53,17 @@ class MetaBox {
 	function additional_authors_html( $post ) {
 		wp_nonce_field( '_additional_authors_nonce', 'additional_authors_nonce' );
 
-		wp_enqueue_style( "additional_authors_meta_box_style", $this->plugin->url . "/css/meta-box.css" );
+		wp_enqueue_style(
+            "additional_authors_meta_box_style",
+            $this->plugin->url . "/dist/meta-box.css",
+            [],
+            filemtime($this->plugin->path."/dist/meta-box.css")
+        );
 		wp_enqueue_script(
 			"additional_authors_meta_box_script",
-			$this->plugin->url . "/dist/main.js",
+			$this->plugin->url . "/dist/meta-box.js",
 			array("react", "react-dom", 'underscore'),
-			filemtime( $this->plugin->path . "/dist/main.js"),
+			filemtime( $this->plugin->path . "/dist/meta-box.js"),
 			true
 		);
 

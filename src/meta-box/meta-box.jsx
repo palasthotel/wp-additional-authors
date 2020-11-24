@@ -1,7 +1,6 @@
-import React, {Component} from 'react';
+import {Component} from 'react';
 import PropTypes from 'prop-types';
 import _ from 'underscore';
-import "@babel/polyfill";
 
 import Search from './search.jsx';
 import AuthorItem from './author-item.jsx';

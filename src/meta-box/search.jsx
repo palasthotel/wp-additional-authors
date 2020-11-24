@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import {Component} from 'react';
 import PropTypes from 'prop-types';
 import SearchItem from './search-item.jsx';
 import NewItem from './new-item.jsx';
