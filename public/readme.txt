@@ -30,6 +30,7 @@ Let's you add more than one author to your posts.
 
 = 1.2.6 =
  * Performance: WP_Query performance optimization
+ * Update: Dependency updates
  * Bugfix: Cannot delete last additional author from post
 
 = 1.2.5 =
