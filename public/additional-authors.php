@@ -68,6 +68,8 @@ class Plugin {
 	 */
 	const REST_FIELD_ADDITIONAL_AUTHORS = "additional_authors";
 
+	const HANDLE_GUTENBERG = "additional_authors_js";
+
 	/**
 	 * meta values
 	 */
@@ -106,8 +108,8 @@ class Plugin {
 
 		$this->database = new Database();
 		$this->query_manipulation = new QueryManipulation( $this );
-		$this->assets = new Assets();
-		$this->rest = new REST();
+		$this->assets = new Assets($this);
+		$this->rest = new REST($this);
 
 		$this->meta_box = new MetaBox( $this );
 		$this->user = new User( $this );

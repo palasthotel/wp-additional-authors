@@ -8,21 +8,21 @@
     "buildGutenberg": "wp-scripts build --config webpack.gutenberg.js"
   },
   "dependencies": {
-    "@babel/core": "^7.12.8",
+    "@babel/core": "^7.12.9",
     "@babel/preset-env": "^7.12.7",
     "@babel/preset-react": "^7.12.7",
     "@wordpress/scripts": "^12.5.0",
-    "babel-loader": "^8.2.1",
+    "babel-loader": "^8.2.2",
     "prop-types": "^15.7.2",
     "css-loader": "^5.0.1",
-    "mini-css-extract-plugin": "^1.3.1",
-    "sass": "^1.29.0",
+    "mini-css-extract-plugin": "^1.3.2",
+    "sass": "^1.30.0",
     "sass-loader": "^10.1.0",
     "style-loader": "^2.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "underscore": "^1.12.0",
-    "webpack": "^5.6.0",
+    "webpack": "^5.10.0",
     "webpack-cli": "^4.2.0",
     "webpack-merge": "^5.4.0"
   }
