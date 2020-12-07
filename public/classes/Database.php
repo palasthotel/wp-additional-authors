@@ -6,12 +6,14 @@ use wpdb;
 
 /**
  * @property wpdb wpdb
+ * @property string table
  */
 class Database{
 
 	public function __construct() {
 		global $wpdb;
 		$this->wpdb = $wpdb;
+		$this->table = $wpdb->prefix."additional_authors";
 	}
 
 
@@ -25,7 +27,7 @@ class Database{
 		);
 
 		global $wpdb;
-		$additional_authors_ids_as_string = $wpdb->get_col("SELECT author_id FROM ".tablename()." WHERE post_id = {$post->ID} ORDER BY id ASC");
+		$additional_authors_ids_as_string = $wpdb->get_col("SELECT author_id FROM $this->table WHERE post_id = {$post->ID} ORDER BY id ASC");
 
 		if ( ! empty( $additional_authors_ids_as_string ) ) {
 			foreach ( $additional_authors_ids_as_string as $author_id_as_string ) {
@@ -59,7 +61,7 @@ class Database{
 	function set($post_id, $author_id){
 		global $wpdb;
 		return $wpdb->replace(
-			tablename(),
+			$this->table,
 			array(
 				'post_id' => $post_id,
 				'author_id' => $author_id,
@@ -79,7 +81,7 @@ class Database{
 	function delete($post_id, $auhtor_id){
 		global $wpdb;
 		return $wpdb->delete(
-			tablename(),
+			$this->table,
 			array(
 				"post_id" => $post_id,
 				"author_id" => $auhtor_id,
@@ -101,7 +103,7 @@ class Database{
 	function delete_all_of_post($post_id){
 		global $wpdb;
 		return $wpdb->delete(
-			tablename(),
+			$this->table,
 			array(
 				"post_id" => $post_id,
 			),
@@ -122,7 +124,7 @@ class Database{
 	function delete_all_of_author($author_id){
 		global $wpdb;
 		return $wpdb->delete(
-			tablename(),
+			$this->table,
 			array(
 				"author_id" => $author_id,
 			),
@@ -133,20 +135,11 @@ class Database{
 	}
 
 	/**
-	 * table name of
-	 * @return string
-	 */
-	function tablename(){
-		global $wpdb;
-		return $wpdb->prefix."additional_authors";
-	}
-
-	/**
 	 * install flags table
 	 */
 	function install(){
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-		dbDelta("CREATE TABLE IF NOT EXISTS ".tablename()." 
+		dbDelta("CREATE TABLE IF NOT EXISTS $this->table 
 		(
 		 id bigint(20) unsigned not null auto_increment ,
 		 post_id bigint(20) unsigned not null,

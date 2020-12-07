@@ -25,6 +25,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @property Render render
  * @property Migrate migrate
  * @property Update update
+ * @property REST rest
  */
 class Plugin {
 
@@ -61,6 +62,11 @@ class Plugin {
 	const FILTER_TEMPLATE_PATH = "additional_authors_template_paths";
 	const FILTER_META_BOX_GET_USERS = "additional_authors_meta_box_get_users";
 	const FILTER_WP_QUERY_IGNORE_ADDITIONAL_DEFAULT = "additional_authors_wp_query_ignore_additional_default";
+
+	/**
+	 * rest fields
+	 */
+	const REST_FIELD_ADDITIONAL_AUTHORS = "additional_authors";
 
 	/**
 	 * meta values
@@ -101,6 +107,7 @@ class Plugin {
 		$this->database = new Database();
 		$this->query_manipulation = new QueryManipulation( $this );
 		$this->assets = new Assets();
+		$this->rest = new REST();
 
 		$this->meta_box = new MetaBox( $this );
 		$this->user = new User( $this );
