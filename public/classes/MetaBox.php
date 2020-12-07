@@ -5,6 +5,7 @@ namespace AdditionalAuthors;
 
 /**
  * @property Plugin plugin
+ * @deprecated Please start using Gutenberg
  */
 class MetaBox {
 
@@ -29,7 +30,7 @@ class MetaBox {
 	}
 
 	function add_meta_box() {
-        //if(!get_current_screen()->is_block_editor()){
+        if(!get_current_screen()->is_block_editor()){
 		    $args      = array(
 			    '_builtin' => false,
 		    );
@@ -45,9 +46,12 @@ class MetaBox {
 			    array( $this, 'additional_authors_html' ),
 			    $this->screens,
 			    'side',
-			    'high'
+			    'high',
+                array(
+                        '__block_editor_compatible_meta_box' => false,
+                )
 		    );
-        //}
+        }
 	}
 
 	function additional_authors_html( $post ) {

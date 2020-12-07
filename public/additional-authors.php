@@ -11,15 +11,20 @@ namespace AdditionalAuthors;
  * Author URI: https://palasthotel.de
  */
 
-// If this file is called directly, abort.
-use function AdditionalAuthors\Table\install;
-
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
 /**
  * Class AdditionalAuthors
+ * @property Database database
+ * @property QueryManipulation query_manipulation
+ * @property Assets assets
+ * @property MetaBox meta_box
+ * @property User user
+ * @property Render render
+ * @property Migrate migrate
+ * @property Update update
  */
 class Plugin {
 
@@ -91,35 +96,23 @@ class Plugin {
 		$this->path = plugin_dir_path( __FILE__ );
 		$this->url  = plugin_dir_url( __FILE__ );
 
-		require dirname( __FILE__ ) . "/inc/authors-table.php";
+		require_once dirname(__FILE__)."/vendor/autoload.php";
 
-		require dirname( __FILE__ ) . "/inc/query-manipulation.php";
+		$this->database = new Database();
 		$this->query_manipulation = new QueryManipulation( $this );
-
-		require dirname( __FILE__ ) . "/inc/Assets.php";
 		$this->assets = new Assets();
 
-		require dirname( __FILE__ ) . "/inc/meta-box.php";
 		$this->meta_box = new MetaBox( $this );
-
-		require dirname( __FILE__ ) . "/inc/user.php";
 		$this->user = new User( $this );
-
-		require dirname( __FILE__ ) . "/inc/render.php";
 		$this->render = new Render( $this );
-
-		require dirname( __FILE__ ) . "/inc/migrate.php";
 		$this->migrate = new Migrate( $this );
 
-		require dirname( __FILE__ ) . "/inc/update.php";
 		$this->update = new Update( $this );
 
 		/**
 		 * on activate or deactivate plugin
 		 */
 		register_activation_hook(__FILE__, array($this, "activation"));
-		register_deactivation_hook(__FILE__, array($this, "deactivation"));
-
 	}
 
 	/**
@@ -130,7 +123,7 @@ class Plugin {
 	 * @return array
 	 */
 	public function get_ids( $post_id = null ) {
-		return Table\get_author_ids($post_id);
+		return $this->database->get_author_ids($post_id);
 	}
 
 	/**
@@ -154,15 +147,9 @@ class Plugin {
 	 * on plugin activation
 	 */
 	function activation(){
-		install();
+		$this->database->install();
 	}
 
-	/**
-	 * on plugin deactivation
-	 */
-	function deactivation(){
-
-	}
 }
 
 /**
