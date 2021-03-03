@@ -12,6 +12,11 @@ mkdir -p "$DEST_PATH"
 echo "Syncing files..."
 rsync -rL "$PROJECT_PATH/public/" "$DEST_PATH/"
 
+cd "$DEST_PATH"
+composer dump-autoload
+rm composer.json
+d "$PROJECT_PATH"
+
 echo "Generating zip file..."
 cd "$BUILD_PATH" || exit
 zip -q -r "${PLUGIN_SLUG}.zip" "$PLUGIN_SLUG/"
