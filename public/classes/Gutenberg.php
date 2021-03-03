@@ -14,6 +14,7 @@ class Gutenberg {
 	}
 
 	public function enqueue_assets(){
-		$this->plugin->assets->enqueueGutenberg();
+		// TODO: not ready yet. Please check JS
+		//$this->plugin->assets->enqueueGutenberg();
 	}
 }
