@@ -29,6 +29,7 @@ Let's you add more than one author to your posts.
 == Changelog ==
 
 = 1.2.7 =
+ * WP5.7 checked
  * Bugfix: Database update error
 
 = 1.2.6 =
