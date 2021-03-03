@@ -40,6 +40,9 @@ class MetaBox extends Component {
 		if(isGutenbergActive){
 			gutenbergInfo = <input type="hidden" name="additional_authors_is_gutenberg" value="it-is" />
 		}
+
+		const selectedIds = selected.map(u=>u.ID);
+
 		return (
 			<div className="additional-authors">
 				{gutenbergInfo}

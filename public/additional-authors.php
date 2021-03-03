@@ -6,7 +6,7 @@ namespace AdditionalAuthors;
  * Plugin Name: Additional Authors
  * Plugin URI: https://github.com/palasthotel/wp-additional-authors
  * Description: Provides a meta box for additional authors from existing users or taxonomy.
- * Version: 1.2.6
+ * Version: 1.2.7
  * Author: PALASTHOTEL (by Kim-Christian Meyer, Edward Bock, Stephan Kroppenstedt)
  * Author URI: https://palasthotel.de
  */
@@ -26,6 +26,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @property Migrate migrate
  * @property Update update
  * @property REST rest
+ * @property Gutenberg gutenberg
  */
 class Plugin {
 
@@ -68,7 +69,9 @@ class Plugin {
 	 */
 	const REST_FIELD_ADDITIONAL_AUTHORS = "additional_authors";
 
-	const HANDLE_GUTENBERG = "additional_authors_js";
+	const HANDLE_GUTENBERG_JS = "additional_authors_js";
+	const HANDLE_META_BOX_JS = "additional_authors_meta_box_js";
+	const HANDLE_META_BOX_CSS = "additional_authors_meta_box_css";
 
 	/**
 	 * meta values
@@ -112,6 +115,7 @@ class Plugin {
 		$this->rest = new REST($this);
 
 		$this->meta_box = new MetaBox( $this );
+		$this->gutenberg = new Gutenberg($this);
 		$this->user = new User( $this );
 		$this->render = new Render( $this );
 		$this->migrate = new Migrate( $this );

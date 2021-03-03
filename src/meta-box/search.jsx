@@ -55,7 +55,7 @@ class Search extends Component {
 		if(focus){
 			const newItem = (query !== "") ? (<NewItem
 			name={query}
-			isOver={(over_index == search_result.length)}
+			isOver={(over_index === search_result.length)}
 			onSelect={this.onNewItem.bind(this)}
 			/>): null;
 			return (
@@ -67,7 +67,7 @@ class Search extends Component {
 							key={item.ID}
 							author={item}
 							onSelect={this.onSelect.bind(this, item)}
-							isOver={(over_index == index)}
+							isOver={(over_index === index)}
 						/>
 					})}
 					{newItem}
@@ -91,10 +91,10 @@ class Search extends Component {
 		
 		let search_result = [];
 		
-		if(query != ''){
+		if(query !== ''){
 			for(let user of users){
 				if(user.display_name.toLowerCase().indexOf(query.toLowerCase()) > -1){
-					if(selected.indexOf(user.ID) >= 0) continue;
+					if(selected.indexOf(user.ID+"") >= 0 || selected.indexOf(parseInt(user.ID)) >= 0) continue;
 					search_result.unshift(user);
 				}
 			}
@@ -103,8 +103,6 @@ class Search extends Component {
 		}
 		
 		this.setState({over_index: 0, search_result: search_result});
-		
-		
 	}
 
 	onFocusSearch(focus){
@@ -134,11 +132,13 @@ class Search extends Component {
 	}
 	onKeyDown(e){
 		const ENTER = 13;
-		if(ENTER == e.keyCode && this.state.focus){
+		if(ENTER === e.keyCode && this.state.focus){
 			e.preventDefault();
 			if(typeof this.state.search_result[this.state.over_index] != typeof undefined ){
 				this.onSelect(this.state.search_result[this.state.over_index]);
 			}
+		} else {
+			this.setState({focus: true});
 		}
 	}
 	onKeyUp(e){
@@ -149,14 +149,14 @@ class Search extends Component {
 		const UP = 38;
 		const DOWN = 40;
 		
-		if(ESC == e.keyCode){
+		if(ESC === e.keyCode){
 			this.setState({search_result: []});
 			return;
 		}
-		else if(UP == e.keyCode){
+		else if(UP === e.keyCode){
 			e.preventDefault();
 			this.state.over_index--;
-		} else if(DOWN == e.keyCode){
+		} else if(DOWN === e.keyCode){
 			e.preventDefault();
 			this.state.over_index++;
 		}

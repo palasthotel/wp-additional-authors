@@ -2,10 +2,11 @@
 
 namespace AdditionalAuthors;
 use WP_Query;
-use function AdditionalAuthors\Table\tablename;
 
 /**
  * Class QueryManipulation
+ * @property Plugin plugin
+ * @property Database database
  * @package AdditionalAuthors
  */
 class QueryManipulation {
@@ -18,6 +19,7 @@ class QueryManipulation {
 	function __construct( Plugin $plugin ) {
 
 		$this->plugin = $plugin;
+		$this->database = $plugin->database;
 		// Manipulate author query to show also posts, where this author is set
 		// in a post meta field.
 		add_filter( 'posts_where', array( $this, 'posts_where' ), 10, 2 );
@@ -102,13 +104,13 @@ class QueryManipulation {
 
 		$where = str_replace(
 			"{$wpdb->posts}.post_author IN ({$author_id})",
-			"( {$wpdb->posts}.post_author IN ({$author_id}) OR {$wpdb->posts}.ID IN ( SELECT post_id FROM ".tablename()." WHERE author_id IN ({$author_id})) )",
+			"( {$wpdb->posts}.post_author IN ({$author_id}) OR {$wpdb->posts}.ID IN ( SELECT post_id FROM ".$this->database->table." WHERE author_id IN ({$author_id})) )",
 			$where
 		);
 
 		$where = str_replace(
 			"{$wpdb->posts}.post_author = {$author_id}",
-			"( {$wpdb->posts}.ID IN (SELECT post_id FROM ".tablename()." WHERE author_id = {$author_id}) OR {$wpdb->posts}.post_author = {$author_id} )",
+			"( {$wpdb->posts}.ID IN (SELECT post_id FROM ".$this->database->table." WHERE author_id = {$author_id}) OR {$wpdb->posts}.post_author = {$author_id} )",
 			$where
 		);
 
@@ -119,7 +121,7 @@ class QueryManipulation {
 
 		global $wpdb;
 
-		$select = "SELECT count(*) FROM {$wpdb->posts} WHERE {$wpdb->posts}.ID IN ( SELECT post_id FROM ".tablename()." WHERE author_id = $userid)";
+		$select = "SELECT count(*) FROM {$wpdb->posts} WHERE {$wpdb->posts}.ID IN ( SELECT post_id FROM ".$this->database->table." WHERE author_id = $userid)";
 
 		if($post_type != "any"){
 			$select.= " AND post_type = '$post_type'";
@@ -142,7 +144,7 @@ class QueryManipulation {
 		) {
 			$start_string = "AND $wpdb->users.ID IN ( ";
 			
-			$inject_where_additional_authors = " $wpdb->users.ID IN ( SELECT author_id FROM ".tablename()." ) ";
+			$inject_where_additional_authors = " $wpdb->users.ID IN ( SELECT author_id FROM ".$this->database->table." ) ";
 
 			$new_start    = "AND ( $inject_where_additional_authors OR $wpdb->users.ID IN ( ";
 			$end_string   = ") )";

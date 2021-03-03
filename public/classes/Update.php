@@ -7,11 +7,10 @@
  */
 
 namespace AdditionalAuthors;
-use function AdditionalAuthors\Table\tablename;
-use function AdditionalAuthors\Table\install;
 
 /**
  * Class Update
+ * @property Plugin plugin
  * @package AdditionalAuthors
  */
 class Update {
@@ -24,6 +23,7 @@ class Update {
 	 * @param Plugin $plugin
 	 */
 	function __construct(Plugin $plugin) {
+		$this->plugin = $plugin;
 		add_action('plugins_loaded', array($this, "check_and_run"));
 	}
 
@@ -60,11 +60,12 @@ class Update {
 
 	function update_1(){
 
-		install();
+		$this->plugin->database->install();
+		$table = $this->plugin->database->table;
 
 		global $wpdb;
 		$query = "
-		INSERT INTO ".tablename()." (post_id, author_id) 
+		INSERT INTO $table (post_id, author_id) 
 		SELECT DISTINCT post_id, meta_value as author_id FROM {$wpdb->postmeta} 
 		WHERE meta_key = %s AND meta_value IS NOT NULL
 		";

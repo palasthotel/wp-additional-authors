@@ -57,25 +57,10 @@ class MetaBox {
 	function additional_authors_html( $post ) {
 		wp_nonce_field( '_additional_authors_nonce', 'additional_authors_nonce' );
 
-		wp_enqueue_style(
-            "additional_authors_meta_box_style",
-            $this->plugin->url . "/dist/meta-box.css",
-            [],
-            filemtime($this->plugin->path."/dist/meta-box.css")
-        );
-		wp_enqueue_script(
-			"additional_authors_meta_box_script",
-			$this->plugin->url . "/dist/meta-box.js",
-			array("react", "react-dom", 'underscore'),
-			filemtime( $this->plugin->path . "/dist/meta-box.js"),
-			true
-		);
-
-
 		/**
 		 * get selected users
 		 */
-		$selected = Table\get_author_ids( $post->ID );
+		$selected = $this->plugin->database->get_author_ids( $post->ID );
 
 		/**
 		 * get all users
@@ -95,7 +80,6 @@ class MetaBox {
 				)
 			)
 		);
-		array_shift( $users );
 		$config = array(
 			"users"    => $users,
 			"selected" => $selected,
@@ -105,7 +89,7 @@ class MetaBox {
 			),
 			"root_id"  => "meta_additional_authors",
 		);
-		wp_localize_script( 'additional_authors_meta_box_script', 'AdditionalAuthors', $config );
+		$this->plugin->assets->enqueueMetaBox($config);
 
 		do_action( Plugin::ACTION_META_BOX_BEFORE, $post );
 		?>
@@ -150,7 +134,7 @@ class MetaBox {
 			 * we are in post edit form action
 			 */
 			delete_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS );
-			Table\delete_all_of_post( $post_id );
+			$this->plugin->database->delete_all_of_post($post_id);
 		}
 
 		if ( isset( $_POST ) && isset($_POST[ self::POST_AUTHORS ]) && is_array( $_POST[ self::POST_AUTHORS ] ) ) {
@@ -185,7 +169,7 @@ class MetaBox {
 				}
 				// @deprecated
 				//				add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author );
-				Table\set( $post_id, $additional_author );
+                $this->plugin->database->set($post_id, $additional_author);
 			}
 
 		} else {
@@ -196,7 +180,7 @@ class MetaBox {
 				if ( $post->post_author == $user_ids[ $i ] ) {
 					// additional author is now main author
 					delete_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $post->post_author );
-					Table\delete( $post_id, $post->post_author );
+					$this->plugin->database->delete($post_id, $post->post_author );
 					break;
 				}
 			}
