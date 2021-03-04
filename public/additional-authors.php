@@ -8,6 +8,8 @@ namespace AdditionalAuthors;
  * Description: Provides a meta box for additional authors from existing users or taxonomy.
  * Author: PALASTHOTEL (by Kim-Christian Meyer, Edward Bock, Stephan Kroppenstedt)
  * Author URI: https://palasthotel.de
+ * Text Domain: additional-authors
+ * Domain Path: /languages
  * Version: 1.2.7
  * Requires at least: 5.0
  * Tested up to: 5.7.0
@@ -29,8 +31,13 @@ if ( ! defined( 'WPINC' ) ) {
  * @property Update update
  * @property REST rest
  * @property Gutenberg gutenberg
+ * @property PostsTable postsTable
+ * @property string path
+ * @property string url
  */
 class Plugin {
+
+	const DOMAIN = "additional-authors";
 
 	const OPTION_DATA_VERSION = "additional_authors_data_version";
 
@@ -93,15 +100,18 @@ class Plugin {
 	}
 
 	/**
-	 * variables
-	 */
-	public $path;
-	public $url;
-
-	/**
 	 * AdditionalAuthors constructor.
 	 */
 	function __construct() {
+
+		/**
+		 * load translations
+		 */
+		load_plugin_textdomain(
+			self::DOMAIN,
+			false,
+			plugin_basename( dirname( __FILE__ ) ) . '/languages'
+		);
 
 		/**
 		 * base paths
@@ -109,6 +119,9 @@ class Plugin {
 		$this->path = plugin_dir_path( __FILE__ );
 		$this->url  = plugin_dir_url( __FILE__ );
 
+		/**
+		 * feature classes
+		 */
 		require_once dirname(__FILE__)."/vendor/autoload.php";
 
 		$this->database = new Database();
@@ -116,6 +129,7 @@ class Plugin {
 		$this->assets = new Assets($this);
 		$this->rest = new REST($this);
 
+		$this->postsTable = new PostsTable($this);
 		$this->meta_box = new MetaBox( $this );
 		$this->gutenberg = new Gutenberg($this);
 		$this->user = new User( $this );
