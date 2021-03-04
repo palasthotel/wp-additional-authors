@@ -3,6 +3,9 @@
 namespace AdditionalAuthors;
 
 
+/**
+ * @property Plugin plugin
+ */
 class Migrate {
 	
 	const PREFIX = "additional_authors:";
@@ -17,6 +20,7 @@ class Migrate {
 	 * @param Plugin $plugin
 	 */
 	function __construct( Plugin $plugin ) {
+		$this->plugin = $plugin;
 		add_action( Plugin::ACTION_ADDITIONAL_AUTHOR_DESTINATION, array($this, 'author_destination') );
 		add_action( 'ph_migrate_register_field_handlers',array($this, 'handler_register') );
 	}
@@ -25,7 +29,7 @@ class Migrate {
 	 * load author destination for migrate
 	 */
 	function author_destination(){
-		require_once( 'migrate.additional-author-destination.php' );
+		require_once( $this->plugin->path.'/inc/migrate.additional-author-destination.php' );
 	}
 	
 	/**
