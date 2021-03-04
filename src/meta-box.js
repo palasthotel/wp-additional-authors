@@ -14,11 +14,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	
 	const {language, users, selected, root_id} = AdditionalAuthors;
 
-	const isGutenberg = typeof wp.blocks !== typeof undefined;
-	
 	ReactDOM.render(
 		<MetaBox
-			isGutenbergActive={isGutenberg}
+			isGutenbergActive={false}
 			language={language}
 			users={users}
 		    selected={selected}

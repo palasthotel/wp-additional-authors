@@ -1,0 +1,38 @@
+.additional-authors-author{
+    padding: 10px;
+}
+.additional-authors-author + .additional-authors-author{
+    border-top: 1px solid #eee;
+}
+.additional-authors-author:hover{
+    background: #efefef;
+    cursor: pointer;
+}
+.additional-authors--locked-author{
+    position: relative;
+}
+.additional-authors--search-author__no-results{
+    padding: 10px;
+    font-style: italic;
+}
+.additional-authors--locked-author__icon{
+    position: absolute;
+    right: 0px;
+    bottom: 1px;
+    top: 28px;
+    padding: 4px;
+    background: linear-gradient(90deg,transparent 0%, #eee 20%, #eee 100%);
+
+}
+.additional-authors--locked-author__icon:hover{
+    cursor: pointer;
+}
+
+.additional-authors--search-authors__input-wrapper{
+    position: relative;
+}
+.additional-authors--search-author__spinner-wrapper{
+    position: absolute;
+    bottom: 2px;
+    right: -6px;
+}

@@ -79,6 +79,7 @@ class Plugin {
 	const REST_FIELD_ADDITIONAL_AUTHORS = "additional_authors";
 
 	const HANDLE_GUTENBERG_JS = "additional_authors_js";
+	const HANDLE_GUTENBERG_CSS = "additional_authors_css";
 	const HANDLE_META_BOX_JS = "additional_authors_meta_box_js";
 	const HANDLE_META_BOX_CSS = "additional_authors_meta_box_css";
 

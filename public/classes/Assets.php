@@ -32,6 +32,12 @@ class Assets {
 	}
 
 	public function enqueueGutenberg(){
+		wp_enqueue_style(
+			Plugin::HANDLE_GUTENBERG_CSS,
+			$this->plugin->url . "/dist/additional-authors.css",
+			[],
+			filemtime($this->plugin->path."/dist/additional-authors.css")
+		);
 		$info = include $this->plugin->path . "/dist/additional-authors.asset.php";
 		wp_enqueue_script(
 			Plugin::HANDLE_GUTENBERG_JS,
@@ -39,13 +45,30 @@ class Assets {
 			$info["dependencies"],
 			$info["version"]
 		);
+		$users = get_users(
+			apply_filters(
+				Plugin::FILTER_META_BOX_GET_USERS,
+				array(
+					'role__in'     => 'authors',
+					'orderby' => 'display_name',
+					'fields'  => array(
+						'ID',
+						'display_name',
+						'user_login',
+						'user_nicename',
+					),
+				)
+			)
+		);
 		wp_localize_script(
 			Plugin::HANDLE_GUTENBERG_JS,
 			"AdditionalAuthors",
 			[
+				"users" => $users,
+				"selected" => $this->plugin->database->get_author_ids( get_the_ID()),
 				"i18n" => array(
-					"label"       => __( 'Search for author:' ),
-					"description" => __( 'Selected authors.' ),
+					"label"       => __( 'Additional Authors', Plugin::DOMAIN ),
+					"search_404" => __( 'No author found.', Plugin::DOMAIN ),
 				),
 			]
 		);

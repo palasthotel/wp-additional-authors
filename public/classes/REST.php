@@ -16,8 +16,11 @@ class REST {
 
 
 	public function rest_api_init() {
+		$post_types = get_post_types([
+			'public' => true,
+		]);
 		register_rest_field(
-			[ "post", "newsletter" ],
+			$post_types,
 			Plugin::REST_FIELD_ADDITIONAL_AUTHORS,
 			[
 				'get_callback'        => function ( $post ) {
@@ -25,7 +28,6 @@ class REST {
 				},
 				'update_callback'     => function ( $value, $post ) {
 					if(is_array($value)){
-						//TODO: create users
 						$ids = array_map('intval', $value);
 						$this->plugin->database->delete_all_of_post($post->ID);
 						foreach ($ids as $userId){

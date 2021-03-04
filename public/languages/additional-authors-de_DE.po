@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Additional Authors\n"
-"POT-Creation-Date: 2021-03-04 07:44+0100\n"
-"PO-Revision-Date: 2021-03-04 07:44+0100\n"
+"POT-Creation-Date: 2021-03-04 10:30+0100\n"
+"PO-Revision-Date: 2021-03-04 10:30+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -22,18 +22,22 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 "X-Poedit-SearchPathExcluded-1: vendor\n"
 
-#: classes/Assets.php:47 classes/MetaBox.php:87
+#. Plugin Name of the plugin/theme
+#: classes/Assets.php:70 classes/MetaBox.php:45
+msgid "Additional Authors"
+msgstr "Zusätzliche Autoren"
+
+#: classes/Assets.php:71
+msgid "No author found."
+msgstr "Kein Autor gefunden."
+
+#: classes/MetaBox.php:87
 msgid "Search for author:"
 msgstr "Autor suchen:"
 
-#: classes/Assets.php:48 classes/MetaBox.php:88
+#: classes/MetaBox.php:88
 msgid "Selected authors."
 msgstr "Ausgewählte Autoren."
-
-#. Plugin Name of the plugin/theme
-#: classes/MetaBox.php:45
-msgid "Additional Authors"
-msgstr "Zusätzliche Autoren"
 
 #: classes/PostsTable.php:35 classes/PostsTable.php:40
 msgid "All authors"
