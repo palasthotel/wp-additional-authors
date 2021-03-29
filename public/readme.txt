@@ -4,7 +4,7 @@ Donate link: http://palasthotel.de/
 Tags: author, meta fields
 Requires at least: 4.0
 Tested up to: 5.7
-Stable tag: 1.2.8
+Stable tag: 1.2.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -27,6 +27,9 @@ Let's you add more than one author to your posts.
 
 
 == Changelog ==
+
+= 1.2.9 =
+ * Optimization: autocomplete search case insensitive
 
 = 1.2.8 =
  * Bugfix: Missing migration script
