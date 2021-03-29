@@ -30,6 +30,7 @@ Let's you add more than one author to your posts.
 
 = 1.2.9 =
  * Optimization: autocomplete search case insensitive
+ * Optimization: click outside hides dropdown
 
 = 1.2.8 =
  * Bugfix: Missing migration script
