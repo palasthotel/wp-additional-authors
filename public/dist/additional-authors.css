@@ -1,5 +1,6 @@
 .additional-authors-author{
     padding: 10px;
+    min-width: 240px;
 }
 .additional-authors-author + .additional-authors-author{
     border-top: 1px solid #eee;
@@ -14,6 +15,7 @@
 .additional-authors--search-author__no-results{
     padding: 10px;
     font-style: italic;
+    min-width: 240px;
 }
 .additional-authors--locked-author__icon{
     position: absolute;
