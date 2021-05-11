@@ -10,9 +10,9 @@ namespace AdditionalAuthors;
  * Author URI: https://palasthotel.de
  * Text Domain: additional-authors
  * Domain Path: /languages
- * Version: 1.2.9
+ * Version: 1.2.10
  * Requires at least: 5.0
- * Tested up to: 5.7.0
+ * Tested up to: 5.7.1
  */
 
 if ( ! defined( 'WPINC' ) ) {
