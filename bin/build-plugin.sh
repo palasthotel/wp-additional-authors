@@ -13,7 +13,7 @@ echo "Syncing files..."
 rsync -rL "$PROJECT_PATH/public/" "$DEST_PATH/"
 
 cd "$DEST_PATH"
-composer dump-autoload
+composer dumpautoload
 rm composer.json
 d "$PROJECT_PATH"
 
