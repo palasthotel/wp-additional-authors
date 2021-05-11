@@ -16,11 +16,8 @@ class REST {
 
 
 	public function rest_api_init() {
-		$post_types = get_post_types([
-			'public' => true,
-		]);
 		register_rest_field(
-			$post_types,
+			SettingsStore::getSupportedPostTypes(),
 			Plugin::REST_FIELD_ADDITIONAL_AUTHORS,
 			[
 				'get_callback'        => function ( $post ) {

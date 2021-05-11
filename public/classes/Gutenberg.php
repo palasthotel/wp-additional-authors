@@ -14,7 +14,7 @@ class Gutenberg {
 	}
 
 	public function enqueue_assets(){
-		if(is_post_type_viewable(get_post_type())){
+		if(SettingsStore::isSupportedPostType(get_post_type())){
 			$this->plugin->assets->enqueueGutenberg();
 		}
 	}
