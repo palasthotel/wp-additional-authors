@@ -21,14 +21,7 @@ class ComposerStaticInitc174aa7b191bae922592ffe196662618
     );
 
     public static $classMap = array (
-        'AdditionalAuthors\\Assets' => __DIR__ . '/../..' . '/classes/Assets.php',
-        'AdditionalAuthors\\Database' => __DIR__ . '/../..' . '/classes/Database.php',
-        'AdditionalAuthors\\MetaBox' => __DIR__ . '/../..' . '/classes/MetaBox.php',
-        'AdditionalAuthors\\Migrate' => __DIR__ . '/../..' . '/classes/Migrate.php',
-        'AdditionalAuthors\\QueryManipulation' => __DIR__ . '/../..' . '/classes/QueryManipulation.php',
-        'AdditionalAuthors\\Render' => __DIR__ . '/../..' . '/classes/Render.php',
-        'AdditionalAuthors\\Update' => __DIR__ . '/../..' . '/classes/Update.php',
-        'AdditionalAuthors\\User' => __DIR__ . '/../..' . '/classes/User.php',
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

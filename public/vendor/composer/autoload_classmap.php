@@ -6,12 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'AdditionalAuthors\\Assets' => $baseDir . '/classes/Assets.php',
-    'AdditionalAuthors\\Database' => $baseDir . '/classes/Database.php',
-    'AdditionalAuthors\\MetaBox' => $baseDir . '/classes/MetaBox.php',
-    'AdditionalAuthors\\Migrate' => $baseDir . '/classes/Migrate.php',
-    'AdditionalAuthors\\QueryManipulation' => $baseDir . '/classes/QueryManipulation.php',
-    'AdditionalAuthors\\Render' => $baseDir . '/classes/Render.php',
-    'AdditionalAuthors\\Update' => $baseDir . '/classes/Update.php',
-    'AdditionalAuthors\\User' => $baseDir . '/classes/User.php',
+    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
 );
