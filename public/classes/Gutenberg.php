@@ -14,6 +14,8 @@ class Gutenberg {
 	}
 
 	public function enqueue_assets(){
-		$this->plugin->assets->enqueueGutenberg();
+		if(is_post_type_viewable(get_post_type())){
+			$this->plugin->assets->enqueueGutenberg();
+		}
 	}
 }
