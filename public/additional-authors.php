@@ -10,14 +10,19 @@ namespace AdditionalAuthors;
  * Author URI: https://palasthotel.de
  * Text Domain: additional-authors
  * Domain Path: /languages
- * Version: 1.2.10
+ * Version: 1.2.11
  * Requires at least: 5.0
- * Tested up to: 5.7.1
+ * Tested up to: 5.8
  */
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
+/**
+ * feature classes
+ */
+require_once dirname(__FILE__)."/vendor/autoload.php";
 
 /**
  * Class AdditionalAuthors
@@ -32,10 +37,8 @@ if ( ! defined( 'WPINC' ) ) {
  * @property REST rest
  * @property Gutenberg gutenberg
  * @property PostsTable postsTable
- * @property string path
- * @property string url
  */
-class Plugin {
+class Plugin extends Components\Plugin {
 
 	const DOMAIN = "additional-authors";
 
@@ -90,40 +93,18 @@ class Plugin {
 	const META_POST_ADDITIONAL_AUTHORS = "_additional_authors";
 	const META_USER_GENERATED = "_additional_authors_generated_user";
 
-	private static $instance;
-
-	static function get_instance() {
-		if ( self::$instance == null ) {
-			self::$instance = new Plugin();
-		}
-
-		return self::$instance;
-	}
-
 	/**
 	 * AdditionalAuthors constructor.
 	 */
-	function __construct() {
+	function onCreate() {
 
 		/**
 		 * load translations
 		 */
-		load_plugin_textdomain(
+		$this->loadTextdomain(
 			self::DOMAIN,
-			false,
-			plugin_basename( dirname( __FILE__ ) ) . '/languages'
+			'languages'
 		);
-
-		/**
-		 * base paths
-		 */
-		$this->path = plugin_dir_path( __FILE__ );
-		$this->url  = plugin_dir_url( __FILE__ );
-
-		/**
-		 * feature classes
-		 */
-		require_once dirname(__FILE__)."/vendor/autoload.php";
 
 		$this->database = new Database();
 		$this->query_manipulation = new QueryManipulation( $this );
@@ -139,10 +120,6 @@ class Plugin {
 
 		$this->update = new Update( $this );
 
-		/**
-		 * on activate or deactivate plugin
-		 */
-		register_activation_hook(__FILE__, array($this, "activation"));
 	}
 
 	/**
@@ -176,8 +153,16 @@ class Plugin {
 	/**
 	 * on plugin activation
 	 */
-	function activation(){
+	function onSiteActivation(){
 		$this->database->install();
+	}
+
+	/**
+	 * @deprecated use instance() instead
+	 * @return Plugin|mixed
+	 */
+	public static function get_instance(){
+		return static::instance();
 	}
 
 }
@@ -185,7 +170,7 @@ class Plugin {
 /**
  * init plugin and make it accessible
  */
-Plugin::get_instance();
+Plugin::instance();
 
 require_once dirname( __FILE__ ) . "/public-functions.php";
 require_once dirname( __FILE__ ) . "/deprecated.php";
