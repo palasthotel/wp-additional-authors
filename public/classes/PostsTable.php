@@ -29,9 +29,7 @@ class PostsTable {
 		global $current_screen;
 		if(
 			!($current_screen instanceof \WP_Screen) ||
-			!in_array($current_screen->post_type, get_post_types([
-				"public" => true,
-			], "names"))
+			!in_array($current_screen->post_type, SettingsStore::getSupportedPostTypes())
 		) return $columns;
 
 		$newCols = array();
@@ -56,6 +54,7 @@ class PostsTable {
 	public function custom_columns($column, $post_id){
 		if($column == 'additional-authors'){
 			$authors = $this->plugin->database->get_author_ids($post_id);
+			$strings = [];
 			foreach ($authors as $authorId){
 				$args = array(
 					'post_type' => get_post_type($post_id),
@@ -78,7 +77,7 @@ class PostsTable {
 
 				$user = get_user_by("ID", $authorId);
 
-				printf(
+				$strings[] = sprintf(
 					'<a href="%s"%s%s>%s</a>',
 					esc_url( $url ),
 					$class_html,
@@ -86,6 +85,8 @@ class PostsTable {
 					$user->display_name
 				);
 			}
+
+			echo implode(", ", $strings);
 
 		}
 	}
