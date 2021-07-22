@@ -26,6 +26,14 @@ class PostsTable {
 
 	public function add_column($columns){
 
+		global $current_screen;
+		if(
+			!($current_screen instanceof \WP_Screen) ||
+			!in_array($current_screen->post_type, get_post_types([
+				"public" => true,
+			], "names"))
+		) return $columns;
+
 		$newCols = array();
 		$added = false;
 		foreach ($columns as $key => $label){
