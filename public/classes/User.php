@@ -3,6 +3,9 @@
 namespace AdditionalAuthors;
 
 
+/**
+ * @property Plugin plugin
+ */
 class User {
 	/**
 	 * User constructor.
@@ -31,7 +34,7 @@ class User {
 				'%d',
 			)
 		);
-		Table\delete_all_of_author($user_id);
+		$this->plugin->database->delete_all_of_author($user_id);
 	}
 	
 	/**
