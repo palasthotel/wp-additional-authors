@@ -6,7 +6,7 @@ use AdditionalAuthors\Plugin;
  * @return Plugin
  */
 function additional_authors_get_plugin(){
-	return Plugin::get_instance();
+	return Plugin::instance();
 }
 
 /**

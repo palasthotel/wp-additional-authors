@@ -3,8 +3,8 @@ Contributors: palasthotel, edwardbock, greatestview
 Donate link: http://palasthotel.de/
 Tags: author, meta fields
 Requires at least: 4.0
-Tested up to: 5.7.1
-Stable tag: 1.2.10
+Tested up to: 5.8
+Stable tag: 1.2.11
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -27,6 +27,9 @@ Let's you add more than one author to your posts.
 
 
 == Changelog ==
+
+= 1.2.11 =
+ * Optimization: Add admins and editors to additional author dropdown
 
 = 1.2.10 =
  * Bugfix: Additional authors script broke reusable block editor
