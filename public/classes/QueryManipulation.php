@@ -123,7 +123,19 @@ class QueryManipulation {
 
 		$select = "SELECT count(*) FROM {$wpdb->posts} WHERE {$wpdb->posts}.ID IN ( SELECT post_id FROM ".$this->database->table." WHERE author_id = $userid)";
 
-		if($post_type != "any"){
+		if(is_array($post_type)){
+			if(count($post_type) > 0 && !in_array("any", $post_type)){
+
+				$values = array_filter($post_type, function($type){
+					return post_type_exists($type);
+				});
+				$values = implode(", ", array_map(function($type){
+					return "'$type'";
+				}, $values));
+
+				$select.= " AND post_type IN ($values)";
+			}
+		} else if($post_type != "any") {
 			$select.= " AND post_type = '$post_type'";
 		}
 
