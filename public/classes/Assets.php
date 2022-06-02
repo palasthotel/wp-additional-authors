@@ -49,7 +49,7 @@ class Assets {
 			apply_filters(
 				Plugin::FILTER_META_BOX_GET_USERS,
 				array(
-					'role__in'     => ['authors', 'editor', 'administrator'],
+					'role__in'     => ['author', 'editor', 'administrator'],
 					'orderby' => 'display_name',
 					'fields'  => array(
 						'ID',
