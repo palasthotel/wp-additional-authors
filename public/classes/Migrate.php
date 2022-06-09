@@ -73,6 +73,8 @@ function migration_handler($post, $fields)
 			break;
 		}
 	}
+
+	$db = Plugin::instance()->database;
 	
 	/**
 	 * save authors to db
@@ -108,7 +110,7 @@ function migration_handler($post, $fields)
 					 // make author additional, so info doesnt get lost
 					//  @deprecated
 //					add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author[Migrate::FIELD_USERS_ID] );
-					Table\set($post_id, $additional_author[Migrate::FIELD_USERS_ID]);
+					$db->set($post_id, $additional_author[Migrate::FIELD_USERS_ID]);
 					 
 					continue;
 				}
@@ -128,7 +130,7 @@ function migration_handler($post, $fields)
 				 */
 				// @deprecated
 //				add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author[Migrate::FIELD_USERS_ID] );
-				Table\set($post_id, $additional_author[Migrate::FIELD_USERS_ID]);
+				$db->set($post_id, $additional_author[Migrate::FIELD_USERS_ID]);
 			}
 			
 			
@@ -144,7 +146,7 @@ function migration_handler($post, $fields)
 			} else {
 				// @deprecated
 //				add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author );
-				Table\set($post_id, $additional_author);
+				$db->set($post_id, $additional_author);
 			}
 		}
 		
