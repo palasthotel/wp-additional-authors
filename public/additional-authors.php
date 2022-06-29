@@ -37,6 +37,7 @@ require_once dirname(__FILE__)."/vendor/autoload.php";
  * @property REST rest
  * @property Gutenberg gutenberg
  * @property PostsTable postsTable
+ * @property Ajax $ajax
  */
 class Plugin extends Components\Plugin {
 
@@ -85,6 +86,7 @@ class Plugin extends Components\Plugin {
 	const HANDLE_GUTENBERG_CSS = "additional_authors_css";
 	const HANDLE_META_BOX_JS = "additional_authors_meta_box_js";
 	const HANDLE_META_BOX_CSS = "additional_authors_meta_box_css";
+	const HANDLE_USERS_TABLE_JS = "additional_authors_users_table_js";
 
 	/**
 	 * meta values
@@ -110,6 +112,7 @@ class Plugin extends Components\Plugin {
 		$this->query_manipulation = new QueryManipulation( $this );
 		$this->assets = new Assets($this);
 		$this->rest = new REST($this);
+		$this->ajax = new Ajax();
 
 		$this->postsTable = new PostsTable($this);
 		$this->meta_box = new MetaBox( $this );

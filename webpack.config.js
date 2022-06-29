@@ -7,6 +7,7 @@ module.exports = {
     entry: {
         'additional-authors': path.resolve(__dirname, './src/gutenberg.js'),
         'additional-authors-meta-box': path.resolve(__dirname, './src/meta-box.js'),
+        'users-table': path.resolve(__dirname, './src/users-table.ts'),
     },
     output: {
         path: path.resolve(__dirname, './public/dist/.'),

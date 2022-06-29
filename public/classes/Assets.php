@@ -11,6 +11,31 @@ class Assets {
 
 	public function __construct(Plugin $plugin) {
 		$this->plugin = $plugin;
+		add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
+	}
+
+	public function admin_enqueue_scripts($hook) {
+		if($hook == "users.php"){
+			$this->enqueueUsersTable();
+		}
+	}
+	public function enqueueUsersTable(){
+		$info = include $this->plugin->path . "/dist/users-table.asset.php";
+		wp_enqueue_script(
+			Plugin::HANDLE_USERS_TABLE_JS,
+			$this->plugin->url . "/dist/users-table.js",
+			$info["dependencies"],
+			$info["version"],
+			true
+		);
+		wp_localize_script(
+			Plugin::HANDLE_USERS_TABLE_JS,
+			"AdditionalAuthors",
+			[
+				"postsUrl" => admin_url("edit.php"),
+				"ajaxUrl" => admin_url('admin-ajax.php'),
+			]
+		);
 	}
 
 	public function enqueueMetaBox($config){
