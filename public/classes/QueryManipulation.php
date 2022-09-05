@@ -41,34 +41,40 @@ class QueryManipulation {
 	/**
 	 * @param WP_Query $wp_query
 	 *
-	 * @return bool|int
+	 * @return false|int
 	 */
 	private function getAuthorId($wp_query){
 
-		// at the moment we are only compatible with an single author id
-		// TODO: handle coma separated list of ids
 		$author_id = $wp_query->get('author');
 		if( (is_int($author_id) && $author_id > 0) || (is_string($author_id) && $author_id != "" && intval($author_id)."" === $author_id)){
 			return intval($author_id);
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param WP_Query $wp_query
+	 * @return false|int[]
+	 */
+	private function getNotIn($wp_query){
+		$ids = $wp_query->get('author__not_in');
+		if(!empty($ids)){
+			return array_map('intval', $ids);
 		}
 		return false;
 	}
 
 	/**
 	 * @param WP_Query $wp_query
-	 */
-	private function getNotIn($wp_query){
-		// TODO: handle author__not_in
-		$ids = $wp_query->get('author__not_in');
-
-	}
-
-	/**
-	 * @param WP_Query $wp_query
+	 * @return false|int[]
 	 */
 	private function getIn($wp_query){
-		// TODO: handle author__in
 		$ids = $wp_query->get('author__in');
+		if(!empty($ids)){
+			return array_map('intval', $ids);
+		}
+		return false;
 	}
 
 	/**
@@ -78,7 +84,9 @@ class QueryManipulation {
 	 */
 	private function isManipulationNeeded($wp_query){
 		$author_id = $this->getAuthorId($wp_query);
-		return $author_id !== false && (is_author() || !$this->isIgnored($wp_query));
+		$include = $this->getIn($wp_query);
+		return (false !== $author_id || false !== $include)
+		       && (is_author() || !$this->isIgnored($wp_query));
 
 	}
 
@@ -98,19 +106,34 @@ class QueryManipulation {
 			return $where;
 		}
 
+		global $wpdb;
 		$author_id = $this->getAuthorId($wp_query);
 
-		global $wpdb;
+		$author_ids = [];
+		if($author_id){
+			$author_ids[] = $author_id;
+		}
+
+		$include = $this->getIn($wp_query);
+		if(!empty($include)){
+			$author_ids = array_unique(array_merge($include, $author_ids));
+		}
+
+		$author_id = implode(",", $author_ids);
+
+		if(empty($author_ids)){
+			return $where;
+		}
 
 		$where = str_replace(
-			"{$wpdb->posts}.post_author IN ({$author_id})",
-			"( {$wpdb->posts}.post_author IN ({$author_id}) OR {$wpdb->posts}.ID IN ( SELECT post_id FROM ".$this->database->table." WHERE author_id IN ({$author_id})) )",
+			"$wpdb->posts.post_author = $author_id",
+			"( $wpdb->posts.ID IN (SELECT post_id FROM " . $this->database->table . " WHERE author_id = $author_id) OR $wpdb->posts.post_author = $author_id )",
 			$where
 		);
 
 		$where = str_replace(
-			"{$wpdb->posts}.post_author = {$author_id}",
-			"( {$wpdb->posts}.ID IN (SELECT post_id FROM ".$this->database->table." WHERE author_id = {$author_id}) OR {$wpdb->posts}.post_author = {$author_id} )",
+			"$wpdb->posts.post_author IN ($author_id)",
+			"( $wpdb->posts.post_author IN ($author_id) OR $wpdb->posts.ID IN ( SELECT post_id FROM " . $this->database->table . " WHERE author_id IN ($author_id)) )",
 			$where
 		);
 
@@ -150,12 +173,12 @@ class QueryManipulation {
 	function pre_user_query($query){
 		global $wpdb;
 		if(
-			$query->get("has_published_posts") === true
+			($query->get("has_published_posts") === true || !empty($query->get("has_published_posts")))
 		   &&
 			$query->get(Plugin::WP_USER_QUERY_ARG_IGNORE_PUBLISHED_AS_ADDITIONAL_AUTHOR) !== true
 		) {
 			$start_string = "AND $wpdb->users.ID IN ( ";
-			
+
 			$inject_where_additional_authors = " $wpdb->users.ID IN ( SELECT author_id FROM ".$this->database->table." ) ";
 
 			$new_start    = "AND ( $inject_where_additional_authors OR $wpdb->users.ID IN ( ";
