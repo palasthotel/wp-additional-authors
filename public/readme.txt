@@ -3,8 +3,8 @@ Contributors: palasthotel, edwardbock, greatestview
 Donate link: http://palasthotel.de/
 Tags: author, meta fields
 Requires at least: 4.0
-Tested up to: 6.0
-Stable tag: 1.3.0
+Tested up to: 6.1
+Stable tag: 1.3.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -27,6 +27,9 @@ Let's you add more than one author to your posts.
 
 
 == Changelog ==
+
+= 1.3.1 =
+ * Update: JS packages update
 
 = 1.3.0 =
  * Feature: Show posts count on users table with additional author posts inclusive
@@ -73,7 +76,7 @@ Let's you add more than one author to your posts.
 
 = 1.2.2 =
  * Fix: Query manipulation fix which lead to duplicate posts
- 
+
 = 1.2.1 =
  * Feature: Link to user profile page
 
