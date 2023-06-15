@@ -1,6 +1,3 @@
-// @ts-ignore
-// @ts-ignore
-
 window.document.addEventListener("DOMContentLoaded", () => {
     const table = document.querySelector(".wp-list-table.users")
     const rows = table.querySelectorAll("tr[id^='user-']");

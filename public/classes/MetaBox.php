@@ -69,7 +69,7 @@ class MetaBox {
 			apply_filters(
 				Plugin::FILTER_META_BOX_GET_USERS,
 				array(
-					'who'     => 'authors',
+					'capability'     => 'edit_posts',
 					'orderby' => 'display_name',
 					'fields'  => array(
 						'ID',
