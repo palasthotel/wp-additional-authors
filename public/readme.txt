@@ -4,7 +4,7 @@ Donate link: http://palasthotel.de/
 Tags: author, meta fields
 Requires at least: 4.0
 Tested up to: 6.3
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
