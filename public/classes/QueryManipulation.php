@@ -5,11 +5,11 @@ use WP_Query;
 
 /**
  * Class QueryManipulation
- * @property Plugin plugin
- * @property Database database
  * @package AdditionalAuthors
  */
 class QueryManipulation {
+	private Plugin $plugin;
+	private Database $database;
 
 	/**
 	 * Query constructor.

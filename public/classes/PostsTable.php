@@ -3,11 +3,8 @@
 
 namespace AdditionalAuthors;
 
-
-/**
- * @property Plugin plugin
- */
 class PostsTable {
+	private Plugin $plugin;
 
 	/**
 	 * PostsTable constructor.

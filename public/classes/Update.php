@@ -10,12 +10,12 @@ namespace AdditionalAuthors;
 
 /**
  * Class Update
- * @property Plugin plugin
  * @package AdditionalAuthors
  */
 class Update {
 
 	const VERSION = 1;
+	private Plugin $plugin;
 
 	/**
 	 * Update constructor.

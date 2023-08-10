@@ -2,18 +2,15 @@
 
 namespace AdditionalAuthors;
 
-
-/**
- * @property Plugin plugin
- */
 class Migrate {
-	
+
 	const PREFIX = "additional_authors:";
 	const FIELD_USERS = "users";
-	
+
 	const FIELD_USERS_ID = "id";
 	const FIELD_USERS_IS_MAIN = "is_main";
-	
+	private Plugin $plugin;
+
 	/**
 	 * Migrate constructor.
 	 *
@@ -24,14 +21,14 @@ class Migrate {
 		add_action( Plugin::ACTION_ADDITIONAL_AUTHOR_DESTINATION, array($this, 'author_destination') );
 		add_action( 'ph_migrate_register_field_handlers',array($this, 'handler_register') );
 	}
-	
+
 	/**
 	 * load author destination for migrate
 	 */
 	function author_destination(){
 		require_once( $this->plugin->path.'/inc/migrate.additional-author-destination.php' );
 	}
-	
+
 	/**
 	 * register migrate handler
 	 */
@@ -51,17 +48,17 @@ class Migrate {
 function migration_handler($post, $fields)
 {
 	$post_id = $post['ID'];
-	
+
 	/**
 	 * get user ids
 	 */
 	$users = $fields[Migrate::PREFIX.Migrate::FIELD_USERS];
-	
+
 	if(!is_array($users)){
 		echo "WARNING: Additional Authors needs to be an array of integer or an array of arrays.\n";
 		return;
 	}
-	
+
 	/**
 	 * check if there are ids only
 	 */
@@ -75,15 +72,15 @@ function migration_handler($post, $fields)
 	}
 
 	$db = Plugin::instance()->database;
-	
+
 	/**
 	 * save authors to db
 	 */
 	$main_author = false;
 	foreach ( $users as $idx => $additional_author ) {
-		
+
 		if(is_array($additional_author)){
-			
+
 			if( empty($additional_author[Migrate::FIELD_USERS_ID]) ){
 				echo " ----> WARNING: There is no id Field for author\n";
 				echo "All users:\n";
@@ -93,9 +90,9 @@ function migration_handler($post, $fields)
 				echo " <---- \n";
 				continue;
 			}
-			
+
 			if( !empty($additional_author[Migrate::FIELD_USERS_IS_MAIN]) && $additional_author[Migrate::FIELD_USERS_IS_MAIN] === true){
-				
+
 				if($main_author){
 					/**
 					 * if there was already an main author
@@ -106,15 +103,15 @@ function migration_handler($post, $fields)
 					echo "Problem user:\n";
 					var_dump($additional_author);
 					 echo " <---- \n";
-					
+
 					 // make author additional, so info doesnt get lost
 					//  @deprecated
 //					add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author[Migrate::FIELD_USERS_ID] );
 					$db->set($post_id, $additional_author[Migrate::FIELD_USERS_ID]);
-					 
+
 					continue;
 				}
-				
+
 				/**
 				 * is main author
 				 */
@@ -124,7 +121,7 @@ function migration_handler($post, $fields)
 				));
 				$main_author=true;
 			} else {
-				
+
 				/**
 				 * no main author so additional
 				 */
@@ -132,8 +129,8 @@ function migration_handler($post, $fields)
 //				add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author[Migrate::FIELD_USERS_ID] );
 				$db->set($post_id, $additional_author[Migrate::FIELD_USERS_ID]);
 			}
-			
-			
+
+
 		} else {
 			/**
 			 * if ids only set first one to main author
@@ -149,7 +146,7 @@ function migration_handler($post, $fields)
 				$db->set($post_id, $additional_author);
 			}
 		}
-		
+
 	}
-	
+
 }

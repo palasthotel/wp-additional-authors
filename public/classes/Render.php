@@ -7,11 +7,11 @@ namespace AdditionalAuthors;
  * @package AdditionalAuthors
  */
 class Render {
+	private Plugin $plugin;
 	/**
-	 * Render constructor.
-	 *
-	 * @param Plugin $plugin
+	 * @var null|array
 	 */
+	private $sub_dirs;
 	function __construct(Plugin $plugin) {
 		$this->plugin = $plugin;
 		$this->sub_dirs = null;
@@ -19,7 +19,7 @@ class Render {
 		add_action(Plugin::ACTION_THE_AUTHORS_POSTS_LINKS, array($this, "the_authors_posts_links"));
 		add_action(Plugin::ACTION_THE_AUTHOR_POSTS_LINK, array($this, "the_author_posts_link"));
 	}
-	
+
 	/**
 	 * @param null|int $post_id
 	 */
@@ -27,7 +27,7 @@ class Render {
 		$additional_authors_ids = $this->plugin->get_ids( $post_id );
 		include $this->get_template_path(Plugin::TEMPLATE_THE_AUTHORS);
 	}
-	
+
 	/**
 	 * @param null|int $post_id
 	 *
@@ -36,7 +36,7 @@ class Render {
 		$additional_authors_ids = $this->plugin->get_ids( $post_id );
 		include $this->get_template_path(Plugin::TEMPLATE_THE_AUTHORS_POSTS_LINKS);
 	}
-	
+
 	public function the_author_posts_link($author_id , $additional_vars = null){
 		include $this->get_template_path(Plugin::TEMPLATE_THE_AUTHOR_POSTS_LINK);
 	}

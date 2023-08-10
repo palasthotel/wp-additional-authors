@@ -10,9 +10,9 @@ namespace AdditionalAuthors;
  * Author URI: https://palasthotel.de
  * Text Domain: additional-authors
  * Domain Path: /languages
- * Version: 1.3.1
+ * Version: 1.3.2
  * Requires at least: 5.0
- * Tested up to: 6.1
+ * Tested up to: 6.3
  */
 
 if ( ! defined( 'WPINC' ) ) {
@@ -26,18 +26,6 @@ require_once dirname(__FILE__)."/vendor/autoload.php";
 
 /**
  * Class AdditionalAuthors
- * @property Database database
- * @property QueryManipulation query_manipulation
- * @property Assets assets
- * @property MetaBox meta_box
- * @property User user
- * @property Render render
- * @property Migrate migrate
- * @property Update update
- * @property REST rest
- * @property Gutenberg gutenberg
- * @property PostsTable postsTable
- * @property Ajax $ajax
  */
 class Plugin extends Components\Plugin {
 
@@ -94,6 +82,18 @@ class Plugin extends Components\Plugin {
 	// @deprecated
 	const META_POST_ADDITIONAL_AUTHORS = "_additional_authors";
 	const META_USER_GENERATED = "_additional_authors_generated_user";
+	public Database $database;
+	public QueryManipulation $query_manipulation;
+	public Assets $assets;
+	public REST $rest;
+	public PostsTable $postsTable;
+	public MetaBox $meta_box;
+	public Ajax $ajax;
+	public Gutenberg $gutenberg;
+	public User $user;
+	public Render $render;
+	public Migrate $migrate;
+	public Update $update;
 
 	/**
 	 * AdditionalAuthors constructor.

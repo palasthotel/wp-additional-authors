@@ -4,7 +4,6 @@ namespace AdditionalAuthors;
 
 
 /**
- * @property Plugin plugin
  * @deprecated Please start using Gutenberg
  */
 class MetaBox {
@@ -15,6 +14,7 @@ class MetaBox {
 	const POST_AUTHORS_IS_GUTENBERG = "additional_authors_is_gutenberg";
 
 	public $screens;
+	private Plugin $plugin;
 
 	/**
 	 * MetaBox constructor.

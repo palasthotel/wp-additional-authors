@@ -4,7 +4,7 @@ import SearchItem from './search-item.jsx';
 import NewItem from './new-item.jsx';
 
 class Search extends Component {
-	
+
 	/**
 	 * ------------------------------------------------
 	 * lifecycle
@@ -19,7 +19,7 @@ class Search extends Component {
 			focus: false,
 		}
 	}
-	
+
 	/**
 	 * ------------------------------------------------
 	 * rendering
@@ -76,21 +76,21 @@ class Search extends Component {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * ------------------------------------------------
 	 * events
 	 * ------------------------------------------------
 	 */
 	onChange(e){
-		
+
 		if(e) this.state.query = e.target.value;
-		
+
 		const {users, selected} = this.props;
 		const {query} = this.state;
-		
+
 		let search_result = [];
-		
+
 		if(query !== ''){
 			for(let user of users){
 				if(user.display_name.toLowerCase().indexOf(query.toLowerCase()) > -1){
@@ -101,7 +101,7 @@ class Search extends Component {
 		} else {
 			search_result = [];
 		}
-		
+
 		this.setState({over_index: 0, search_result: search_result});
 	}
 
@@ -142,13 +142,13 @@ class Search extends Component {
 		}
 	}
 	onKeyUp(e){
-		
+
 		if(!this.state.focus) return;
-		
+
 		const ESC = 27;
 		const UP = 38;
 		const DOWN = 40;
-		
+
 		if(ESC === e.keyCode){
 			this.setState({search_result: []});
 			return;
@@ -165,10 +165,10 @@ class Search extends Component {
 		} else if(this.state.over_index < 0) {
 			this.state.over_index = 0;
 		}
-		
+
 		this.setState({over_index: this.state.over_index });
 	}
-	
+
 	/**
 	 * ------------------------------------------------
 	 * other functions

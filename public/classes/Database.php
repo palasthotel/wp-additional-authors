@@ -4,11 +4,10 @@ namespace AdditionalAuthors;
 
 use wpdb;
 
-/**
- * @property wpdb wpdb
- * @property string table
- */
 class Database{
+
+	private wpdb $wpdb;
+	public string $table;
 
 	public function __construct() {
 		global $wpdb;
