@@ -3,8 +3,8 @@ Contributors: palasthotel, edwardbock, greatestview
 Donate link: http://palasthotel.de/
 Tags: author, meta fields
 Requires at least: 4.0
-Tested up to: 6.2.2
-Stable tag: 1.3.2
+Tested up to: 6.3
+Stable tag: 1.3.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -27,6 +27,10 @@ Let's you add more than one author to your posts.
 
 
 == Changelog ==
+
+= 1.3.3 =
+* Fix: PHP 8.2 warnings
+* Packages update
 
 = 1.3.2 =
  * WordPress Core compatibility fix
