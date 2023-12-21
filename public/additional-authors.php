@@ -12,7 +12,7 @@ namespace AdditionalAuthors;
  * Domain Path: /languages
  * Version: 1.3.4
  * Requires at least: 5.0
- * Tested up to: 6.3
+ * Tested up to: 6.4.2
  */
 
 if ( ! defined( 'WPINC' ) ) {
