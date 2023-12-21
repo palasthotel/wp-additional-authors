@@ -2,7 +2,6 @@ import {BaseControl, Popover, Spinner, TextControl} from "@wordpress/components"
 import {useEffect, useState, useRef} from "@wordpress/element";
 import { useEscapeKey } from "../hooks/use-utils.js";
 import './Search.css'
-import useClickOutside from "use-click-outside";
 
 const SearchResult = ({display_name, onClick})=>{
     return <div
@@ -19,11 +18,6 @@ const Search = ({i18n, users, onFound})=>{
     const [isVisible, setIsVisible] = useState(false);
     const [results, setResults] = useState([]);
 
-    const ref = useRef();
-    useClickOutside(ref, ()=>{
-        setIsVisible(false);
-    });
-
     useEffect(()=>{
         setResults(users.filter(u=>{
             return state === "" || u.display_name.toLowerCase().includes(state.toLowerCase());
@@ -36,7 +30,7 @@ const Search = ({i18n, users, onFound})=>{
     }, [isVisible], isVisible)
 
     return <BaseControl className="additional-authors--search-author">
-        <div ref={ref}>
+        <div>
             <div className="additional-authors--search-authors__input-wrapper">
                 <TextControl
                     label={i18n.label}
