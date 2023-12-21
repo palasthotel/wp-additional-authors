@@ -6,16 +6,15 @@
     "build": "wp-scripts build"
   },
   "dependencies": {
-    "@wordpress/components": "^25.4.0",
-    "@wordpress/data": "^9.8.0",
-    "@wordpress/edit-post": "^7.15.0",
-    "@wordpress/element": "^5.15.0",
-    "@wordpress/plugins": "^6.6.0",
-    "@wordpress/scripts": "^26.9.0",
+    "@wordpress/components": "^25.14.0",
+    "@wordpress/data": "^9.18.0",
+    "@wordpress/edit-post": "^7.25.0",
+    "@wordpress/element": "^5.25.0",
+    "@wordpress/plugins": "^6.16.0",
+    "@wordpress/scripts": "^26.19.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "underscore": "^1.13.6",
-    "use-click-outside": "^2.0.0"
+    "underscore": "^1.13.6"
   }
 }
