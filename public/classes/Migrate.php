@@ -26,7 +26,7 @@ class Migrate {
 	 * load author destination for migrate
 	 */
 	function author_destination(){
-		require_once( $this->plugin->path.'/inc/migrate.additional-author-destination.php' );
+		require_once( $this->plugin->getPath('/inc/migrate.additional-author-destination.php' ));
 	}
 
 	/**

@@ -28,8 +28,11 @@ Let's you add more than one author to your posts.
 
 == Changelog ==
 
-= 1.3.3 =
+= 1.3.4 =
 * Fix: PHP 8.2 warnings
+* Packages update
+
+= 1.3.3 =
 * Packages update
 
 = 1.3.2 =
