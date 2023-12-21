@@ -4,7 +4,7 @@ Donate link: http://palasthotel.de/
 Tags: author, meta fields
 Requires at least: 4.0
 Tested up to: 6.4.2
-Stable tag: 1.3.4
+Stable tag: 1.3.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -28,8 +28,9 @@ Let's you add more than one author to your posts.
 
 == Changelog ==
 
-= 1.3.4 =
+= 1.3.5 =
 * Fix: PHP 8.2 warnings
+* Fix: double slash in asset urls
 * Packages update
 
 = 1.3.3 =
