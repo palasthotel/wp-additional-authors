@@ -62,6 +62,11 @@ class MetaBox {
 		 */
 		$selected = $this->plugin->database->get_author_ids( $post->ID );
 
+        /**
+         * We want to filter possible Authors by their capabilities, default is 'edit_posts'.
+         */
+        $capabilities = apply_filters(Plugin::FILTER_WP_QUERY_CAPABILITY_FOR_AUTHORS, 'edit_posts');
+
 		/**
 		 * get all users
 		 */
@@ -69,7 +74,7 @@ class MetaBox {
 			apply_filters(
 				Plugin::FILTER_META_BOX_GET_USERS,
 				array(
-					'capability'     => 'edit_posts',
+					'capability'     => $capabilities,
 					'orderby' => 'display_name',
 					'fields'  => array(
 						'ID',

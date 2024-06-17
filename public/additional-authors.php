@@ -10,7 +10,7 @@ namespace AdditionalAuthors;
  * Author URI: https://palasthotel.de
  * Text Domain: additional-authors
  * Domain Path: /languages
- * Version: 1.3.5
+ * Version: 1.3.6
  * Requires at least: 5.0
  * Tested up to: 6.4.2
  */
@@ -64,6 +64,7 @@ class Plugin extends Components\Plugin {
 	const FILTER_TEMPLATE_PATH = "additional_authors_template_paths";
 	const FILTER_META_BOX_GET_USERS = "additional_authors_meta_box_get_users";
 	const FILTER_WP_QUERY_IGNORE_ADDITIONAL_DEFAULT = "additional_authors_wp_query_ignore_additional_default";
+    const FILTER_WP_QUERY_CAPABILITY_FOR_AUTHORS = "additional_authors_wp_query_capability_for_authors";
 
 	/**
 	 * rest fields
