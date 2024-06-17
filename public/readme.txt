@@ -1,5 +1,5 @@
 === Additional Authors ===
-Contributors: palasthotel, edwardbock, greatestview
+Contributors: palasthotel, edwardbock, greatestview, benjaminbirkenhake
 Donate link: http://palasthotel.de/
 Tags: author, meta fields
 Requires at least: 4.0
