@@ -15,7 +15,7 @@ rsync -a \
     --exclude='.gitignore/' \
     --exclude='.github/' \
     --exclude='bin/' \
-    --exclude='resources/' \
+    --exclude='resource/' \
     --exclude='.wp-env.json' \
     --exclude='build/' \
     --exclude='node_modules/' \
