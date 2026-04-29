@@ -10,6 +10,6 @@ module.exports = {
         'users-table': path.resolve(__dirname, './src/users-table.ts'),
     },
     output: {
-        path: path.resolve(__dirname, './public/dist/.'),
+        path: path.resolve(__dirname, './dist/.'),
     },
 }

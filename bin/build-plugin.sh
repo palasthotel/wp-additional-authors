@@ -10,12 +10,16 @@ rm -rf "$BUILD_PATH"
 mkdir -p "$DEST_PATH"
 
 echo "Syncing files..."
-rsync -rL "$PROJECT_PATH/public/" "$DEST_PATH/"
-
-cd "$DEST_PATH"
-composer dumpautoload
-rm composer.json
-d "$PROJECT_PATH"
+rsync -a \
+    --exclude='.git/' \
+    --exclude='.gitignore/' \
+    --exclude='.github/' \
+    --exclude='bin/' \
+    --exclude='resources/' \
+    --exclude='.wp-env.json' \
+    --exclude='build/' \
+    --exclude='node_modules/' \
+    "$PROJECT_PATH/" "$DEST_PATH/"
 
 echo "Generating zip file..."
 cd "$BUILD_PATH" || exit
