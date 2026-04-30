@@ -1,6 +1,6 @@
 {
     "name": "@palasthotel/additional-authors",
-    "version": "1.3.7",
+    "version": "1.3.8",
     "scripts": {
 		"build": "npm run build:scripts && npm run build:blocks",
         "build:scripts": "wp-scripts build ./src/gutenberg.js ./src/meta-box.js ./src/users-table.ts",
