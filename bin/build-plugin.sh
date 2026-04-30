@@ -2,7 +2,7 @@
 
 PLUGIN_SLUG="additional-authors"
 PROJECT_PATH=$(pwd)
-BUILD_PATH="${PROJECT_PATH}/build"
+BUILD_PATH="/tmp/${PROJECT_PATH}/tmp/${PLUGIN_SLUG}-build"
 DEST_PATH="$BUILD_PATH/$PLUGIN_SLUG"
 
 echo "Generating build directory..."

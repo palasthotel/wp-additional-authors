@@ -102,6 +102,7 @@ jobs:
           --exclude='node_modules/' \
           --exclude='resource/' \
           --exclude='src/' \
+          --exclude='src-blocks/' \
           --exclude='.gitignore' \
           --exclude='.wp-env.json' \
           --exclude='package-lock.json' \
