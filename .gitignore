@@ -3,3 +3,4 @@
 /build
 *.zip
 *.DS_Store
+.idea/
