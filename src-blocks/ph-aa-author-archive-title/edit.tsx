@@ -11,7 +11,7 @@ export default function Edit({
 
     return (
         <div {...blockProps}>
-            <h1>Author Archive Title</h1>
+            <h1>Additional Author Archive Title</h1>
         </div>
     );
 }

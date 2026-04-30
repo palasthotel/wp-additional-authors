@@ -11,7 +11,7 @@ export default function Edit({
 
     return (
         <div {...blockProps}>
-            <p>Author Archive Biography</p>
+            <p>Additional Author Archive Biography</p>
         </div>
     );
 }
