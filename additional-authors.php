@@ -10,7 +10,7 @@ namespace AdditionalAuthors;
  * Author URI: https://palasthotel.de
  * Text Domain: additional-authors
  * Domain Path: /languages
- * Version: 1.3.7
+ * Version: 1.3.8
  * Requires at least: 5.0
  * Tested up to: 6.4.2
  */
@@ -95,6 +95,7 @@ class Plugin extends Components\Plugin {
 	public Render $render;
 	public Migrate $migrate;
 	public Update $update;
+	public Blocks $blocks;
 
 	/**
 	 * AdditionalAuthors constructor.
@@ -123,6 +124,7 @@ class Plugin extends Components\Plugin {
 		$this->migrate = new Migrate( $this );
 
 		$this->update = new Update( $this );
+		$this->blocks = new Blocks( $this);
 
 	}
 

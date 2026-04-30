@@ -1,0 +1,15 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "additional-authors/author-archive-title",
+  "title": "Author Archive Title",
+  "description": "Displays the Title of an author in archives.",
+  "supports": {
+    "html": false
+  },
+  "category": "additional-authors",
+  "attributes": {},
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

@@ -17,7 +17,6 @@ rsync -a \
     --exclude='bin/' \
     --exclude='resource/' \
     --exclude='.wp-env.json' \
-    --exclude='build/' \
     --exclude='node_modules/' \
     "$PROJECT_PATH/" "$DEST_PATH/"
 

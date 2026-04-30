@@ -18,10 +18,10 @@ class Assets {
 		}
 	}
 	public function enqueueUsersTable(){
-		$info = include $this->plugin->getPath("/dist/users-table.asset.php");
+		$info = include $this->plugin->getPath("/build/users-table.asset.php");
 		wp_enqueue_script(
 			Plugin::HANDLE_USERS_TABLE_JS,
-			$this->plugin->getUrl( "/dist/users-table.js"),
+			$this->plugin->getUrl( "/build/users-table.js"),
 			$info["dependencies"],
 			$info["version"],
 			true
@@ -39,14 +39,14 @@ class Assets {
 	public function enqueueMetaBox($config){
 		wp_enqueue_style(
 			Plugin::HANDLE_META_BOX_CSS,
-			$this->plugin->getUrl("/dist/additional-authors-meta-box.css"),
+			$this->plugin->getUrl("/build/meta-box.css"),
 			[],
-			filemtime($this->plugin->getPath("/dist/additional-authors-meta-box.css"))
+			filemtime($this->plugin->getPath("/build/meta-box.css"))
 		);
-		$info = include $this->plugin->getPath("/dist/additional-authors-meta-box.asset.php");
+		$info = include $this->plugin->getPath("/build/meta-box.asset.php");
 		wp_enqueue_script(
 			Plugin::HANDLE_META_BOX_JS,
-			$this->plugin->getUrl("/dist/additional-authors-meta-box.js"),
+			$this->plugin->getUrl("/build/meta-box.js"),
 			$info["dependencies"],
 			$info["version"],
 			true
@@ -57,14 +57,14 @@ class Assets {
 	public function enqueueGutenberg(){
 		wp_enqueue_style(
 			Plugin::HANDLE_GUTENBERG_CSS,
-			$this->plugin->getUrl( "/dist/additional-authors.css"),
+			$this->plugin->getUrl( "/build/gutenberg.css"),
 			[],
-			filemtime($this->plugin->getPath("/dist/additional-authors.css"))
+			filemtime($this->plugin->getPath("/build/gutenberg.css"))
 		);
-		$info = include $this->plugin->getPath("/dist/additional-authors.asset.php");
+		$info = include $this->plugin->getPath("/build/gutenberg.asset.php");
 		wp_enqueue_script(
 			Plugin::HANDLE_GUTENBERG_JS,
-			$this->plugin->getUrl("/dist/additional-authors.js"),
+			$this->plugin->getUrl("/build/gutenberg.js"),
 			$info["dependencies"],
 			$info["version"]
 		);

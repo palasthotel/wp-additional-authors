@@ -1,0 +1,15 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "additional-authors/author-archive-biography",
+  "title": "Author Archive Biography",
+  "description": "Displays the biography of an author in archives.",
+  "supports": {
+    "html": false
+  },
+  "category": "additional-authors",
+  "attributes": {},
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}
