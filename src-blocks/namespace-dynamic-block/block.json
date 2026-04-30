@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "additional-authors/dynamic-block",
+    "title": "Dynamic Block",
+    "description": "Blueprint for a dynamic block.",
+    "supports": {
+        "html": false
+    },
+    "category": "additional-authors",
+    "attributes": {},
+    "editorScript": "file:./index.js",
+    "style": "file:./style-index.css",
+    "render": "file:./render.php"
+}

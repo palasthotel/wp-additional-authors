@@ -95,6 +95,7 @@ class Plugin extends Components\Plugin {
 	public Render $render;
 	public Migrate $migrate;
 	public Update $update;
+	public Blocks $blocks;
 
 	/**
 	 * AdditionalAuthors constructor.
@@ -123,6 +124,7 @@ class Plugin extends Components\Plugin {
 		$this->migrate = new Migrate( $this );
 
 		$this->update = new Update( $this );
+		$this->blocks = new Blocks( $this);
 
 	}
 
