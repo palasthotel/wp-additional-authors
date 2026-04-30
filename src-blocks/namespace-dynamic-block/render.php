@@ -1,1 +1,0 @@
-<h1>This is rendered dynamically.</h1>
