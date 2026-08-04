@@ -144,22 +144,28 @@ class QueryManipulation {
 
 		global $wpdb;
 
-		$select = "SELECT count(*) FROM {$wpdb->posts} WHERE {$wpdb->posts}.ID IN ( SELECT post_id FROM ".$this->database->table." WHERE author_id = $userid)";
+		// $userid and $post_type come from whoever called count_user_posts(), which
+		// is not necessarily this plugin - so they are escaped here rather than
+		// trusted.
+		$select = $wpdb->prepare(
+			"SELECT count(*) FROM {$wpdb->posts} WHERE {$wpdb->posts}.ID IN ( SELECT post_id FROM " . $this->database->table . " WHERE author_id = %d)",
+			$userid
+		);
 
+		$types = array();
 		if(is_array($post_type)){
 			if(count($post_type) > 0 && !in_array("any", $post_type)){
-
-				$values = array_filter($post_type, function($type){
-					return post_type_exists($type);
-				});
-				$values = implode(", ", array_map(function($type){
-					return "'$type'";
-				}, $values));
-
-				$select.= " AND post_type IN ($values)";
+				$types = array_values(array_filter($post_type, function($type){
+					return is_string($type) && post_type_exists($type);
+				}));
 			}
 		} else if($post_type != "any") {
-			$select.= " AND post_type = '$post_type'";
+			$types = array($post_type);
+		}
+
+		if(count($types) > 0){
+			$placeholders = implode(", ", array_fill(0, count($types), "%s"));
+			$select .= $wpdb->prepare(" AND post_type IN ($placeholders)", $types);
 		}
 
 		$additional_count = $wpdb->get_var( $select );
@@ -186,7 +192,16 @@ class QueryManipulation {
 
 			$where = $query->query_where;
 			$start = strpos( $where, $start_string );
-			$end   = strpos( $where, $end_string, $start );
+			if ( false === $start ) {
+				// WP_User_Query did not build the clause this rewrite expects.
+				// Without this guard strpos() returns false, substr_replace() reads
+				// that as offset 0 and the injected ") " corrupts the whole WHERE.
+				return;
+			}
+			$end = strpos( $where, $end_string, $start );
+			if ( false === $end ) {
+				return;
+			}
 
 			$where = substr_replace( $where, ") ", $end, 0 );
 

@@ -53,33 +53,28 @@ class PostsTable {
 			$authors = $this->plugin->database->get_author_ids($post_id);
 			$strings = [];
 			foreach ($authors as $authorId){
-				$args = array(
-					'post_type' => get_post_type($post_id),
-					'author'    => get_the_author_meta( 'ID' ),
-				);
-				$url = add_query_arg( $args, 'edit.php' );
-
-				$class_html   = '';
-				$aria_current = '';
-				if ( ! empty( $class ) ) {
-					$class_html = sprintf(
-						' class="%s"',
-						esc_attr( $class )
-					);
-
-					if ( 'current' === $class ) {
-						$aria_current = ' aria-current="page"';
-					}
+				$user = get_user_by("ID", $authorId);
+				if ( ! ( $user instanceof \WP_User ) ) {
+					// The user was deleted but the row survived - skip it rather than
+					// reading display_name off false.
+					continue;
 				}
 
-				$user = get_user_by("ID", $authorId);
+				// This used to pass get_the_author_meta('ID'), the author of whatever
+				// post the loop was on, so every link in the column pointed at the
+				// same user.
+				$url = add_query_arg(
+					array(
+						'post_type' => get_post_type($post_id),
+						'author'    => $authorId,
+					),
+					'edit.php'
+				);
 
 				$strings[] = sprintf(
-					'<a href="%s"%s%s>%s</a>',
+					'<a href="%s">%s</a>',
 					esc_url( $url ),
-					$class_html,
-					$aria_current,
-					$user->display_name
+					esc_html( $user->display_name )
 				);
 			}
 
