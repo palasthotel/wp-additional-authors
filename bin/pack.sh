@@ -5,8 +5,7 @@
 # The build directory is left in place on purpose: the release workflow rsyncs from
 # it into the SVN checkout, so the zip and the SVN trunk are byte-identical.
 #
-# Run "npm run build" first, otherwise public/build/ holds whatever the last build
-# left there.
+# public/build/ is not in the repository - run "npm run build" first.
 set -e
 
 PLUGIN_SLUG="additional-authors"
@@ -18,6 +17,11 @@ DEST_PATH="$BUILD_PATH/$PLUGIN_SLUG"
 echo "Generating build directory..."
 rm -rf "$BUILD_PATH"
 mkdir -p "$DEST_PATH"
+
+if [ ! -f "$PROJECT_PATH/public/build/gutenberg.js" ]; then
+  echo "public/build/ is missing or incomplete - run \"npm run build\" first." >&2
+  exit 1
+fi
 
 echo "Syncing files..."
 rsync -rL "$PROJECT_PATH/public/" "$DEST_PATH/"

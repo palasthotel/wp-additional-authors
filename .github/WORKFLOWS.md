@@ -25,7 +25,7 @@ Push to main
     │    On PR to main
     └──▶ [pr.yml]
              php -l on 7.4 / 8.2 / 8.3 / 8.4
-             tsc --noEmit + build + "are the committed assets current?"
+             tsc --noEmit + build + "were the enqueued assets produced?"
              pack + "is the payload clean?"
 
 
@@ -43,12 +43,11 @@ Merge release PR  →  release-please pushes tag v1.3.10 + creates GitHub Releas
 Three jobs:
 
 - **php-lint** — `php -l` over every PHP file except `public/vendor/` (generated
-  autoloader) and `public/build/` (compiled asset manifests), on PHP 7.4, 8.2, 8.3
-  and 8.4.
-- **assets** — `npm run lint` (`tsc --noEmit`), `npm run build`, then `git diff` over
-  `public/build`. The built assets are committed because they are part of the
-  payload, so a PR that changes `src/` without rebuilding would otherwise ship stale
-  JavaScript. The job fails and names the files.
+  autoloader), on PHP 7.4, 8.2, 8.3 and 8.4.
+- **assets** — `npm run lint` (`tsc --noEmit`), `npm run build`, then a check that the
+  build produced every file the plugin enqueues. `public/build/` is not in the
+  repository; the release builds it, so nothing can go stale, but a renamed or broken
+  entry point would otherwise only show up as a 404 in wp-admin.
 - **pack** — runs `bin/pack.sh` and asserts the staged payload has an autoloader and
   the plugin file, and carries no `composer.json`, `composer.lock`, `src/`,
   `src-blocks/` or `tsconfig.json`.
