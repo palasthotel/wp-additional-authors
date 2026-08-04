@@ -1,6 +1,6 @@
 {
   "plugins": [
-    "."
+    "./public"
   ],
   "config": {
     "WP_DEBUG": true,
@@ -10,8 +10,6 @@
     "WP_ENVIRONMENT_TYPE": "local"
   },
   "mappings": {
-    ".htaccess": "./resource/.htaccess",
-    "wp-content/debug.log": "./resource/debug.log",
-    "wp-content/mu-plugins/error-reporting.php": "./resource/error-reporting.php"
-  }    
+    "wp-content/mu-plugins": "./resource/mu-plugins"
+  }
 }

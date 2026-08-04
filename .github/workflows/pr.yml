@@ -1,0 +1,93 @@
+name: PR
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  php-lint:
+    name: PHP syntax check (${{ matrix.php-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["7.4", "8.2", "8.3", "8.4"]
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+
+      # public/vendor holds only the generated autoloader, public/build the
+      # compiled assets - neither is ours to lint.
+      - name: Lint PHP files
+        run: |
+          find . -name '*.php' \
+            -not -path './public/vendor/*' \
+            -not -path './public/build/*' \
+            -not -path './node_modules/*' \
+            -print0 | xargs -0 -r -n1 php -l
+
+  assets:
+    name: Editor assets (lint + build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.x
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      - run: npm run build
+
+      # The built assets are committed, because they are part of the payload.
+      # A PR that changes src/ without rebuilding would otherwise ship stale JS.
+      - name: Assert the committed assets match the sources
+        run: |
+          if ! git diff --quiet -- public/build; then
+            echo "::error::public/build is out of date - run 'npm run build' and commit the result."
+            git diff --stat -- public/build
+            exit 1
+          fi
+
+  pack:
+    name: Pack plugin
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          tools: composer
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.x
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Pack
+        run: bash bin/pack.sh
+
+      - name: Assert the payload carries no composer manifest and no sources
+        run: |
+          test -f build/additional-authors/vendor/autoload.php
+          test -f build/additional-authors/additional-authors.php
+          test ! -e build/additional-authors/composer.json
+          test ! -e build/additional-authors/composer.lock
+          test ! -e build/additional-authors/src
+          test ! -e build/additional-authors/src-blocks
+          test ! -e build/additional-authors/tsconfig.json
