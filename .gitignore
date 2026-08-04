@@ -3,3 +3,5 @@
 *.zip
 *.DS_Store
 .idea/
+# pack staging directory - public/build holds the tracked, shipped assets
+/build

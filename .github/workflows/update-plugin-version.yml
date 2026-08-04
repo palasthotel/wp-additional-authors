@@ -1,0 +1,51 @@
+name: Update plugin version
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  update-plugin-version:
+    # Only run for the release-please release PR. Its branch always lives in
+    # this repository, so plain `pull_request` gives us secrets access.
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      startsWith(github.head_ref, 'release-please--')
+    runs-on: ubuntu-latest
+    steps:
+      # Pushing with the app token (instead of GITHUB_TOKEN) re-triggers the PR
+      # checks on the new head commit — GITHUB_TOKEN pushes trigger nothing,
+      # which would leave the release PR without check results.
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.RELEASE_BOT_APP_ID }}
+          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+          permission-contents: write
+
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Sync version into public/additional-authors.php and public/readme.txt
+        run: bash bin/update-plugin-version.sh
+
+      - name: Commit to release PR branch
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+        run: |
+          # The bot's numeric user id — required for verified commit attribution
+          BOT_ID=$(gh api "/users/${APP_SLUG}%5Bbot%5D" --jq .id)
+          git config user.name "${APP_SLUG}[bot]"
+          git config user.email "${BOT_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
+          git add public/additional-authors.php public/readme.txt
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          git commit -m "chore: update additional-authors.php and readme.txt"
+          git push
