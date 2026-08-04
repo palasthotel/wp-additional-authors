@@ -12,8 +12,8 @@ printf(
 	esc_url( get_author_posts_url( $author_id ) ),
 	sprintf(
 		esc_attr__( 'Posts by %s' ),
-		$display_name
+		esc_attr( $display_name )
 	),
-	$display_name
+	esc_html( $display_name )
 );
 ?></address>

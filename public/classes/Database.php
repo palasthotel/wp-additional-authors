@@ -20,13 +20,22 @@ class Database{
 		/**
 		 * first id is main author
 		 */
-		$post                   = get_post( $post_id );
+		$post = get_post( $post_id );
+		if ( ! ( $post instanceof \WP_Post ) ) {
+			return array();
+		}
+
 		$additional_authors_ids = array(
 			intval($post->post_author),
 		);
 
 		global $wpdb;
-		$additional_authors_ids_as_string = $wpdb->get_col("SELECT author_id FROM $this->table WHERE post_id = {$post->ID} ORDER BY id ASC");
+		$additional_authors_ids_as_string = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT author_id FROM $this->table WHERE post_id = %d ORDER BY id ASC",
+				$post->ID
+			)
+		);
 
 		if ( ! empty( $additional_authors_ids_as_string ) ) {
 			foreach ( $additional_authors_ids_as_string as $author_id_as_string ) {
