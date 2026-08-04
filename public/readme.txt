@@ -14,6 +14,8 @@ Let's you add more than one author to your posts.
 
 Let's you add more than one author to your posts.
 
+Optionally extends the byline your theme already renders - see the FAQ.
+
 == Installation ==
 
 1. Upload `additional-authors-wordpress.zip` to the `/wp-content/plugins/` directory
@@ -22,9 +24,46 @@ Let's you add more than one author to your posts.
 
 == Frequently Asked Questions ==
 
+= The additional authors do not show up in my theme =
+
+By default the plugin only stores them; the output is up to the theme, through
+`do_action( 'additional_authors_the_authors' )`. Since 1.4.0 it can also extend the
+byline a standard theme already renders:
+
+`add_filter( 'additional_authors_auto_byline', '__return_true' );`
+
+That covers the `core/post-author` and `core/post-author-name` blocks used by block
+themes such as Twenty Twenty-Four and Twenty Twenty-Five, and the `the_author()` and
+`the_author_posts_link()` template tags used by classic themes. It is off by default,
+because a plugin update should not change what your site outputs.
+
+Two things worth knowing:
+
+* Some classic themes — Twenty Twenty-One among them — wrap `get_the_author()` in a
+  link they build themselves. The additional names then sit inside that link, which
+  points at the main author. If per-author links matter to you, output them yourself
+  with `do_action( 'additional_authors_the_authors_posts_links' )` instead.
+* The `core/post-author` block is left untouched when its "Show bio" option is on: a
+  biography belongs to one person, and listing several names above it would read as if
+  it described all of them.
+
+= Can I change how the names are joined? =
+
+`additional_authors_byline_separator` sets the separator (default `, `), and
+`additional_authors_byline_suffix` lets you build the whole appended string, for
+example to get "Anna, Mark und David":
+
+`add_filter( 'additional_authors_byline_suffix', function ( $suffix, $ids ) {
+	$names = array_map( fn( $id ) => get_the_author_meta( 'display_name', $id ), $ids );
+	$last  = array_pop( $names );
+	return ( $names ? ', ' . implode( ', ', $names ) : '' ) . ' und ' . $last;
+}, 10, 2 );`
+
+
 
 == Screenshots ==
 
+1. The Additional Authors panel in the block editor sidebar: search for a user, and the ones you picked are listed below with a button to remove them again.
 
 == Changelog ==
 = 1.3.9 =

@@ -70,6 +70,13 @@ class Plugin extends Components\Plugin {
 	const FILTER_CREATE_USERS = "additional_authors_create_users";
 
 	/**
+	 * byline output in standard themes
+	 */
+	const FILTER_AUTO_BYLINE = "additional_authors_auto_byline";
+	const FILTER_BYLINE_SEPARATOR = "additional_authors_byline_separator";
+	const FILTER_BYLINE_SUFFIX = "additional_authors_byline_suffix";
+
+	/**
 	 * rest fields
 	 */
 	const REST_FIELD_ADDITIONAL_AUTHORS = "additional_authors";
@@ -99,6 +106,7 @@ class Plugin extends Components\Plugin {
 	public Migrate $migrate;
 	public Update $update;
 	public Blocks $blocks;
+	public Byline $byline;
 
 	/**
 	 * AdditionalAuthors constructor.
@@ -128,6 +136,7 @@ class Plugin extends Components\Plugin {
 
 		$this->update = new Update( $this );
 		$this->blocks = new Blocks( $this);
+		$this->byline = new Byline( $this );
 
 	}
 
