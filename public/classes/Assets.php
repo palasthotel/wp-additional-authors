@@ -32,6 +32,8 @@ class Assets {
 			[
 				"postsUrl" => admin_url("edit.php"),
 				"ajaxUrl" => admin_url('admin-ajax.php'),
+				"action" => Ajax::ACTION_COUNT_POSTS,
+				"nonce" => wp_create_nonce(Ajax::NONCE_ACTION),
 			]
 		);
 	}
@@ -74,10 +76,12 @@ class Assets {
 				array(
 					'role__in'     => ['author', 'editor', 'administrator'],
 					'orderby' => 'display_name',
+					// No user_login: it is the account's login name, the editor UI
+					// never displays it, and core only exposes it to users who may
+					// list users.
 					'fields'  => array(
 						'ID',
 						'display_name',
-						'user_login',
 						'user_nicename',
 					),
 				)

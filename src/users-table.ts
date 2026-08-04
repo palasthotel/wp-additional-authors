@@ -13,8 +13,14 @@ window.document.addEventListener("DOMContentLoaded", () => {
     spinner.style.transform = "translate(-34px, -4px)";
     head.prepend(spinner);
 
+    const params = new URLSearchParams({
+        action: window.AdditionalAuthors.action,
+        _ajax_nonce: window.AdditionalAuthors.nonce,
+        user_ids: ids.join(","),
+    });
+
     fetch(
-        window.AdditionalAuthors.ajaxUrl+"?action=additional_authors_count_posts&user_ids=" + ids.join(",")
+        `${window.AdditionalAuthors.ajaxUrl}?${params.toString()}`
     ).then(
         response => response.json()
     ).then(
@@ -49,6 +55,8 @@ declare global {
         AdditionalAuthors: {
             postsUrl: string
             ajaxUrl: string
+            action: string
+            nonce: string
         }
     }
 }
