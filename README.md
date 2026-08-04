@@ -53,9 +53,46 @@ searched as well, and other plugins can add search paths with the
 | `additional_authors_wp_query_capability_for_authors` | which capability a user needs to be offered as an author (default `edit_posts`) |
 | `additional_authors_wp_query_ignore_additional_default` | default for whether a query ignores additional authors |
 | `additional_authors_template_paths` | extra template search paths |
+| `additional_authors_auto_byline` | opt in to extending the byline a standard theme renders (default off) |
+| `additional_authors_byline_separator` | how the names are joined (default `, `) |
+| `additional_authors_byline_suffix` | the whole appended string, for wordings like "Anna, Mark und David" |
 
 `WP_User_Query` accepts `ignore_published_as_additional_author => true` to get core's
 unmodified `has_published_posts` behaviour back.
+
+## Output in a standard theme
+
+Normally the theme decides where the authors appear. With
+
+```php
+add_filter( 'additional_authors_auto_byline', '__return_true' );
+```
+
+the plugin appends them to the byline the theme already renders instead. There is no
+single hook for that, so it uses four:
+
+| Hook | Covers |
+|---|---|
+| `render_block_core/post-author-name` | the byline block of Twenty Twenty-Four / Twenty Twenty-Five and most block themes |
+| `render_block_core/post-author` | the same block with avatar and byline label |
+| `the_author_posts_link` | the linked byline of most classic themes |
+| `the_author` | `the_author()`, and classic themes that build their own link from `get_the_author()` |
+
+Verified against WordPress 7.0.2 with Twenty Twenty-Five and Twenty Twenty-One.
+
+Two limitations, both deliberate:
+
+- A classic theme that wraps `get_the_author()` in its own link — Twenty Twenty-One
+  does — puts the additional names inside that one link, pointing at the main author.
+  The `the_author` filter is the only lever there, and it has to return plain text,
+  because such themes run the result through `esc_html()`. Use
+  `do_action( 'additional_authors_the_authors_posts_links' )` where per-author links
+  matter.
+- `core/post-author` with "Show bio" enabled is left alone. The biography belongs to
+  one author; names listed above it would read as if it described all of them.
+
+`the_author` only fires inside the loop, which is what keeps `get_the_archive_title()`
+out — otherwise an author archive heading would read "Author: Anna, Mark, David".
 
 ## Repository layout
 
