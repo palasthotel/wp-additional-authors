@@ -4,7 +4,7 @@ Donate link: http://palasthotel.de/
 Tags: author, meta fields
 Requires at least: 5.0
 Tested up to: 7.0.2
-Stable tag: 1.3.9
+Stable tag: 1.4.0
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -66,6 +66,16 @@ example to get "Anna, Mark und David":
 1. The Additional Authors panel in the block editor sidebar: search for a user, and the ones you picked are listed below with a button to remove them again.
 
 == Changelog ==
+
+= 1.4.0 =
+**Features**
+* optionally extend the byline a standard theme renders (cffb64c)
+
+**Bug Fixes**
+* point the All authors column at the right users (8567bd1)
+* repair the post-count endpoint and the users list column (aa3416a)
+* stop contributors from creating accounts and reassigning posts (2e19c60)
+
 = 1.3.9 =
 * Fix: Include build in pipeline
 

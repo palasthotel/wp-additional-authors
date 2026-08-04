@@ -10,7 +10,7 @@ namespace AdditionalAuthors;
  * Author URI: https://palasthotel.de
  * Text Domain: additional-authors
  * Domain Path: /languages
- * Version: 1.3.9
+ * Version: 1.4.0
  * Requires at least: 5.0
  * Tested up to: 7.0.2
  * License: GPL-3.0-or-later
