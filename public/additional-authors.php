@@ -67,6 +67,7 @@ class Plugin extends Components\Plugin {
 	const FILTER_META_BOX_GET_USERS = "additional_authors_meta_box_get_users";
 	const FILTER_WP_QUERY_IGNORE_ADDITIONAL_DEFAULT = "additional_authors_wp_query_ignore_additional_default";
     const FILTER_WP_QUERY_CAPABILITY_FOR_AUTHORS = "additional_authors_wp_query_capability_for_authors";
+	const FILTER_CREATE_USERS = "additional_authors_create_users";
 
 	/**
 	 * rest fields

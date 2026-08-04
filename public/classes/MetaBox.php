@@ -42,7 +42,7 @@ class MetaBox {
 		    }
 		    add_meta_box(
 			    'additional-authors-meta-box',
-			    __( 'Additional Authors', 'additional_authors' ),
+			    __( 'Additional Authors', Plugin::DOMAIN ),
 			    array( $this, 'additional_authors_html' ),
 			    $this->screens,
 			    'side',
@@ -76,10 +76,10 @@ class MetaBox {
 				array(
 					'capability'     => $capabilities,
 					'orderby' => 'display_name',
+					// No user_login - see Assets::enqueueGutenberg().
 					'fields'  => array(
 						'ID',
 						'display_name',
-						'user_login',
 						'user_nicename',
 					),
 				)
@@ -102,6 +102,21 @@ class MetaBox {
         <input type="hidden" name="<?= self::POST_IS_META_BOX_REQUEST; ?>" value="yes" />
 		<?php
 		do_action( Plugin::ACTION_META_BOX_AFTER, $post );
+	}
+
+	/**
+	 * Whether the current user may have an account created for a typed-in name.
+	 *
+	 * Defaults to edit_others_posts (Editor and up), which keeps the editorial
+	 * workflow working while denying it to Contributors and Authors. Sites that want
+	 * the old behaviour back can filter it - but note that it creates users with the
+	 * author role.
+	 */
+	private function mayCreateUsers(): bool {
+		return (bool) apply_filters(
+			Plugin::FILTER_CREATE_USERS,
+			current_user_can( 'edit_others_posts' )
+		);
 	}
 
 	/**
@@ -142,7 +157,11 @@ class MetaBox {
 			$this->plugin->database->delete_all_of_post($post_id);
 		}
 
-		if ( isset( $_POST ) && isset($_POST[ self::POST_AUTHORS ]) && is_array( $_POST[ self::POST_AUTHORS ] ) ) {
+		if ( isset( $_POST[ self::POST_AUTHORS ]["ids"] ) && is_array( $_POST[ self::POST_AUTHORS ]["ids"] ) ) {
+
+			$names = isset( $_POST[ self::POST_AUTHORS ]["names"] ) && is_array( $_POST[ self::POST_AUTHORS ]["names"] )
+				? $_POST[ self::POST_AUTHORS ]["names"]
+				: array();
 
 			foreach ( $_POST[ self::POST_AUTHORS ]["ids"] as $index => $additional_author ) {
 
@@ -151,10 +170,15 @@ class MetaBox {
 				 * only if is not gutenberg
 				 */
 				if ( $index == 0 && ! $is_gutenberg ) {
+					// Reassigning a post to somebody else is what edit_others_posts
+					// governs in WordPress, and the id has to belong to a real user.
+					if ( ! current_user_can( 'edit_others_posts' ) || ! get_userdata( intval( $additional_author ) ) ) {
+						continue;
+					}
 					remove_action( 'save_post', array( $this, 'save' ) );
 					wp_update_post( array(
 						"ID"          => $post_id,
-						"post_author" => $additional_author,
+						"post_author" => intval( $additional_author ),
 					) );
 					add_action( 'save_post', array( $this, 'save' ), 10, 2 );
 					continue;
@@ -166,11 +190,27 @@ class MetaBox {
 				}
 
 				if ( intval( $additional_author ) <= 0 ) {
-					$name              = $_POST[ self::POST_AUTHORS ]["names"][ $index ];
+					// A non-positive id means "create an account for this name". That
+					// is user creation, which core reserves for administrators, so it
+					// is gated instead of being available to everyone who may edit
+					// this post - a Contributor could otherwise mint Author accounts.
+					if ( ! $this->mayCreateUsers() ) {
+						continue;
+					}
+					if ( ! isset( $names[ $index ] ) || ! is_string( $names[ $index ] ) ) {
+						continue;
+					}
+					$name              = sanitize_text_field( $names[ $index ] );
+					if ( '' === trim( $name ) ) {
+						continue;
+					}
 					$additional_author = $this->plugin->user->create( $name );
 					if ( is_wp_error( $additional_author ) ) {
 						// TODO: error display
+						continue;
 					}
+				} elseif ( ! get_userdata( intval( $additional_author ) ) ) {
+					continue;
 				}
 				// @deprecated
 				//				add_post_meta( $post_id, Plugin::META_POST_ADDITIONAL_AUTHORS, $additional_author );
