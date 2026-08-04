@@ -46,8 +46,8 @@ download is `chore:`, not `fix:` — nothing changes for anyone who installed th
 plugin.
 
 Editor sources are the exception to the "outside `public/`" rule: `src/` and
-`src-blocks/` are compiled into `public/build/`, so a change there does reach users
-and the rebuilt output belongs in the same commit.
+`src-blocks/` are compiled into `public/build/` and do reach users, so a change there
+can be a `fix:` or `feat:` even though the files live outside `public/`.
 
 ## Repository layout
 
@@ -59,7 +59,7 @@ repository-only.
 | `public/additional-authors.php` | plugin header and bootstrap |
 | `public/classes/` | the plugin's PHP, autoloaded via `AdditionalAuthors\` → `classes` |
 | `public/inc/`, `public/templates/` | migration include and the overridable output templates |
-| `public/build/` | compiled editor assets — **committed**, built from `src/` and `src-blocks/` |
+| `public/build/` | compiled editor assets — **not in the repository**, built from `src/` and `src-blocks/` |
 | `public/languages/` | translations |
 | `public/vendor/` | generated composer autoloader, no third-party code |
 | `src/`, `src-blocks/` | JavaScript and TypeScript sources |
@@ -78,10 +78,11 @@ npx wp-env start      # http://localhost:8888, admin / password
 `bash bin/pack.sh` stages the payload in `build/additional-authors/` and zips it to
 `additional-authors.zip` — the same payload the release deploys. It needs `composer`,
 because the packed copy gets a freshly generated `--no-dev` autoloader and the
-composer files are dropped from it.
+composer files are dropped from it. Run `npm run build` first; the script refuses to
+pack an unbuilt payload.
 
-**Commit the result of `npm run build`.** `public/build/` is part of the payload, and
-the PR checks fail if the committed assets do not match the sources.
+`public/build/` is generated and gitignored. The release builds it, so there is
+nothing to commit and no stale asset to review.
 
 ## Versions
 
@@ -97,5 +98,6 @@ entries alone.
 ## Checks
 
 Every PR runs `php -l` against PHP 7.4, 8.2, 8.3 and 8.4, type-checks the editor
-sources, asserts the committed assets are current, and packs the plugin so a broken
-`bin/pack.sh` surfaces in the pull request rather than in a release.
+sources, builds them and asserts the files the plugin enqueues were produced, and
+packs the plugin so a broken `bin/pack.sh` surfaces in the pull request rather than in
+a release.

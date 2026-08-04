@@ -67,7 +67,7 @@ repository-only.
 | `public/additional-authors.php` | plugin header and bootstrap |
 | `public/classes/` | the plugin's PHP, autoloaded via `AdditionalAuthors\` → `classes` |
 | `public/templates/` | the overridable output templates |
-| `public/build/` | compiled editor assets — **committed**, built from `src/` and `src-blocks/` |
+| `public/build/` | compiled editor assets — **generated**, not in the repository |
 | `public/languages/` | translations |
 | `public/vendor/` | generated composer autoloader, no third-party code |
 | `src/`, `src-blocks/` | JavaScript and TypeScript sources |
@@ -87,8 +87,9 @@ npx wp-env start      # http://localhost:8888, admin / password
 bash bin/pack.sh      # → additional-authors.zip
 ```
 
-`public/build/` is committed because it is part of the payload — commit the rebuilt
-assets together with a change to `src/`. The PR checks fail otherwise.
+`public/build/` is generated and gitignored — the release pipeline builds it. Run
+`npm run build` before `wp-env start` or `bin/pack.sh`, otherwise the plugin has no
+editor assets.
 
 ## Releasing
 

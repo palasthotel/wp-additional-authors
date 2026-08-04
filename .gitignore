@@ -3,5 +3,7 @@
 *.zip
 *.DS_Store
 .idea/
-# pack staging directory - public/build holds the tracked, shipped assets
+# pack staging directory
 /build
+# compiled editor assets - built by the pipeline, never committed
+/public/build
