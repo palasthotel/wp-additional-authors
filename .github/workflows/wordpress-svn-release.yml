@@ -42,7 +42,7 @@ jobs:
         run: echo "VERSION=${VERSION}"
 
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Check version numbers
         run: bash bin/version-checker.sh
