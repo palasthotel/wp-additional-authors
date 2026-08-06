@@ -59,6 +59,7 @@ const Plugin = (props)=>{
                 onChangePosition={(to)=>onChangePosition(index, to)}
                 onUnselect={()=>onUnselect(id)}
                 isMainAuthor={false}
+                i18n={i18n}
                 />
         })}
         </div>

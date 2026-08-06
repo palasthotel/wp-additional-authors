@@ -1,14 +1,18 @@
 import PropTypes from 'prop-types';
+import { Button } from "@wordpress/components";
+import { closeSmall } from "@wordpress/icons";
 import "./Author.css";
 
-const Delete = ({onClick}) => {
+const Delete = ({onClick, label}) => {
 	return (
-		<span
+		<Button
 			className="author-item__delete"
+			size="small"
+			icon={closeSmall}
+			isDestructive
+			label={label}
 			onClick={onClick}
-		>
-			&times;
-		</span>
+		/>
 	)
 }
 
@@ -20,7 +24,7 @@ const ProfileLink = ({author}) => {
 	return display_name
 }
 
-const Author = ({author, index, onUnselect, onChangePosition})=>{
+const Author = ({author, index, onUnselect, onChangePosition, i18n})=>{
 
 	return (
 		<div
@@ -31,7 +35,7 @@ const Author = ({author, index, onUnselect, onChangePosition})=>{
 					<span className="author-item__nicename">{author.user_nicename}</span>
 				</span>
 
-			<Delete onClick={onUnselect} />
+			<Delete onClick={onUnselect} label={i18n.remove} />
 
 			<span
 				className="author-item__move author-item__up"
@@ -71,6 +75,7 @@ Author.propTypes = {
 	onUnselect: PropTypes.func.isRequired,
 	onChangePosition: PropTypes.func.isRequired,
 	isMainAuthor: PropTypes.bool.isRequired,
+	i18n: PropTypes.object.isRequired,
 };
 
 /**
