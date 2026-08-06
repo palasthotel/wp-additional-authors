@@ -49,19 +49,22 @@ const Plugin = (props)=>{
             onFound={onSelectSearchItem}
         />
         <div>
-        {selected
-            .filter(id => parseInt(mainAuthor) !== parseInt(id))
-            .map((id, index)=>{
-            return <Author
-                key={id}
-                author={users.find(u=> parseInt(u.ID) === parseInt(id))}
-                index={index}
-                onChangePosition={(to)=>onChangePosition(index, to)}
-                onUnselect={()=>onUnselect(id)}
-                isMainAuthor={false}
-                i18n={i18n}
-                />
-        })}
+        {(()=>{
+            const visible = selected.filter(id => parseInt(mainAuthor) !== parseInt(id));
+            return visible.map((id, index)=>{
+                return <Author
+                    key={id}
+                    author={users.find(u=> parseInt(u.ID) === parseInt(id))}
+                    index={index}
+                    isFirst={index === 0}
+                    isLast={index === visible.length - 1}
+                    onChangePosition={(to)=>onChangePosition(index, to)}
+                    onUnselect={()=>onUnselect(id)}
+                    isMainAuthor={false}
+                    i18n={i18n}
+                    />
+            })
+        })()}
         </div>
     </div>;
 }

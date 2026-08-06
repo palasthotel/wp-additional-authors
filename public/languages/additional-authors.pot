@@ -22,6 +22,30 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 "X-Poedit-SearchPathExcluded-1: vendor\n"
 
+#: classes/Assets.php:71
+msgid "Add author"
+msgstr ""
+
+#: classes/Assets.php:72
+msgid "Search author…"
+msgstr ""
+
+#: classes/Assets.php:73
+msgid "No author found."
+msgstr ""
+
+#: classes/Assets.php:74
+msgid "Move up"
+msgstr ""
+
+#: classes/Assets.php:75
+msgid "Move down"
+msgstr ""
+
+#: classes/Assets.php:76
+msgid "Remove"
+msgstr ""
+
 #: classes/Assets.php:47 classes/MetaBox.php:87
 msgid "Search for author:"
 msgstr ""

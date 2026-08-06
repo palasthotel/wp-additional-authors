@@ -28,8 +28,28 @@ msgid "Additional Authors"
 msgstr "Zusätzliche Autoren"
 
 #: classes/Assets.php:71
+msgid "Add author"
+msgstr "Autor hinzufügen"
+
+#: classes/Assets.php:72
+msgid "Search author…"
+msgstr "Autor suchen…"
+
+#: classes/Assets.php:73
 msgid "No author found."
 msgstr "Kein Autor gefunden."
+
+#: classes/Assets.php:74
+msgid "Move up"
+msgstr "Nach oben"
+
+#: classes/Assets.php:75
+msgid "Move down"
+msgstr "Nach unten"
+
+#: classes/Assets.php:76
+msgid "Remove"
+msgstr "Entfernen"
 
 #: classes/MetaBox.php:87
 msgid "Search for author:"
