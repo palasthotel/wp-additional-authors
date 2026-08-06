@@ -16,13 +16,16 @@ updates:
       time: "07:00"
       timezone: "Europe/Berlin"
 
+  # Has to be "/" - that is what makes Dependabot read .github/workflows. A path
+  # like /.github/ is understood as the location of a composite action instead,
+  # and workflow files are then never checked.
   - package-ecosystem: "github-actions"
     assignees:
       - "JanaME"
     commit-message:
       prefix: "deps"
       include: "scope"
-    directory: "/.github/"
+    directory: "/"
     open-pull-requests-limit: 10
     schedule:
       interval: "weekly"
