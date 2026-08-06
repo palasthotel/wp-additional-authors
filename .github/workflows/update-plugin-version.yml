@@ -21,7 +21,7 @@ jobs:
       # Pushing with the app token (instead of GITHUB_TOKEN) re-triggers the PR
       # checks on the new head commit — GITHUB_TOKEN pushes trigger nothing,
       # which would leave the release PR without check results.
-      - uses: actions/create-github-app-token@v2
+      - uses: actions/create-github-app-token@v3
         id: app-token
         with:
           app-id: ${{ vars.RELEASE_BOT_APP_ID }}

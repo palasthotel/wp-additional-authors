@@ -15,7 +15,7 @@ jobs:
       # A short-lived installation token of the org-owned "Palasthotel Release
       # Bot" app. Needed instead of GITHUB_TOKEN because the tag this job
       # pushes has to trigger wordpress-svn-release.yml.
-      - uses: actions/create-github-app-token@v2
+      - uses: actions/create-github-app-token@v3
         id: app-token
         with:
           app-id: ${{ vars.RELEASE_BOT_APP_ID }}
