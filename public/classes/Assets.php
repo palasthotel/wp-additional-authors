@@ -96,6 +96,7 @@ class Assets {
 				"i18n" => array(
 					"label"       => __( 'Additional Authors', Plugin::DOMAIN ),
 					"search_404" => __( 'No author found.', Plugin::DOMAIN ),
+					"remove"      => __( 'Remove', Plugin::DOMAIN ),
 				),
 			]
 		);
