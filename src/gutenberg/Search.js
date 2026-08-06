@@ -33,7 +33,8 @@ const Search = ({i18n, users, onFound})=>{
         <div>
             <div className="additional-authors--search-authors__input-wrapper">
                 <TextControl
-                    label={i18n.label}
+                    label={i18n.add_author}
+                    placeholder={i18n.search_placeholder}
                     value={state}
                     onChange={(value)=>{
                         setIsVisible(true)
