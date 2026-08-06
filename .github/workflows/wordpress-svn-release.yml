@@ -74,7 +74,7 @@ jobs:
         run: bash bin/pack.sh
 
       - name: Upload release asset
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         continue-on-error: true
         with:
           # Explicit, because on a dispatch run github.ref is a branch and the
