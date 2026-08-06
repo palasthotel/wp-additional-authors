@@ -1,13 +1,16 @@
 import { registerPlugin } from '@wordpress/plugins';
-import { PluginPostStatusInfo } from '@wordpress/edit-post';
+import { PluginDocumentSettingPanel } from '@wordpress/editor';
 import Plugin from "./gutenberg/Plugin.js";
 
 const AdditionalAuthorsPlugin = () => (
-    <PluginPostStatusInfo>
+    <PluginDocumentSettingPanel
+        name="additional-authors"
+        title={ AdditionalAuthors.i18n.label }
+    >
         <Plugin
             {...AdditionalAuthors}
         />
-    </PluginPostStatusInfo>
+    </PluginDocumentSettingPanel>
 );
 
-registerPlugin( 'post-status-info-test', { render: AdditionalAuthorsPlugin } );
+registerPlugin( 'additional-authors', { render: AdditionalAuthorsPlugin } );
