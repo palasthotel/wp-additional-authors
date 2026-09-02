@@ -20,7 +20,7 @@
         "@wordpress/edit-post": "^8.52.0",
         "@wordpress/element": "^8.4.0",
         "@wordpress/plugins": "^7.52.0",
-        "@wordpress/scripts": "^34.0.0",
+        "@wordpress/scripts": "^34.2.0",
         "prop-types": "^15.8.1",
         "react": "^19.2.8",
         "react-dom": "^19.2.8",
