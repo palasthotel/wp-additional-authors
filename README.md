@@ -111,7 +111,6 @@ repository-only.
 | `assets/` | media for the WordPress.org plugin page — not part of the download |
 | `additional-authors.php` | DEV wrapper, loads `public/additional-authors.php` when the repository is checked out into `wp-content/plugins/` |
 | `resource/` | wp-env helpers |
-| `bin/` | release helper scripts |
 | `.github/workflows/` | CI/CD — see [.github/WORKFLOWS.md](.github/WORKFLOWS.md) |
 
 ## Development
@@ -121,12 +120,14 @@ npm ci
 npm run lint          # tsc --noEmit
 npm run build         # → public/build/
 npx wp-env start      # http://localhost:8888, admin / password
-bash bin/pack.sh      # → additional-authors.zip
+npm run pack          # → additional-authors.zip
 ```
 
 `public/build/` is generated and gitignored — the release pipeline builds it. Run
-`npm run build` before `wp-env start` or `bin/pack.sh`, otherwise the plugin has no
-editor assets.
+`npm run build` before `wp-env start` or `npm run pack`, otherwise the plugin has no
+editor assets. `npm run pack` runs the shared script from
+[palasthotel/github-workflows](https://github.com/palasthotel/github-workflows), which
+has to be checked out next to this repository.
 
 ## Releasing
 
@@ -139,8 +140,10 @@ the release PR:
 fix: …   → patch    feat: …  → minor    feat!: … → major
 ```
 
-The full pipeline is documented in [.github/WORKFLOWS.md](.github/WORKFLOWS.md), the
-commit conventions in [CONTRIBUTING.md](CONTRIBUTING.md).
+The workflows call the shared ones in
+[palasthotel/github-workflows](https://github.com/palasthotel/github-workflows) — see
+[.github/WORKFLOWS.md](.github/WORKFLOWS.md). The commit conventions are in
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 

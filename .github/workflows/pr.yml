@@ -9,88 +9,27 @@ permissions:
   contents: read
 
 jobs:
-  php-lint:
-    name: PHP syntax check (${{ matrix.php-version }})
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: ["7.4", "8.2", "8.3", "8.4"]
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-version }}
-          coverage: none
-
-      # public/vendor holds only the generated autoloader, and public/build is not
-      # in the repository at all - the pipeline builds it.
-      - name: Lint PHP files
-        run: |
-          find . -name '*.php' \
-            -not -path './public/vendor/*' \
-            -not -path './public/build/*' \
-            -not -path './node_modules/*' \
-            -print0 | xargs -0 -r -n1 php -l
-
-  assets:
-    name: Editor assets (lint + build)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24.x
-
-      - run: npm ci
-
-      - run: npm run lint
-
-      - run: npm run build
-
-      # public/build is not in the repository - the release builds it. Assert the
-      # build actually produced the files the plugin enqueues, so a broken or
-      # renamed entry point surfaces here instead of as a 404 in wp-admin.
-      - name: Assert the build produced the enqueued assets
-        run: |
-          for f in gutenberg.js gutenberg.css gutenberg.asset.php \
-                   meta-box.js meta-box.css meta-box.asset.php \
-                   users-table.js users-table.asset.php; do
-            test -f "public/build/$f" || { echo "::error::public/build/$f was not built"; exit 1; }
-          done
-          test -d public/build/blocks/ph-aa-author-archive-title
-          test -d public/build/blocks/ph-aa-author-archive-biography
-
-  pack:
-    name: Pack plugin
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.3"
-          tools: composer
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24.x
-
-      - run: npm ci
-
-      - run: npm run build
-
-      - name: Pack
-        run: bash bin/pack.sh
-
-      - name: Assert the payload carries no composer manifest and no sources
-        run: |
-          test -f build/additional-authors/vendor/autoload.php
-          test -f build/additional-authors/additional-authors.php
-          test ! -e build/additional-authors/composer.json
-          test ! -e build/additional-authors/composer.lock
-          test ! -e build/additional-authors/src
-          test ! -e build/additional-authors/src-blocks
-          test ! -e build/additional-authors/tsconfig.json
+  checks:
+    uses: palasthotel/github-workflows/.github/workflows/wp-plugin-pr.yml@v1
+    with:
+      slug: additional-authors
+      dev-plugin-name: Additional Authors - DEV
+      # npm run lint is tsc --noEmit - wp-scripts never checks the types itself
+      build-command: npm ci && npm run lint && npm run build
+      # public/build is not in the repository - the pipeline builds it. These are
+      # what Assets.php enqueues and Blocks.php registers, so a renamed or broken
+      # entry point fails here instead of 404ing in wp-admin.
+      required-files: |
+        build/gutenberg.js
+        build/gutenberg.css
+        build/gutenberg.asset.php
+        build/meta-box.js
+        build/meta-box.css
+        build/meta-box.asset.php
+        build/users-table.js
+        build/users-table.asset.php
+        build/blocks/ph-aa-author-archive-title/block.json
+        build/blocks/ph-aa-author-archive-title/render.php
+        build/blocks/ph-aa-author-archive-biography/block.json
+        build/blocks/ph-aa-author-archive-biography/render.php
+        vendor/autoload.php
