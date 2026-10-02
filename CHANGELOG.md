@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/palasthotel/wp-additional-authors/compare/v1.4.0...v1.4.1) (2026-10-02)
+
+
+### Bug Fixes
+
+* keep the author archive blocks from failing outside author archives ([4e41823](https://github.com/palasthotel/wp-additional-authors/commit/4e4182381f0f3c81ec8a542067b8f8d8bce2328d))
+
 ## [1.4.0](https://github.com/palasthotel/wp-additional-authors/compare/v1.3.9...v1.4.0) (2026-08-04)
 
 
