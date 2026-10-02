@@ -1,25 +1,25 @@
 === Additional Authors ===
 Contributors: palasthotel, edwardbock, greatestview, benjaminbirkenhake, janaeggebrecht
-Donate link: http://palasthotel.de/
+Donate link: https://palasthotel.de/
 Tags: author, meta fields
 Requires at least: 5.0
-Tested up to: 7.0.2
+Tested up to: 7.1.2
+Requires PHP: 7.4
 Stable tag: 1.4.0
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Let's you add more than one author to your posts.
+Lets you add more than one author to your posts.
 
 == Description ==
 
-Let's you add more than one author to your posts.
+Lets you add more than one author to your posts.
 
 Optionally extends the byline your theme already renders - see the FAQ.
 
 == Installation ==
 
-1. Upload `additional-authors-wordpress.zip` to the `/wp-content/plugins/` directory
-1. Extract the Plugin to a `Additional Authors` Folder
+1. Install the plugin from Plugins > Add New, or upload `additional-authors.zip` under Plugins > Add New > Upload Plugin
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
 == Frequently Asked Questions ==
@@ -190,10 +190,4 @@ example to get "Anna, Mark und David":
 
 Since 1.2.3: Author lists will change if you use "has_published_posts" in WP_User_Query as additional authors are included.
 
-Since 1.2.2: There was an update on query manipulation. Please make shure your results are still as expected/befor.
-
-
-== Arbitrary section ==
-
-
-
+Since 1.2.2: There was an update on query manipulation. Please make sure your results are still as expected.

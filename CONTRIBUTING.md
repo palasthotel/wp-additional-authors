@@ -64,7 +64,11 @@ repository-only.
 | `public/vendor/` | generated composer autoloader, no third-party code |
 | `src/`, `src-blocks/` | JavaScript and TypeScript sources |
 | `resource/` | wp-env helpers (mu-plugin, log target) |
-| `bin/` | release helper scripts |
+| `additional-authors.php` | development wrapper, loads `public/`; never deployed |
+
+The main file `public/additional-authors.php` must keep its name. WordPress identifies
+an installed plugin by `<directory>/<main file>` and stores that pair in
+`active_plugins`; renaming it deactivates the plugin on every site at the next update.
 
 ## Local setup
 
@@ -75,11 +79,13 @@ npm run build         # → public/build/ and public/build/blocks/
 npx wp-env start      # http://localhost:8888, admin / password
 ```
 
-`bash bin/pack.sh` stages the payload in `build/additional-authors/` and zips it to
-`additional-authors.zip` — the same payload the release deploys. It needs `composer`,
-because the packed copy gets a freshly generated `--no-dev` autoloader and the
-composer files are dropped from it. Run `npm run build` first; the script refuses to
-pack an unbuilt payload.
+`npm run pack` stages the payload in `build/additional-authors/` and zips it to
+`additional-authors.zip` — the same payload the release deploys. It runs the shared
+script from [palasthotel/github-workflows](https://github.com/palasthotel/github-workflows),
+which has to be checked out next to this repository, and needs `composer`, because the
+packed copy gets a freshly generated `--no-dev` autoloader and the composer files are
+dropped from it. Run `npm run build` first — the pack does not build, and the PR check
+fails if an enqueued file is missing from the payload.
 
 `public/build/` is generated and gitignored. The release builds it, so there is
 nothing to commit and no stale asset to review.
@@ -89,7 +95,9 @@ nothing to commit and no stale asset to review.
 Never edit version numbers by hand. `version.txt`, `CHANGELOG.md`,
 `public/additional-authors.php` and the `Stable tag:` in `public/readme.txt` are all
 maintained by the release pipeline — see
-[.github/WORKFLOWS.md](.github/WORKFLOWS.md).
+[.github/WORKFLOWS.md](.github/WORKFLOWS.md). `version.txt` is the version file
+release-please bumps; `package.json` deliberately carries no version, so there is no
+second one to drift.
 
 Content changes to `public/readme.txt` (description, FAQ, screenshots, tested-up-to)
 are of course done by hand; just leave `Stable tag:` and the `== Changelog ==`
@@ -98,6 +106,6 @@ entries alone.
 ## Checks
 
 Every PR runs `php -l` against PHP 7.4, 8.2, 8.3 and 8.4, type-checks the editor
-sources, builds them and asserts the files the plugin enqueues were produced, and
-packs the plugin so a broken `bin/pack.sh` surfaces in the pull request rather than in
-a release.
+sources, builds and packs the plugin, asserts that the files it enqueues are in the
+payload and that nothing repository-only is, and checks that the version carriers
+agree.

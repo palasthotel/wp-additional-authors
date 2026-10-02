@@ -6,13 +6,14 @@ namespace AdditionalAuthors;
  * Plugin Name: Additional Authors
  * Plugin URI: https://github.com/palasthotel/wp-additional-authors
  * Description: Provides a meta box for additional authors from existing users or taxonomy.
- * Author: PALASTHOTEL (by Kim-Christian Meyer, Edward Bock, Stephan Kroppenstedt)
+ * Author: Palasthotel <webmaster@palasthotel.de>
  * Author URI: https://palasthotel.de
  * Text Domain: additional-authors
  * Domain Path: /languages
  * Version: 1.4.0
  * Requires at least: 5.0
- * Tested up to: 7.0.2
+ * Tested up to: 7.1.2
+ * Requires PHP: 7.4
  * License: GPL-3.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  */
