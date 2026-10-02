@@ -5,7 +5,7 @@ Tags: author, meta fields
 Requires at least: 5.0
 Tested up to: 7.1.2
 Requires PHP: 7.4
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -66,6 +66,10 @@ example to get "Anna, Mark und David":
 1. The Additional Authors panel in the block editor sidebar: search for a user, and the ones you picked are listed below with a button to remove them again.
 
 == Changelog ==
+
+= 1.4.1 =
+**Bug Fixes**
+* keep the author archive blocks from failing outside author archives (4e41823)
 
 = 1.4.0 =
 **Features**
