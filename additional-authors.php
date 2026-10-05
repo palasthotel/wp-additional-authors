@@ -5,7 +5,7 @@
  * Plugin URI:        https://github.com/palasthotel/wp-additional-authors
  * Version:           X.X.X
  * Requires at least: 5.0
- * Tested up to:      7.1.2
+ * Tested up to:      7.1
  * Requires PHP:      7.4
  * Author:            Palasthotel <webmaster@palasthotel.de>
  * Author URI:        https://palasthotel.de

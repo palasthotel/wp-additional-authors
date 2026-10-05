@@ -3,7 +3,7 @@ Contributors: palasthotel, edwardbock, greatestview, benjaminbirkenhake, janaegg
 Donate link: https://palasthotel.de/
 Tags: author, meta fields
 Requires at least: 5.0
-Tested up to: 7.1.2
+Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 1.4.1
 License: GPL-3.0-or-later
