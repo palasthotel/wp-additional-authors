@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0](https://github.com/palasthotel/wp-additional-authors/compare/v1.4.1...v1.5.0) (2026-10-12)
+
+
+### Features
+
+* **Sidebar:** core layout for sidebar panel ([fb37d06](https://github.com/palasthotel/wp-additional-authors/commit/fb37d068f71c5d648604355b9a276531b17183f3))
+
+
+### Bug Fixes
+
+* give additional authors its own document setting panel ([94567b7](https://github.com/palasthotel/wp-additional-authors/commit/94567b7c792b8b3a99e101e2c4e440c9b5fe26b7))
+* use the standard editor button for removing an author ([a359877](https://github.com/palasthotel/wp-additional-authors/commit/a3598772974e6cc773c0bdfd3dd269518514ac22))
+
 ## [1.4.1](https://github.com/palasthotel/wp-additional-authors/compare/v1.4.0...v1.4.1) (2026-10-02)
 
 

@@ -5,7 +5,7 @@ Tags: author, meta fields
 Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.4.1
+Stable tag: 1.5.0
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -66,6 +66,14 @@ example to get "Anna, Mark und David":
 1. The Additional Authors panel in the block editor sidebar: search for a user, and the ones you picked are listed below with a button to remove them again.
 
 == Changelog ==
+
+= 1.5.0 =
+**Features**
+* **Sidebar:** core layout for sidebar panel (fb37d06)
+
+**Bug Fixes**
+* give additional authors its own document setting panel (94567b7)
+* use the standard editor button for removing an author (a359877)
 
 = 1.4.1 =
 **Bug Fixes**
