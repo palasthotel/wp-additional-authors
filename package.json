@@ -31,7 +31,7 @@
         "@wordpress/element": "^8.8.0",
         "@wordpress/icons": "^18.0.0",
         "@wordpress/plugins": "^7.56.0",
-        "@wordpress/scripts": "^36.0.0",
+        "@wordpress/scripts": "^36.1.0",
         "prop-types": "^15.8.1",
         "react": "^19.3.0",
         "react-dom": "^19.3.0",
