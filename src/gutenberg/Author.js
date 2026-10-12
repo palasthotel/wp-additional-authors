@@ -1,16 +1,7 @@
 import PropTypes from 'prop-types';
+import { Button, Flex, FlexItem, __experimentalText as Text } from "@wordpress/components";
+import { chevronDown, chevronUp, closeSmall } from "@wordpress/icons";
 import "./Author.css";
-
-const Delete = ({onClick}) => {
-	return (
-		<span
-			className="author-item__delete"
-			onClick={onClick}
-		>
-			&times;
-		</span>
-	)
-}
 
 const ProfileLink = ({author}) => {
 	const {ID,display_name} = author;
@@ -20,32 +11,41 @@ const ProfileLink = ({author}) => {
 	return display_name
 }
 
-const Author = ({author, index, onUnselect, onChangePosition})=>{
+const Author = ({author, index, isFirst, isLast, onUnselect, onChangePosition, i18n})=>{
 
 	return (
-		<div
+		<Flex
 			className={`author-item ${(author.ID < 0)?"is-new-author":""}`}
+			align="center"
+			gap="1"
 		>
-				<span className="autor-item__name">
+			<FlexItem isBlock>
+				<Text>
 					<ProfileLink author={author} />
-					<span className="author-item__nicename">{author.user_nicename}</span>
-				</span>
-
-			<Delete onClick={onUnselect} />
-
-			<span
-				className="author-item__move author-item__up"
+				</Text>
+			</FlexItem>
+			<Button
+				size="small"
+				icon={chevronUp}
+				label={i18n.move_up}
+				disabled={isFirst}
 				onClick={()=>onChangePosition(index-1)}
-			>
-					▲
-				</span>
-			<span
-				className="author-item__move author-item__down"
+			/>
+			<Button
+				size="small"
+				icon={chevronDown}
+				label={i18n.move_down}
+				disabled={isLast}
 				onClick={()=>onChangePosition(index+1)}
-			>
-					▼
-			</span>
-		</div>
+			/>
+			<Button
+				size="small"
+				icon={closeSmall}
+				isDestructive
+				label={i18n.remove}
+				onClick={onUnselect}
+			/>
+		</Flex>
 	)
 
 }
@@ -68,9 +68,12 @@ Author.defaultProps = {
 Author.propTypes = {
 	author: PropTypes.object.isRequired,
 	index: PropTypes.number.isRequired,
+	isFirst: PropTypes.bool.isRequired,
+	isLast: PropTypes.bool.isRequired,
 	onUnselect: PropTypes.func.isRequired,
 	onChangePosition: PropTypes.func.isRequired,
 	isMainAuthor: PropTypes.bool.isRequired,
+	i18n: PropTypes.object.isRequired,
 };
 
 /**
