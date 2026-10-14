@@ -105,7 +105,7 @@ entries alone.
 
 ## Checks
 
-Every PR runs `php -l` against PHP 7.4, 8.2, 8.3 and 8.4, type-checks the editor
+Every PR runs `php -l` against PHP 8.0 to 8.4, type-checks the editor
 sources, builds and packs the plugin, asserts that the files it enqueues are in the
 payload and that nothing repository-only is, and checks that the version carriers
 agree.
