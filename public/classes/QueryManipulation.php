@@ -147,10 +147,7 @@ class QueryManipulation {
 		// $userid and $post_type come from whoever called count_user_posts(), which
 		// is not necessarily this plugin - so they are escaped here rather than
 		// trusted.
-		$select = $wpdb->prepare(
-			"SELECT count(*) FROM {$wpdb->posts} WHERE {$wpdb->posts}.ID IN ( SELECT post_id FROM " . $this->database->table . " WHERE author_id = %d)",
-			$userid
-		);
+		$table = $this->database->table;
 
 		$types = array();
 		if(is_array($post_type)){
@@ -163,12 +160,20 @@ class QueryManipulation {
 			$types = array($post_type);
 		}
 
+		$post_type_clause = "";
 		if(count($types) > 0){
-			$placeholders = implode(", ", array_fill(0, count($types), "%s"));
-			$select .= $wpdb->prepare(" AND post_type IN ($placeholders)", $types);
+			$post_type_clause = " AND post_type IN (" . implode(", ", array_fill(0, count($types), "%s")) . ")";
 		}
 
-		$additional_count = $wpdb->get_var( $select );
+		$additional_count = $wpdb->get_var(
+			$wpdb->prepare(
+				// $table is $wpdb->prefix plus a constant - %i would need WordPress 6.2 -,
+				// $post_type_clause holds one %s per post type and nothing else.
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+				"SELECT count(*) FROM {$wpdb->posts} WHERE {$wpdb->posts}.ID IN ( SELECT post_id FROM $table WHERE author_id = %d)$post_type_clause",
+				array_merge( array( $userid ), $types )
+			)
+		);
 
 		return (int)$count + (int)$additional_count;
 	}

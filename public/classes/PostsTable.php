@@ -35,12 +35,12 @@ class PostsTable {
 			$newCols[$key] = $label;
 			if( !$added && $key == "author" ){
 				$added = true;
-				$newCols['additional-authors'] = __('All authors', Plugin::DOMAIN);
+				$newCols['additional-authors'] = __('All authors', 'additional-authors');
 			}
 		}
 
 		if($added == false){
-			$newCols['additional-authors'] = __('All authors', Plugin::DOMAIN);
+			$newCols['additional-authors'] = __('All authors', 'additional-authors');
 		}
 
 		return $newCols;
@@ -78,6 +78,7 @@ class PostsTable {
 				);
 			}
 
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- every link is built with esc_url() and esc_html() above
 			echo implode(", ", $strings);
 
 		}

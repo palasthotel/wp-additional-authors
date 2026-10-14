@@ -1,4 +1,7 @@
 <?php
+
+defined( 'ABSPATH' ) || exit;
+
 /**
  * @var \AdditionalAuthors\Render $this
  * @var array $additional_authors_ids

@@ -64,12 +64,16 @@ class Update {
 		$table = $this->plugin->database->table;
 
 		global $wpdb;
-		$query = "
-		INSERT INTO $table (post_id, author_id) 
-		SELECT DISTINCT post_id, meta_value as author_id FROM {$wpdb->postmeta} 
-		WHERE meta_key = %s AND meta_value IS NOT NULL
-		";
-		$wpdb->query( $wpdb->prepare($query, '_additional_authors'));
+		$wpdb->query(
+			$wpdb->prepare(
+				// $table is $wpdb->prefix plus a constant - %i would need WordPress 6.2.
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"INSERT INTO $table (post_id, author_id)
+				SELECT DISTINCT post_id, meta_value as author_id FROM {$wpdb->postmeta}
+				WHERE meta_key = %s AND meta_value IS NOT NULL",
+				'_additional_authors'
+			)
+		);
 
 	}
 

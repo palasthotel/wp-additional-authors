@@ -94,13 +94,13 @@ class Assets {
 				"users" => $users,
 				"selected" => $this->plugin->database->get_author_ids( get_the_ID()),
 				"i18n" => array(
-					"label"              => __( 'Additional Authors', Plugin::DOMAIN ),
-					"add_author"         => __( 'Add author', Plugin::DOMAIN ),
-					"search_placeholder" => __( 'Search author…', Plugin::DOMAIN ),
-					"search_404"         => __( 'No author found.', Plugin::DOMAIN ),
-					"move_up"            => __( 'Move up', Plugin::DOMAIN ),
-					"move_down"          => __( 'Move down', Plugin::DOMAIN ),
-					"remove"             => __( 'Remove', Plugin::DOMAIN ),
+					"label"              => __( 'Additional Authors', 'additional-authors' ),
+					"add_author"         => __( 'Add author', 'additional-authors' ),
+					"search_placeholder" => __( 'Search author…', 'additional-authors' ),
+					"search_404"         => __( 'No author found.', 'additional-authors' ),
+					"move_up"            => __( 'Move up', 'additional-authors' ),
+					"move_down"          => __( 'Move down', 'additional-authors' ),
+					"remove"             => __( 'Remove', 'additional-authors' ),
 				),
 			]
 		);
