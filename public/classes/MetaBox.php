@@ -42,7 +42,7 @@ class MetaBox {
 		    }
 		    add_meta_box(
 			    'additional-authors-meta-box',
-			    __( 'Additional Authors', Plugin::DOMAIN ),
+			    __( 'Additional Authors', 'additional-authors' ),
 			    array( $this, 'additional_authors_html' ),
 			    $this->screens,
 			    'side',
@@ -89,8 +89,8 @@ class MetaBox {
 			"users"    => $users,
 			"selected" => $selected,
 			"language" => array(
-				"label"       => __( 'Search for author:' ),
-				"description" => __( 'Selected authors.' ),
+				"label"       => __( 'Search for author:', 'additional-authors' ),
+				"description" => __( 'Selected authors.', 'additional-authors' ),
 			),
 			"root_id"  => "meta_additional_authors",
 		);
@@ -99,7 +99,7 @@ class MetaBox {
 		do_action( Plugin::ACTION_META_BOX_BEFORE, $post );
 		?>
 		<div id="meta_additional_authors"></div>
-        <input type="hidden" name="<?= self::POST_IS_META_BOX_REQUEST; ?>" value="yes" />
+        <input type="hidden" name="<?php echo esc_attr( self::POST_IS_META_BOX_REQUEST ); ?>" value="yes" />
 		<?php
 		do_action( Plugin::ACTION_META_BOX_AFTER, $post );
 	}

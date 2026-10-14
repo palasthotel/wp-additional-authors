@@ -1,5 +1,7 @@
 <?php
 
+defined( 'ABSPATH' ) || exit;
+
 use AdditionalAuthors\Plugin;
 
 /**
@@ -70,12 +72,14 @@ function additional_authors_get_the_author(){
 }
 
 function additional_authors_get_archive_author_title() {
-    $title  = __( 'Archives' );
+    // This mirrors get_the_archive_title(), so it uses core's strings and core's
+    // translations on purpose - in every language core is translated into.
+    $title  = __( 'Archives' ); // phpcs:ignore WordPress.WP.I18n.MissingArgDomain -- core string, see above
     $prefix = '';
 
     if ( is_author() ) {
         $title  = additional_authors_get_the_author();
-        $prefix = _x( 'Author:', 'author archive title prefix' );
+        $prefix = _x( 'Author:', 'author archive title prefix' ); // phpcs:ignore WordPress.WP.I18n.MissingArgDomain -- core string
     }
 
     $original_title = $title;
@@ -91,7 +95,7 @@ function additional_authors_get_archive_author_title() {
     if ( $prefix ) {
         $title = sprintf(
         /* translators: 1: Title prefix. 2: Title. */
-            _x( '%1$s %2$s', 'archive title' ),
+            _x( '%1$s %2$s', 'archive title' ), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain -- core string
             $prefix,
             '<span>' . $title . '</span>'
         );

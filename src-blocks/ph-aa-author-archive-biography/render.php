@@ -1,4 +1,7 @@
 <?php
+
+defined( 'ABSPATH' ) || exit;
+
 /**
  * @var array $attributes
  */
@@ -18,4 +21,5 @@ $additional_author_archive_biography = get_the_author_meta( 'description', $addi
 $align_class_name   = empty( $attributes['textAlign'] ) ? '' : 'has-text-align-' . sanitize_html_class( $attributes['textAlign'] );
 $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => $align_class_name ) );
 
-printf( '<div %1$s>%2$s</div>', $wrapper_attributes, $additional_author_archive_biography );
+// get_block_wrapper_attributes() escapes what it returns.
+printf( '<div %1$s>%2$s</div>', $wrapper_attributes, wp_kses_post( $additional_author_archive_biography ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- see above

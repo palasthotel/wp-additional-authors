@@ -2,6 +2,8 @@
 
 namespace AdditionalAuthors;
 
+defined( 'ABSPATH' ) || exit;
+
 class Migrate {
 
 	const PREFIX = "additional_authors:";

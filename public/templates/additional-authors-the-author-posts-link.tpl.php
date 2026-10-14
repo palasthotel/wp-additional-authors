@@ -1,4 +1,7 @@
 <?php
+
+defined( 'ABSPATH' ) || exit;
+
 /**
  * @var \AdditionalAuthors\Render $this
  * @var int $author_id
@@ -11,7 +14,8 @@ printf(
 	'<a href="%1$s" title="%2$s" rel="author">%3$s</a>',
 	esc_url( get_author_posts_url( $author_id ) ),
 	sprintf(
-		esc_attr__( 'Posts by %s' ),
+		/* translators: %s: author's display name */
+		esc_attr__( 'Posts by %s', 'additional-authors' ),
 		esc_attr( $display_name )
 	),
 	esc_html( $display_name )

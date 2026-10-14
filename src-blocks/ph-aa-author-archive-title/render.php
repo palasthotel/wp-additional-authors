@@ -1,4 +1,7 @@
 <?php
+
+defined( 'ABSPATH' ) || exit;
+
 /**
  * @var array $attributes
  */
@@ -21,4 +24,6 @@ if ( ! $show_prefix ) {
 $align_class_name   = empty( $attributes['textAlign'] ) ? '' : 'has-text-align-' . sanitize_html_class( $attributes['textAlign'] );
 $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => $align_class_name ) );
 
-printf( '<h1 %1$s>%2$s</h1>', $wrapper_attributes, $title );
+// get_block_wrapper_attributes() escapes what it returns. The title is markup -
+// core's archive title wraps the name in a <span> - so it goes through wp_kses_post.
+printf( '<h1 %1$s>%2$s</h1>', $wrapper_attributes, wp_kses_post( $title ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- see above
