@@ -74,7 +74,7 @@ msgstr ""
 
 #. Description of the plugin/theme
 msgid ""
-"Provides a meta box for additional authors from existing users or taxonomy."
+"Adds more authors from your existing users to posts, pages and custom post types, and lists those posts in every author's archive."
 msgstr ""
 
 #. Author of the plugin/theme

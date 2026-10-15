@@ -63,7 +63,7 @@ example to get "Anna, Mark und David":
 
 == Screenshots ==
 
-1. The Additional Authors panel in the block editor sidebar: search for a user, and the ones you picked are listed below with a button to remove them again.
+1. The Additional Authors panel in the block editor sidebar: search for a user to add them, change the order with the arrows and remove one with the ×.
 
 == Changelog ==
 

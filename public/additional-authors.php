@@ -5,7 +5,7 @@ namespace AdditionalAuthors;
 /**
  * Plugin Name: Additional Authors
  * Plugin URI: https://github.com/palasthotel/wp-additional-authors
- * Description: Provides a meta box for additional authors from existing users or taxonomy.
+ * Description: Adds more authors from your existing users to posts, pages and custom post types, and lists those posts in every author's archive.
  * Author: Palasthotel <webmaster@palasthotel.de>
  * Author URI: https://palasthotel.de
  * Text Domain: additional-authors
