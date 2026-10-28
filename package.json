@@ -21,6 +21,7 @@
         "pack": "SLUG=additional-authors bash ../github-workflows/wp-plugin/bin/pack.sh"
     },
     "devDependencies": {
+        "@cyclonedx/webpack-plugin": "5.3.3",
         "@types/wordpress__block-editor": "^15.0.8",
         "@types/wordpress__blocks": "^15.17.0",
         "@wordpress/block-editor": "^19.0.0",
