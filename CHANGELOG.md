@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.0.0](https://github.com/palasthotel/wp-additional-authors/compare/v1.5.0...v2.0.0) (2026-10-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* require WordPress 6.1
+* requires PHP 8.0 or newer
+
+### Features
+
+* drop support for PHP 7.4 ([c83677e](https://github.com/palasthotel/wp-additional-authors/commit/c83677e075922086d6270b9e406f066d419cae63))
+* require WordPress 6.1 ([e5067c9](https://github.com/palasthotel/wp-additional-authors/commit/e5067c9e017ba9b892b4b4a896486bd63fda252a))
+
 ## [1.5.0](https://github.com/palasthotel/wp-additional-authors/compare/v1.4.1...v1.5.0) (2026-10-12)
 
 
