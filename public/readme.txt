@@ -5,7 +5,7 @@ Tags: author, meta fields
 Requires at least: 6.1
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.5.0
+Stable tag: 2.0.0
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -66,6 +66,15 @@ example to get "Anna, Mark und David":
 1. The Additional Authors panel in the block editor sidebar: search for a user to add them, change the order with the arrows and remove one with the ×.
 
 == Changelog ==
+
+= 2.0.0 =
+**⚠ BREAKING CHANGES**
+* require WordPress 6.1
+* requires PHP 8.0 or newer
+
+**Features**
+* drop support for PHP 7.4 (c83677e)
+* require WordPress 6.1 (e5067c9)
 
 = 1.5.0 =
 **Features**
